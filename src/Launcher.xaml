@@ -1,0 +1,128 @@
+<Window xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="Fortnite Tweaks" Width="1040" Height="830" MinWidth="840" MinHeight="560"
+        WindowStartupLocation="CenterScreen" Background="#0C1120" Foreground="#EDF0FA"
+        FontFamily="Segoe UI" FontSize="13" UseLayoutRounding="True">
+  <Window.Resources>
+    <Style TargetType="Button">
+      <Setter Property="Background" Value="#202B45"/>
+      <Setter Property="Foreground" Value="#EDF0FA"/>
+      <Setter Property="Padding" Value="15,11"/>
+      <Setter Property="Cursor" Value="Hand"/>
+      <Setter Property="BorderThickness" Value="0"/>
+      <Setter Property="Template">
+        <Setter.Value>
+          <ControlTemplate TargetType="Button">
+            <Border Name="ButtonBorder" Background="{TemplateBinding Background}" CornerRadius="7" Padding="{TemplateBinding Padding}">
+              <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+            </Border>
+            <ControlTemplate.Triggers>
+              <Trigger Property="IsMouseOver" Value="True"><Setter TargetName="ButtonBorder" Property="Opacity" Value="0.8"/></Trigger>
+              <Trigger Property="IsKeyboardFocused" Value="True"><Setter TargetName="ButtonBorder" Property="BorderBrush" Value="#AFA0FF"/><Setter TargetName="ButtonBorder" Property="BorderThickness" Value="2"/></Trigger>
+              <Trigger Property="IsEnabled" Value="False"><Setter TargetName="ButtonBorder" Property="Opacity" Value="0.35"/></Trigger>
+            </ControlTemplate.Triggers>
+          </ControlTemplate>
+        </Setter.Value>
+      </Setter>
+    </Style>
+    <Style x:Key="Card" TargetType="Border">
+      <Setter Property="Background" Value="#151D30"/>
+      <Setter Property="BorderBrush" Value="#26314A"/>
+      <Setter Property="BorderThickness" Value="1"/>
+      <Setter Property="CornerRadius" Value="10"/>
+      <Setter Property="Padding" Value="16"/>
+    </Style>
+    <Style TargetType="DataGridColumnHeader">
+      <Setter Property="Background" Value="#1D2840"/>
+      <Setter Property="Foreground" Value="#A8B5CF"/>
+      <Setter Property="Padding" Value="12,9"/>
+      <Setter Property="BorderThickness" Value="0"/>
+    </Style>
+    <Style TargetType="DataGridCell">
+      <Setter Property="Padding" Value="12,6"/>
+      <Setter Property="BorderThickness" Value="0"/>
+      <Setter Property="Foreground" Value="#E4EAF7"/>
+      <Setter Property="Template"><Setter.Value><ControlTemplate TargetType="DataGridCell"><Border Padding="{TemplateBinding Padding}" Background="{TemplateBinding Background}"><ContentPresenter/></Border></ControlTemplate></Setter.Value></Setter>
+    </Style>
+    <Style TargetType="ComboBoxItem">
+      <Setter Property="Background" Value="#202B45"/>
+      <Setter Property="Foreground" Value="#EDF0FA"/>
+      <Setter Property="Padding" Value="8"/>
+    </Style>
+  </Window.Resources>
+  <Grid>
+    <Grid.ColumnDefinitions><ColumnDefinition Width="185"/><ColumnDefinition Width="*"/></Grid.ColumnDefinitions>
+    <Border Background="#101729" BorderBrush="#222D44" BorderThickness="0,0,1,0" Padding="18,27">
+      <DockPanel LastChildFill="True">
+        <StackPanel DockPanel.Dock="Top">
+          <Border Background="#7C5CFF" Width="45" Height="45" CornerRadius="12" HorizontalAlignment="Left">
+            <TextBlock Text="FT" FontSize="20" FontWeight="Bold" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+          </Border>
+          <TextBlock Text="FORTNITE" FontWeight="Bold" FontSize="18" Margin="0,14,0,0"/>
+          <TextBlock Text="T W E A K S" Foreground="#9985FF" FontSize="12" Margin="0,3,0,30"/>
+          <TextBlock Text="DEIN LAUNCHER" Foreground="#7E8CA8" FontSize="10" Margin="0,0,0,12"/>
+          <Button Name="RefreshButton" Content="Aktualisieren" Margin="0,0,0,9"/>
+          <Button Name="BrowseButton" Content="Datei auswählen" Margin="0,0,0,9"/>
+          <Button Name="OpenBackupsButton" Content="Sicherungen öffnen"/>
+        </StackPanel>
+        <StackPanel DockPanel.Dock="Bottom" VerticalAlignment="Bottom" Margin="0,30,0,0">
+          <TextBlock Text="LOKAL AUF DEINEM PC" Foreground="#7E8CA8" FontSize="10"/>
+          <TextBlock Text="Keine Adminrechte erforderlich." TextWrapping="Wrap" Foreground="#ABB7CD" FontSize="12" Margin="0,7,0,0"/>
+        </StackPanel>
+        <Grid/>
+      </DockPanel>
+    </Border>
+    <ScrollViewer Grid.Column="1" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
+      <StackPanel Margin="27,25,27,25">
+        <TextBlock Text="DEIN FORTNITE-SETUP" Foreground="#9985FF" FontWeight="SemiBold" FontSize="11"/>
+        <Grid Margin="0,5,0,7">
+          <Grid.ColumnDefinitions><ColumnDefinition Width="*"/><ColumnDefinition Width="Auto"/></Grid.ColumnDefinitions>
+          <TextBlock Text="Competitive-Profil" FontSize="29" FontWeight="Bold"/>
+          <Border Grid.Column="1" Background="#1C2940" CornerRadius="14" Padding="12,6" VerticalAlignment="Center" Margin="12,0,0,0">
+            <TextBlock Name="StatusText" Text="Wird geprüft" FontSize="12"/>
+          </Border>
+        </Grid>
+        <TextBlock Name="HintText" Text="Grafikeinstellungen prüfen, anwenden und wiederherstellen." Foreground="#A8B5CF" TextWrapping="Wrap" Margin="0,0,0,18"/>
+        <UniformGrid Columns="3" Margin="0,0,0,16">
+          <Border Style="{StaticResource Card}" Margin="0,0,7,0"><StackPanel><TextBlock Text="PROZESSOR" FontSize="10" Foreground="#8F9DB9"/><TextBlock Name="CpuText" Text="Wird erkannt …" Margin="0,7,0,0" TextTrimming="CharacterEllipsis"/></StackPanel></Border>
+          <Border Style="{StaticResource Card}" Margin="3,0,3,0"><StackPanel><TextBlock Text="GRAFIKKARTE" FontSize="10" Foreground="#8F9DB9"/><TextBlock Name="GpuText" Text="Wird erkannt …" Margin="0,7,0,0" TextTrimming="CharacterEllipsis"/></StackPanel></Border>
+          <Border Style="{StaticResource Card}" Margin="7,0,0,0"><StackPanel><TextBlock Text="ARBEITSSPEICHER" FontSize="10" Foreground="#8F9DB9"/><TextBlock Name="RamText" Text="Wird erkannt …" Margin="0,7,0,0"/></StackPanel></Border>
+        </UniformGrid>
+        <TextBlock Text="EINSTELLUNGSDATEI" FontSize="10" Foreground="#8F9DB9"/>
+        <TextBlock Name="ConfigPathText" TextWrapping="Wrap" FontSize="11" Foreground="#ABB7CD" Margin="0,5,0,16"/>
+        <Grid Margin="0,0,0,9">
+          <Grid.ColumnDefinitions><ColumnDefinition Width="*"/><ColumnDefinition Width="Auto"/></Grid.ColumnDefinitions>
+          <TextBlock Text="Profilvorschau" FontSize="17" FontWeight="SemiBold"/>
+          <TextBlock Name="ChangeCountText" Grid.Column="1" Foreground="#A8B5CF" VerticalAlignment="Center"/>
+        </Grid>
+        <DataGrid Name="ProfileGrid" Height="235" AutoGenerateColumns="False" IsReadOnly="True"
+                  CanUserAddRows="False" CanUserDeleteRows="False" CanUserResizeRows="False" CanUserReorderColumns="False"
+                  HeadersVisibility="Column" GridLinesVisibility="None" BorderThickness="0" RowHeaderWidth="0"
+                  Background="#151D30" RowBackground="#151D30" AlternatingRowBackground="#182238" Foreground="#EDF0FA">
+          <DataGrid.Columns>
+            <DataGridTextColumn Header="Einstellung" Binding="{Binding Label}" Width="*"/>
+            <DataGridTextColumn Header="Aktuell" Binding="{Binding CurrentLabel}" Width="140"/>
+            <DataGridTextColumn Header="Profil" Binding="{Binding TargetLabel}" Width="140"/>
+          </DataGrid.Columns>
+        </DataGrid>
+        <TextBlock Text="Auflösung, Sichtweite und FPS-Limit bleiben erhalten." Foreground="#8F9DB9" FontSize="11" Margin="0,8,0,13"/>
+        <Button Name="ApplyButton" Content="Profil mit Sicherung anwenden" Background="#7C5CFF" FontWeight="SemiBold" HorizontalAlignment="Left" IsEnabled="False" Padding="21,12"/>
+        <Border Style="{StaticResource Card}" Margin="0,18,0,16">
+          <StackPanel>
+            <TextBlock Text="Wiederherstellen" FontSize="16" FontWeight="SemiBold"/>
+            <TextBlock Text="Setzt die gesamte Einstellungsdatei auf den gewählten Stand zurück." Foreground="#A8B5CF" FontSize="11" TextWrapping="Wrap" Margin="0,5,0,11"/>
+            <Grid>
+              <Grid.ColumnDefinitions><ColumnDefinition Width="*"/><ColumnDefinition Width="Auto"/></Grid.ColumnDefinitions>
+              <ComboBox Name="BackupPicker" DisplayMemberPath="Label" VerticalContentAlignment="Center" MinHeight="36" IsEnabled="False" Foreground="#101729" Margin="0,0,12,0" ToolTip="Wähle eine Sicherung; die neueste steht oben."/>
+              <Button Name="RestoreButton" Grid.Column="1" Content="Wiederherstellen" IsEnabled="False"/>
+            </Grid>
+          </StackPanel>
+        </Border>
+        <TextBlock Text="AKTIVITÄT" Foreground="#8F9DB9" FontSize="10" Margin="0,0,0,7"/>
+        <TextBox Name="LogBox" Height="90" IsReadOnly="True" TextWrapping="Wrap" VerticalScrollBarVisibility="Auto"
+                 Background="#101729" Foreground="#B5C1D8" BorderBrush="#26314A" Padding="10" FontSize="11"/>
+        <TextBlock Text="Fortnite vor Änderungen schließen. Prüfe das Ergebnis danach im Spiel." Foreground="#8F9DB9" FontSize="11" TextWrapping="Wrap" Margin="0,12,0,0"/>
+      </StackPanel>
+    </ScrollViewer>
+  </Grid>
+</Window>
