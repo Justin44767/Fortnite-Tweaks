@@ -73,6 +73,7 @@ function Test-Case {
 
 try {
     . (Join-Path $PSScriptRoot 'PowerPlan.Tests.ps1')
+    . (Join-Path $PSScriptRoot 'Input.Tests.ps1')
 
     Test-Case 'Manual VSync option leaves all other game settings unchanged' {
         $f = New-Fixture

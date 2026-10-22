@@ -1,6 +1,7 @@
 ﻿Set-StrictMode -Version Latest
 Import-Module (Join-Path $PSScriptRoot 'FortniteTweaks.psm1') -Force
 Import-Module (Join-Path $PSScriptRoot 'WindowsTweaks.psm1') -Force
+Import-Module (Join-Path $PSScriptRoot 'InputTweaks.psm1') -Force
 
 $script:SettingLabels = @{
     'sg.AntiAliasingQuality' = 'Kantenglättung'
@@ -135,6 +136,16 @@ function Update-LauncherState {
         $controls.PowerRestoreButton.IsEnabled = $power.CanRestore
         if (-not $power.HighPerformanceAvailable) { $controls.PowerStatusText.Text += ' | Hohe Leistung nicht verfügbar' }
     } catch { $controls.PowerStatusText.Text = 'Nicht verfügbar: ' + $_.Exception.Message }
+    $controls.KeyboardDisableButton.IsEnabled = $false
+    $controls.KeyboardRestoreButton.IsEnabled = $false
+    try {
+        $keyboard = Get-FortniteKeyboardState -StatePath $State.KeyboardStatePath
+        $controls.KeyboardDisableButton.IsEnabled = $keyboard.FilterKeysEnabled
+        $controls.KeyboardRestoreButton.IsEnabled = $keyboard.CanRestore
+        if ($keyboard.FilterKeysEnabled) {
+            $controls.KeyboardStatusText.Text = "Filtertasten aktiv | Annahmeverzögerung: $($keyboard.AcceptanceDelayMs) ms"
+        } else { $controls.KeyboardStatusText.Text = 'Filtertasten bereits aus. Hier ist keine weitere Filterverzögerung zu entfernen.' }
+    } catch { $controls.KeyboardStatusText.Text = 'Nicht verfügbar: ' + $_.Exception.Message }
 }
 
 function Invoke-LauncherAction {
@@ -142,6 +153,34 @@ function Invoke-LauncherAction {
     $failure = $null
     try {
         switch ($Action) {
+            'ShowInput' { $State.Controls.InputSection.BringIntoView() }
+            'KeyboardDisable' {
+                $result = Disable-FortniteKeyboardFilter -StatePath $State.KeyboardStatePath -Confirm:$false
+                if ($result.Status -eq 'Applied') { Write-LauncherLog $State 'Filtertasten deaktiviert. Der vorherige Tastaturzustand wurde gesichert.' }
+                else { Write-LauncherLog $State 'Filtertasten waren bereits deaktiviert. Es wurde nichts geändert.' }
+            }
+            'KeyboardRestore' {
+                $result = Restore-FortniteKeyboardFilter -StatePath $State.KeyboardStatePath -Confirm:$false
+                if ($result.Status -eq 'Restored') { Write-LauncherLog $State 'Vorheriger Filtertasten-Zustand wiederhergestellt.' }
+                else { Write-LauncherLog $State 'Keine Tastatur-Änderung zur Wiederherstellung vorhanden.' }
+            }
+            'KeyboardSettings' { Start-Process 'ms-settings:easeofaccess-keyboard' -ErrorAction Stop | Out-Null }
+            'VictrixSoftware' { Start-Process 'ms-windows-store://search/?query=Victrix%20Control%20Hub' -ErrorAction Stop | Out-Null }
+            'ControllerSettings' {
+                Start-Process -FilePath (Join-Path $env:SystemRoot 'System32/control.exe') -ArgumentList 'joy.cpl' -ErrorAction Stop | Out-Null
+            }
+            'ControllerCheck' {
+                $controllers = @(Get-FortniteControllerState)
+                if ($controllers.Count -eq 0) {
+                    $State.Controls.ControllerStatusText.Text = 'Kein XInput-Controller erkannt. PlayStation- und andere DirectInput-Geräte können trotzdem in Windows und Fortnite funktionieren.'
+                } else {
+                    $lines = @($controllers | ForEach-Object {
+                        'Controller {0}: Stick links {1:N2} %, rechts {2:N2} % | LT {3:N0} %, RT {4:N0} %' -f $_.Slot, $_.LeftStickPercent, $_.RightStickPercent, $_.LeftTriggerPercent, $_.RightTriggerPercent
+                    })
+                    $State.Controls.ControllerStatusText.Text = ([DateTime]::Now.ToString('HH:mm:ss') + ' | Momentaufnahme' + [Environment]::NewLine + ($lines -join [Environment]::NewLine))
+                }
+                Write-LauncherLog $State 'Controller-Momentaufnahme gelesen. Keine Geräte- oder Spieleinstellungen geändert.'
+            }
             'ApplyManual' {
                 $selectedIds = @($State.ManualRows | Where-Object { $_.Selected } | ForEach-Object { $_.Id })
                 if ($selectedIds.Count -eq 0) { throw 'Wähle mindestens eine Optimierung aus.' }
@@ -244,7 +283,7 @@ function Invoke-LauncherAction {
 
 function New-FortniteLauncher {
     [CmdletBinding()]
-    param([string]$ConfigPath, [string]$BackupRoot, [string]$PowerStatePath)
+    param([string]$ConfigPath, [string]$BackupRoot, [string]$PowerStatePath, [string]$KeyboardStatePath)
     if ([Environment]::OSVersion.Platform -ne [PlatformID]::Win32NT) { throw 'Der grafische Launcher benötigt Windows.' }
     if ([Threading.Thread]::CurrentThread.ApartmentState -ne [Threading.ApartmentState]::STA) {
         throw 'Starte den Launcher über Start.cmd oder powershell.exe -NoProfile -STA -File .\Launcher.ps1.'
@@ -252,9 +291,11 @@ function New-FortniteLauncher {
     if (-not $ConfigPath) { $ConfigPath = Join-Path $env:LOCALAPPDATA 'FortniteGame\Saved\Config\WindowsClient\GameUserSettings.ini' }
     if (-not $BackupRoot) { $BackupRoot = Join-Path $env:LOCALAPPDATA 'Fortnite-Tweaks\Backups' }
     if (-not $PowerStatePath) { $PowerStatePath = Join-Path $env:LOCALAPPDATA 'Fortnite-Tweaks\State\power-plan.json' }
+    if (-not $KeyboardStatePath) { $KeyboardStatePath = Join-Path $env:LOCALAPPDATA 'Fortnite-Tweaks\State\keyboard.json' }
     $ConfigPath = $ExecutionContext.SessionState.Path.GetUnresolvedProviderPathFromPSPath($ConfigPath)
     $BackupRoot = $ExecutionContext.SessionState.Path.GetUnresolvedProviderPathFromPSPath($BackupRoot)
     $PowerStatePath = $ExecutionContext.SessionState.Path.GetUnresolvedProviderPathFromPSPath($PowerStatePath)
+    $KeyboardStatePath = $ExecutionContext.SessionState.Path.GetUnresolvedProviderPathFromPSPath($KeyboardStatePath)
     Add-Type -AssemblyName PresentationFramework, PresentationCore, WindowsBase
     $xml = New-Object Xml.XmlDocument
     $xml.XmlResolver = $null
@@ -269,7 +310,7 @@ function New-FortniteLauncher {
     $window.MinHeight = [Math]::Min($window.MinHeight, $window.MaxHeight)
     $window.MinWidth = [Math]::Min($window.MinWidth, $window.MaxWidth)
     $controls = @{}
-    foreach ($name in @('RefreshButton', 'BrowseButton', 'OpenBackupsButton', 'ApplyButton', 'RestoreButton', 'BackupPicker', 'StatusText', 'HintText', 'CpuText', 'GpuText', 'RamText', 'ConfigPathText', 'ChangeCountText', 'ProfileGrid', 'LogBox', 'ManualOptionsList', 'FpsLimitBox', 'ManualApplyButton', 'PowerEnableButton', 'PowerRestoreButton', 'PowerStatusText', 'GameModeButton', 'CapturesButton')) {
+    foreach ($name in @('RefreshButton', 'BrowseButton', 'OpenBackupsButton', 'ApplyButton', 'RestoreButton', 'BackupPicker', 'StatusText', 'HintText', 'CpuText', 'GpuText', 'RamText', 'ConfigPathText', 'ChangeCountText', 'ProfileGrid', 'LogBox', 'ManualOptionsList', 'FpsLimitBox', 'ManualApplyButton', 'PowerEnableButton', 'PowerRestoreButton', 'PowerStatusText', 'GameModeButton', 'CapturesButton', 'InputSection', 'InputButton', 'KeyboardStatusText', 'KeyboardDisableButton', 'KeyboardRestoreButton', 'KeyboardSettingsButton', 'ControllerStatusText', 'ControllerCheckButton', 'ControllerSettingsButton', 'VictrixSoftwareButton')) {
         $controls[$name] = $window.FindName($name)
         if ($null -eq $controls[$name]) { throw "Launcher-Steuerelement fehlt: $name" }
     }
@@ -277,6 +318,7 @@ function New-FortniteLauncher {
         Window = $window; Controls = $controls; ConfigPath = $ConfigPath; BackupRoot = $BackupRoot
         LastError = $null; IsReady = $false; HardwareLoaded = $false; Refresh = $null
         ManualRows = @(); PowerStatePath = $PowerStatePath
+        KeyboardStatePath = $KeyboardStatePath
         ConfirmRestore = {
             param($owner, $label)
             $message = "Die gesamte Einstellungsdatei auf die Sicherung vom $label zurücksetzen? Auch spätere Einstellungen im Spiel werden zurückgesetzt. Der aktuelle Stand wird vorher gesichert."
@@ -291,6 +333,9 @@ function New-FortniteLauncher {
         ApplyButton = 'Apply'; RestoreButton = 'Restore'
         ManualApplyButton = 'ApplyManual'; PowerEnableButton = 'PowerEnable'; PowerRestoreButton = 'PowerRestore'
         GameModeButton = 'GameMode'; CapturesButton = 'Captures'
+        InputButton = 'ShowInput'; KeyboardDisableButton = 'KeyboardDisable'; KeyboardRestoreButton = 'KeyboardRestore'
+        KeyboardSettingsButton = 'KeyboardSettings'; ControllerCheckButton = 'ControllerCheck'; ControllerSettingsButton = 'ControllerSettings'
+        VictrixSoftwareButton = 'VictrixSoftware'
     }.GetEnumerator()) {
         $controls[$pair.Key].Tag = $pair.Value
         $controls[$pair.Key].Add_Click({

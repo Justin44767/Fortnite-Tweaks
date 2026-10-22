@@ -8,7 +8,7 @@ Ein eigenes Windows-Tool mit einem Competitive-Grafikprofil, Hardwareanzeige, Vo
 2. Fortnite schließen.
 3. Die EXE doppelt anklicken.
 
-Die einzelne EXE enthält alle fünf benötigten Launcher-Dateien. Sie entpackt diese für die Laufzeit in einen eigenen temporären Ordner und entfernt ihn nach dem Beenden. Deine Fortnite-Einstellungen und Sicherungen bleiben an ihren bisherigen Speicherorten. Der Launcher benötigt die in Windows 11 enthaltenen Komponenten .NET Framework 4.8 und Windows PowerShell 5.1. Administratorrechte sind nicht erforderlich.
+Die einzelne EXE enthält alle sieben benötigten Launcher-Dateien. Sie entpackt diese für die Laufzeit in einen eigenen temporären Ordner und entfernt ihn nach dem Beenden. Deine Fortnite-Einstellungen und Sicherungen bleiben an ihren bisherigen Speicherorten. Der Launcher benötigt die in Windows 11 enthaltenen Komponenten .NET Framework 4.8 und Windows PowerShell 5.1. Administratorrechte sind nicht erforderlich.
 
 Die EXE ist **nicht mit einem Herausgeberzertifikat signiert**. Windows kann deshalb einen Hinweis zum unbekannten Herausgeber anzeigen. Die [SHA256-Prüfsumme](dist/Fortnite-Tweaks-Launcher.exe.sha256) ermöglicht den Vergleich mit der veröffentlichten Datei:
 
@@ -17,6 +17,34 @@ Get-FileHash .\Fortnite-Tweaks-Launcher.exe -Algorithm SHA256
 ```
 
 Bei einem Startfehler zeigt die EXE die Fehlermeldung und gegebenenfalls den Pfad eines Protokolls unter `%LOCALAPPDATA%\Fortnite-Tweaks\Logs` an.
+
+## Controller und Tastatur
+
+Über **Controller / Tastatur** links springst du zu den neuen Eingabebereichen. Beim Öffnen des Launchers werden keine Eingabeeinstellungen geändert.
+
+### Victrix PRO BFG
+
+**Sticks prüfen** liest eine Momentaufnahme angeschlossener Xbox-kompatibler XInput-Controller: Auslenkung des linken und rechten Sticks sowie der Trigger. Lege den Controller dafür ruhig ab und wiederhole die Prüfung. Die Anzeige ist **keine Messung der Eingabelatenz oder Pollingrate**. Ein nicht über XInput erfasstes Gerät kann trotzdem in Windows und Fortnite funktionieren; **Windows-Controller öffnen** öffnet dafür die Windows-Geräteprüfung (`joy.cpl`). Der Launcher installiert weder Treiber noch Eingabe-Emulation.
+
+Für deinen Victrix PRO BFG:
+
+- Den laut Handbuch passenden Windows-/PC-Modus deiner Variante wählen. USB direkt am PC mit dem Original-Funk-Dongle im gleichen Spielszenario vergleichen; nicht jede Verbindung ist bei jedem Gerät gleich schnell.
+- Die passende offizielle Victrix-Software für Firmware und gegebenenfalls Kalibrierung verwenden. **Victrix Control Hub suchen** öffnet nur eine Suche im Microsoft Store. Prüfe dort den offiziellen Herausgeber und die Kompatibilität deiner Variante. Die App wird nicht automatisch installiert.
+- Trigger-Stops auf einen kürzeren Weg testen und die Auslösung im Spiel prüfen. Das verändert den Betätigungsweg, nicht die USB-Übertragungszeit.
+- In Fortnite die Stick-Totzonen schrittweise reduzieren, solange keine ungewollte Bewegung entsteht. Beim ersten Drift den betroffenen Wert wieder erhöhen. Eine kleinere Totzone erkennt kleinere Bewegungen früher; sie verändert keine Hardware-Pollingrate.
+- Die Blickdämpfungszeit für direktere Kamerabewegungen reduzieren, gegebenenfalls bis 0,00 s, wenn diese Option angeboten wird. Das verändert das Zielgefühl. Wenn du zum Bearbeiten eine Taste halten musst, zusätzlich die Bearbeitungshaltezeit im Spiel testen.
+
+Diese Fortnite-Controllerwerte stellst du im Spiel ein. Der Launcher enthält eine Einstellhilfe und eine Geräteprüfung; er schreibt hierfür keine ungeprüften Schlüssel in die Fortnite-Datei. Sensitivität, Totzonen und Dämpfung sind persönliche Steuerungseinstellungen und kein Nachweis einer geringeren Gesamtlatenz.
+
+### Kemove-Tastatur
+
+Der Launcher zeigt den Zustand der Windows-**Filtertasten** und deren Annahmeverzögerung. Diese Bedienungshilfe kann Anschläge verzögern oder unterdrücken. Wenn du sie nicht benötigst, deaktiviert **Filtertasten deaktivieren** ausschließlich deren Aktivierungsbit über die dokumentierte Windows-API. Shortcut-Flags und alle gespeicherten Zeitwerte bleiben erhalten. Bei bereits deaktivierten Filtertasten erfolgt keine Änderung und es wird kein zusätzlicher Geschwindigkeitsvorteil behauptet.
+
+Vor einer tatsächlichen Änderung wird der vollständige vorherige Filtertasten-Zustand unter `%LOCALAPPDATA%\Fortnite-Tweaks\State\keyboard.json` gespeichert. **Tastaturzustand zurücksetzen** stellt ihn auch nach einem Neustart des Launchers wieder her. Hat eine andere Anwendung oder Windows diese Werte inzwischen geändert, überschreibt der Launcher sie nicht automatisch. Das Zurücksetzen der Fortnite-INI wirkt nicht auf diese separate Windows-Sicherung.
+
+**Windows-Tastatureinstellungen** öffnet die zugehörige Windows-Seite. Wenn du Filtertasten als Bedienungshilfe benötigst, behalte sie bei. Tastaturwiederholung, Anschlagspunkt, Debounce und Firmware sind unterschiedliche Funktionen. Für deine Kemove ist zuerst die genaue Modellnummer auf Unterseite oder Verpackung nötig, bevor passende Herstelleroptionen gewählt werden können. Es wird keine Pollingrate oder Firmware automatisch umgestellt.
+
+Technische Referenzen: Microsoft dokumentiert [FILTERKEYS](https://learn.microsoft.com/en-us/windows/win32/api/winuser/ns-winuser-filterkeys), [SystemParametersInfo](https://learn.microsoft.com/en-us/windows/win32/api/winuser/nf-winuser-systemparametersinfow) und [XInputGetState](https://learn.microsoft.com/en-us/windows/win32/api/xinput/nf-xinput-xinputgetstate). Der Quellcode der offiziellen FILTERKEYS-Dokumentation wurde bei der Implementierung geprüft.
 
 ## Optimierungen manuell auswählen
 
@@ -140,4 +168,4 @@ Für einen Build unter Linux benötigt das Skript PowerShell 7 mit Roslyn und `-
 
 Die Tests benötigen keine weiteren Pakete. Sie bearbeiten ausschließlich temporäre Beispieldateien und prüfen Profilanwendung, unveränderte andere Einstellungen, Sicherungen, Wiederherstellung, Wiederholbarkeit, Vorschau und Fehlerfälle. Sie laufen auch unter PowerShell 7 auf Linux. Das Hauptprogramm benötigt Windows.
 
-Die Tests bestätigen die Dateiverarbeitung, die Vorschau und den Inhalt der EXE. Die Windows-Tests prüfen zusätzlich die Oberfläche über ihre tatsächlichen Schaltflächen mit temporären Einstellungsdateien und starten die EXE mit `--verify-payload`, ohne Fortnite-Einstellungen zu ändern. Unter Linux werden Windows-Prüfungen ausdrücklich übersprungen. Die Wirkung auf Fortnite und die visuelle Darstellung müssen auf einem Windows-PC geprüft werden.
+Die Tests bestätigen die Dateiverarbeitung, die Vorschau, den Inhalt der EXE sowie die Sicherungs- und Rücksetzlogik für Filtertasten mit einem simulierten Windows-Adapter. Der native C#-Teil wird kompiliert; seine Win32-Strukturlayouts und Stick-Normalisierung werden geprüft. Die Windows-Tests prüfen zusätzlich die Oberfläche, die lesende Filtertasten-Abfrage und starten die EXE mit `--verify-payload`. Die automatischen Tests verändern keine echten Tastatureinstellungen. Unter Linux werden Windows-Prüfungen ausdrücklich übersprungen. Die Wirkung auf Fortnite, reale Geräte und die visuelle Darstellung müssen auf einem Windows-PC geprüft werden.

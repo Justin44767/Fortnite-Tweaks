@@ -18,6 +18,8 @@ $payload = [ordered]@{
     'FortniteTweaks.Layout' = 'src/Launcher.xaml'
     'FortniteTweaks.Settings' = 'src/FortniteTweaks.psm1'
     'FortniteTweaks.WindowsSettings' = 'src/WindowsTweaks.psm1'
+    'FortniteTweaks.InputSettings' = 'src/InputTweaks.psm1'
+    'FortniteTweaks.InputNative' = 'src/InputNative.cs'
 }
 if ($assembly.GetManifestResourceNames().Count -ne $payload.Count) { throw 'Wrong number of embedded payload files.' }
 foreach ($name in $payload.Keys) {

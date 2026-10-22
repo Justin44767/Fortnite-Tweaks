@@ -17,6 +17,8 @@ $payload = [ordered]@{
     'FortniteTweaks.Layout' = (Join-Path $repository 'src/Launcher.xaml')
     'FortniteTweaks.Settings' = (Join-Path $repository 'src/FortniteTweaks.psm1')
     'FortniteTweaks.WindowsSettings' = (Join-Path $repository 'src/WindowsTweaks.psm1')
+    'FortniteTweaks.InputSettings' = (Join-Path $repository 'src/InputTweaks.psm1')
+    'FortniteTweaks.InputNative' = (Join-Path $repository 'src/InputNative.cs')
 }
 foreach ($path in $payload.Values) {
     if (-not [IO.File]::Exists($path)) { throw "Payload file missing: $path" }

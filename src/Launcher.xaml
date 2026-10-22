@@ -64,6 +64,7 @@
           <Button Name="RefreshButton" Content="Aktualisieren" Margin="0,0,0,9"/>
           <Button Name="BrowseButton" Content="Datei auswählen" Margin="0,0,0,9"/>
           <Button Name="OpenBackupsButton" Content="Sicherungen öffnen" Margin="0,0,0,9"/>
+          <Button Name="InputButton" Content="Controller / Tastatur" Margin="0,0,0,9"/>
           <Button Name="GameModeButton" Content="Spielmodus öffnen" Margin="0,0,0,9" ToolTip="Öffnet den Spielmodus in den Windows-Einstellungen."/>
           <Button Name="CapturesButton" Content="Spielaufnahmen" ToolTip="Öffnet die Windows-Einstellungen für Spiel- und Hintergrundaufnahmen."/>
         </StackPanel>
@@ -92,6 +93,36 @@
         </UniformGrid>
         <TextBlock Text="EINSTELLUNGSDATEI" FontSize="10" Foreground="#8F9DB9"/>
         <TextBlock Name="ConfigPathText" TextWrapping="Wrap" FontSize="11" Foreground="#ABB7CD" Margin="0,5,0,16"/>
+        <StackPanel Name="InputSection">
+          <Border Style="{StaticResource Card}" Margin="0,0,0,16">
+            <StackPanel>
+              <TextBlock Text="Victrix PRO BFG: Reaktion abstimmen" FontSize="18" FontWeight="SemiBold"/>
+              <TextBlock Text="Für deinen Victrix: den zum Windows-Betrieb passenden Modus gemäß Handbuch wählen. USB direkt am PC und den Original-Funk-Dongle im selben Szenario vergleichen. Trigger-Stops verkürzen den Weg bis zum Druckpunkt; die Auslösung danach im Spiel und gegebenenfalls mit der Herstellerkalibrierung prüfen." TextWrapping="Wrap" Foreground="#A8B5CF" Margin="0,8,0,0"/>
+              <TextBlock Text="Totzonen und Blickdämpfung verändern das Ansprechverhalten. Diese Werte stellst du direkt in Fortnite ein:" TextWrapping="Wrap" Foreground="#A8B5CF" Margin="0,8,0,0"/>
+              <TextBlock Text="• Stick-Totzonen schrittweise reduzieren. Sobald die Kamera oder Spielfigur ohne Berührung wandert, den betroffenen Wert wieder erhöhen.&#10;• Blickdämpfungszeit reduzieren, wenn du eine direktere Kamerabewegung möchtest. 0,00 s deaktiviert diese Dämpfung, sofern diese Option angeboten wird. Das Zielgefühl verändert sich.&#10;• Falls du zum Bearbeiten eine Taste gedrückt hältst: die Bearbeitungshaltezeit im Spiel testen." TextWrapping="Wrap" Foreground="#A8B5CF" FontSize="12" Margin="0,9,0,12"/>
+              <WrapPanel>
+                <Button Name="ControllerCheckButton" Content="Sticks prüfen" Margin="0,0,10,8"/>
+                <Button Name="ControllerSettingsButton" Content="Windows-Controller öffnen" Margin="0,0,0,8"/>
+                <Button Name="VictrixSoftwareButton" Content="Victrix Control Hub suchen" Margin="10,0,0,8" ToolTip="Öffnet eine Suche im Microsoft Store; installiert nichts automatisch. Prüfe den offiziellen Herausgeber und die Kompatibilität mit deiner Variante."/>
+              </WrapPanel>
+              <TextBlock Name="ControllerStatusText" Text="Controller ruhig ablegen und Sticks prüfen wählen. Der Test erkennt Xbox-kompatible XInput-Controller." TextWrapping="Wrap" Foreground="#9985FF" Margin="0,4,0,0"/>
+              <TextBlock Text="Der Test zeigt eine Momentaufnahme der Stickauslenkung, keine Eingabelatenz. Totzonen ändern die Bewegungsschwelle; die Hardware-Abfragerate stellst du gegebenenfalls in der Herstellersoftware ein. USB und Funk im selben Spielszenario vergleichen." TextWrapping="Wrap" Foreground="#8F9DB9" FontSize="11" Margin="0,10,0,0"/>
+            </StackPanel>
+          </Border>
+          <Border Style="{StaticResource Card}" Margin="0,0,0,16">
+            <StackPanel>
+              <TextBlock Text="Tastatur: Windows-Eingabefilter" FontSize="18" FontWeight="SemiBold"/>
+              <TextBlock Name="KeyboardStatusText" Text="Wird geprüft …" TextWrapping="Wrap" Foreground="#9985FF" Margin="0,8,0,0"/>
+              <TextBlock Text="Filtertasten können Anschläge verzögern oder unterdrücken. Nur deaktivieren, wenn du diese Bedienungshilfe nicht benötigst. Der vorherige Zustand mit allen Verzögerungswerten wird gesichert. Sind Filtertasten schon aus, bringt diese Option keinen zusätzlichen Geschwindigkeitsvorteil." TextWrapping="Wrap" Foreground="#A8B5CF" Margin="0,9,0,12"/>
+              <WrapPanel>
+                <Button Name="KeyboardDisableButton" Content="Filtertasten deaktivieren" IsEnabled="False" Margin="0,0,10,8"/>
+                <Button Name="KeyboardRestoreButton" Content="Tastaturzustand zurücksetzen" IsEnabled="False" Margin="0,0,10,8"/>
+                <Button Name="KeyboardSettingsButton" Content="Windows-Tastatureinstellungen" Margin="0,0,0,8"/>
+              </WrapPanel>
+              <TextBlock Text="Für deine Kemove: zuerst die genaue Modellnummer auf der Unterseite oder Verpackung prüfen. Auslösepunkt, Debounce und Pollrate hängen vom Modell ab. Verwende dafür nur die passende Herstellersoftware und teste Änderungen auf Fehleingaben." TextWrapping="Wrap" Foreground="#8F9DB9" FontSize="11" Margin="0,5,0,0"/>
+            </StackPanel>
+          </Border>
+        </StackPanel>
         <Border Style="{StaticResource Card}" Margin="0,0,0,16">
           <StackPanel>
             <TextBlock Text="Deine Auswahl" FontSize="18" FontWeight="SemiBold"/>

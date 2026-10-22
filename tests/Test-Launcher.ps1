@@ -10,6 +10,7 @@ $testDirectory = Join-Path ([IO.Path]::GetTempPath()) ('fortnite-launcher-tests-
 $config = Join-Path $testDirectory 'GameUserSettings.ini'
 $backupRoot = Join-Path $testDirectory 'backups'
 $powerStatePath = Join-Path $testDirectory 'power-plan.json'
+$keyboardStatePath = Join-Path $testDirectory 'keyboard.json'
 $originalText = "[ScalabilityGroups]`r`nsg.ShadowQuality=3`r`n[/Script/FortniteGame.FortGameUserSettings]`r`nbUseVSync=True`r`nResolutionSizeX=1920`r`n"
 $original = [Text.Encoding]::UTF8.GetBytes($originalText)
 [IO.File]::WriteAllBytes($config, $original)
@@ -30,7 +31,7 @@ function Click-LauncherButton {
 }
 
 try {
-    $launcher = New-FortniteLauncher -ConfigPath $config -BackupRoot $backupRoot -PowerStatePath $powerStatePath
+    $launcher = New-FortniteLauncher -ConfigPath $config -BackupRoot $backupRoot -PowerStatePath $powerStatePath -KeyboardStatePath $keyboardStatePath
     Assert-Launcher $launcher.IsReady 'Launcher did not recognize valid settings.'
     Assert-Launcher ($launcher.Controls.ProfileGrid.Items.Count -eq 11) 'Profile grid was not populated.'
     Assert-Launcher $launcher.Controls.ApplyButton.IsEnabled 'Apply should be enabled.'
@@ -38,6 +39,9 @@ try {
     Assert-Launcher (-not (Test-Path -LiteralPath $backupRoot)) 'Opening the launcher wrote backups.'
     Assert-Launcher ($launcher.ManualRows.Count -eq 6 -and @($launcher.ManualRows | Where-Object { $_.Selected }).Count -eq 0) 'Manual options should start unselected.'
     Assert-Launcher (-not [IO.File]::Exists($powerStatePath)) 'Opening the launcher wrote power state.'
+    Assert-Launcher (-not [IO.File]::Exists($keyboardStatePath)) 'Opening the launcher wrote keyboard state.'
+    Assert-Launcher ($launcher.Controls.KeyboardStatusText.Text -notmatch 'Nicht verf.gbar') 'Windows keyboard native API was unavailable.'
+    Assert-Launcher ($launcher.Controls.ControllerStatusText.Text -match 'XInput') 'Controller guidance was not displayed.'
     Assert-Launcher ((Get-ConfigBase64) -ceq [Convert]::ToBase64String($original)) 'Opening the launcher changed settings.'
 
     # Show without a modal loop so layout and ContentRendered can be exercised unattended.
@@ -105,7 +109,7 @@ try {
     Assert-Launcher ((Get-ConfigBase64) -ceq $beforeFailedRestore) 'Failed restore changed settings.'
     Write-Host 'PASS Restore error appears in the launcher without changing current settings.'
 
-    $missing = New-FortniteLauncher -ConfigPath (Join-Path $testDirectory 'missing.ini') -BackupRoot $backupRoot -PowerStatePath $powerStatePath
+    $missing = New-FortniteLauncher -ConfigPath (Join-Path $testDirectory 'missing.ini') -BackupRoot $backupRoot -PowerStatePath $powerStatePath -KeyboardStatePath $keyboardStatePath
     Assert-Launcher (-not $missing.IsReady) 'Missing settings reported as ready.'
     Assert-Launcher (-not $missing.Controls.ApplyButton.IsEnabled -and -not $missing.Controls.RestoreButton.IsEnabled) 'Actions enabled for missing settings.'
     Assert-Launcher (-not $missing.Controls.ManualApplyButton.IsEnabled) 'Manual apply enabled for missing settings.'

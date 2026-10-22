@@ -10,8 +10,8 @@ using System.Windows.Forms;
 [assembly: AssemblyTitle("Fortnite Tweaks Launcher")]
 [assembly: AssemblyProduct("Fortnite Tweaks")]
 [assembly: AssemblyDescription("Windows launcher for the Fortnite Tweaks graphical interface")]
-[assembly: AssemblyVersion("0.2.0.0")]
-[assembly: AssemblyFileVersion("0.2.0.0")]
+[assembly: AssemblyVersion("0.3.0.0")]
+[assembly: AssemblyFileVersion("0.3.0.0")]
 [assembly: TargetFramework(".NETFramework,Version=v4.8", FrameworkDisplayName = ".NET Framework 4.8")]
 
 internal static class Bootstrap
@@ -22,7 +22,9 @@ internal static class Bootstrap
         { "FortniteTweaks.Interface", "src/Launcher.psm1" },
         { "FortniteTweaks.Layout", "src/Launcher.xaml" },
         { "FortniteTweaks.Settings", "src/FortniteTweaks.psm1" },
-        { "FortniteTweaks.WindowsSettings", "src/WindowsTweaks.psm1" }
+        { "FortniteTweaks.WindowsSettings", "src/WindowsTweaks.psm1" },
+        { "FortniteTweaks.InputSettings", "src/InputTweaks.psm1" },
+        { "FortniteTweaks.InputNative", "src/InputNative.cs" }
     };
 
     [STAThread]
