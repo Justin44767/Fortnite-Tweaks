@@ -1,4 +1,4 @@
-Set-StrictMode -Version Latest
+﻿Set-StrictMode -Version Latest
 
 $script:Profile = [ordered]@{
     'ScalabilityGroups' = [ordered]@{
@@ -16,6 +16,47 @@ $script:Profile = [ordered]@{
         'bUseVSync' = 'False'
         'bMotionBlur' = 'False'
     }
+}
+
+$script:Options = @(
+    @{ Id = 'Shadows'; Label = 'Schatten und Beleuchtung'; Description = 'Schatten, globale Beleuchtung und Reflexionen auf niedrig.'; Keys = @('sg.ShadowQuality', 'sg.GlobalIlluminationQuality', 'sg.ReflectionQuality') },
+    @{ Id = 'Effects'; Label = 'Effekte reduzieren'; Description = 'Effekte, Nachbearbeitung, Vegetation und Shading auf niedrig.'; Keys = @('sg.EffectsQuality', 'sg.PostProcessQuality', 'sg.FoliageQuality', 'sg.ShadingQuality') },
+    @{ Id = 'Textures'; Label = 'Texturen und Kantenglättung'; Description = 'Texturen auf mittel, Kantenglättung auf niedrig.'; Keys = @('sg.TextureQuality', 'sg.AntiAliasingQuality') },
+    @{ Id = 'VSyncOff'; Label = 'VSync deaktivieren'; Description = 'Kann die Eingabeverzögerung senken; Bildrisse sind möglich.'; Keys = @('bUseVSync') },
+    @{ Id = 'MotionBlurOff'; Label = 'Bewegungsunschärfe deaktivieren'; Description = 'Klarere Darstellung bei Bewegung; kein garantierter FPS-Gewinn.'; Keys = @('bMotionBlur') },
+    @{ Id = 'FpsCap'; Label = 'Eigenes FPS-Limit'; Description = 'Frei wählbar: 30 bis 1000 FPS. Ein passendes Limit kann Frametimes stabilisieren.'; Keys = @('FrameRateLimit') }
+)
+
+function Get-FortniteOptimizationOptions {
+    foreach ($option in $script:Options) {
+        [pscustomobject]@{ Id = $option.Id; Label = $option.Label; Description = $option.Description; Keys = [string[]]$option.Keys }
+    }
+}
+
+function Get-SelectedSettingsPatch {
+    param([string[]]$Options, [int]$FrameRateLimit)
+    if ($Options.Count -eq 0) { throw 'Wähle mindestens eine Optimierung aus.' }
+    $patch = [ordered]@{}
+    foreach ($id in $Options) {
+        $definitions = @($script:Options | Where-Object { $_.Id -eq $id })
+        if ($definitions.Count -ne 1) { throw "Unbekannte Optimierung: $id" }
+        if ($id -eq 'FpsCap') {
+            if ($FrameRateLimit -lt 30 -or $FrameRateLimit -gt 1000) { throw 'Das FPS-Limit muss eine ganze Zahl von 30 bis 1000 sein.' }
+            $section = '/Script/FortniteGame.FortGameUserSettings'
+            if (-not $patch.Contains($section)) { $patch[$section] = [ordered]@{} }
+            $patch[$section]['FrameRateLimit'] = $FrameRateLimit.ToString('0.000000', [Globalization.CultureInfo]::InvariantCulture)
+            continue
+        }
+        foreach ($key in $definitions[0].Keys) {
+            foreach ($section in $script:Profile.Keys) {
+                if ($script:Profile[$section].Contains($key)) {
+                    if (-not $patch.Contains($section)) { $patch[$section] = [ordered]@{} }
+                    $patch[$section][$key] = $script:Profile[$section][$key]
+                }
+            }
+        }
+    }
+    return $patch
 }
 
 function Get-BytesHash {
@@ -57,11 +98,11 @@ function Read-SettingsFile {
 }
 
 function ConvertTo-CompetitiveSettings {
-    param([string]$Text)
+    param([string]$Text, [Collections.IDictionary]$Profile = $script:Profile)
     $newline = "`r`n"
     $lineMatch = [regex]::Match($Text, '\r\n|\n')
     if ($lineMatch.Success) { $newline = $lineMatch.Value }
-    foreach ($section in $script:Profile.Keys) {
+    foreach ($section in $Profile.Keys) {
         $pattern = '(?im)^[ \t]*\[' + [regex]::Escape($section) + '\][ \t]*(?:[;#][^\r\n]*)?(?:\r\n|\n|$)'
         $headers = [regex]::Matches($Text, $pattern)
         if ($headers.Count -gt 1) { throw "Abschnitt [$section] ist mehrfach vorhanden. Es wurde nichts geaendert." }
@@ -80,8 +121,8 @@ function ConvertTo-CompetitiveSettings {
         $length = $remaining.Length
         if ($next.Success) { $length = $next.Index }
         $body = $remaining.Substring(0, $length)
-        foreach ($key in $script:Profile[$section].Keys) {
-            $value = $script:Profile[$section][$key]
+        foreach ($key in $Profile[$section].Keys) {
+            $value = $Profile[$section][$key]
             $keyPattern = '(?im)^([ \t]*' + [regex]::Escape($key) + '[ \t]*=[ \t]*)([^;#\r\n]*?)([ \t]*(?:[;#][^\r\n]*)?)(?=\r\n|\n|$)'
             if ([regex]::IsMatch($body, $keyPattern)) {
                 $body = [regex]::Replace($body, $keyPattern, [Text.RegularExpressions.MatchEvaluator]{
@@ -168,11 +209,13 @@ function Get-FortniteBackups {
 
 function Get-FortniteProfilePreview {
     [CmdletBinding()]
-    param([Parameter(Mandatory)][string]$ConfigPath)
+    param([Parameter(Mandatory)][string]$ConfigPath, [AllowEmptyCollection()][string[]]$Options, [int]$FrameRateLimit = 144)
+    $profile = $script:Profile
+    if ($PSBoundParameters.ContainsKey('Options')) { $profile = Get-SelectedSettingsPatch @($Options) $FrameRateLimit }
     $settings = Read-SettingsFile $ConfigPath
     # Validate all target sections before returning a partial preview.
-    [void](ConvertTo-CompetitiveSettings $settings.Text)
-    foreach ($section in $script:Profile.Keys) {
+    [void](ConvertTo-CompetitiveSettings $settings.Text $profile)
+    foreach ($section in $profile.Keys) {
         $headerPattern = '(?im)^[ \t]*\[' + [regex]::Escape($section) + '\][ \t]*(?:[;#][^\r\n]*)?(?:\r\n|\n|$)'
         $header = [regex]::Match($settings.Text, $headerPattern)
         $body = ''
@@ -181,10 +224,10 @@ function Get-FortniteProfilePreview {
             $next = [regex]::Match($body, '(?m)^[ \t]*\[[^\r\n\]]+\]')
             if ($next.Success) { $body = $body.Substring(0, $next.Index) }
         }
-        foreach ($key in $script:Profile[$section].Keys) {
+        foreach ($key in $profile[$section].Keys) {
             $keyMatches = [regex]::Matches($body, '(?im)^[ \t]*' + [regex]::Escape($key) + '[ \t]*=[ \t]*([^;#\r\n]*)')
             $values = @($keyMatches | ForEach-Object { $_.Groups[1].Value.Trim() })
-            $target = $script:Profile[$section][$key]
+            $target = $profile[$section][$key]
             $current = 'Nicht gesetzt'
             if ($values.Count -gt 0) { $current = $values -join ', ' }
             [pscustomobject]@{
@@ -197,10 +240,12 @@ function Get-FortniteProfilePreview {
 
 function Set-FortniteCompetitiveProfile {
     [CmdletBinding(SupportsShouldProcess)]
-    param([Parameter(Mandatory)][string]$ConfigPath, [Parameter(Mandatory)][string]$BackupRoot)
+    param([Parameter(Mandatory)][string]$ConfigPath, [Parameter(Mandatory)][string]$BackupRoot, [AllowEmptyCollection()][string[]]$Options, [int]$FrameRateLimit = 144)
+    $profile = $script:Profile
+    if ($PSBoundParameters.ContainsKey('Options')) { $profile = Get-SelectedSettingsPatch @($Options) $FrameRateLimit }
     Assert-FortniteClosed
     $settings = Read-SettingsFile $ConfigPath
-    $updated = ConvertTo-CompetitiveSettings $settings.Text
+    $updated = ConvertTo-CompetitiveSettings $settings.Text $profile
     if ($updated -ceq $settings.Text) { return [pscustomobject]@{ Status = 'Unchanged'; Backup = $null } }
     Assert-WritableSettings $settings.Path
     if (-not $PSCmdlet.ShouldProcess($settings.Path, 'Sichern und Grafikprofil anwenden')) { return }
@@ -238,4 +283,4 @@ function Restore-FortniteBackup {
     return [pscustomobject]@{ Status = 'Restored'; Backup = $backup.FullName; SafetyBackup = $safety }
 }
 
-Export-ModuleMember -Function Get-FortniteProfile, Get-FortniteProfilePreview, Get-FortniteBackups, Set-FortniteCompetitiveProfile, Restore-FortniteBackup
+Export-ModuleMember -Function Get-FortniteProfile, Get-FortniteProfilePreview, Get-FortniteOptimizationOptions, Get-FortniteBackups, Set-FortniteCompetitiveProfile, Restore-FortniteBackup

@@ -72,6 +72,58 @@ function Test-Case {
 }
 
 try {
+    . (Join-Path $PSScriptRoot 'PowerPlan.Tests.ps1')
+
+    Test-Case 'Manual VSync option leaves all other game settings unchanged' {
+        $f = New-Fixture
+        $result = Set-FortniteCompetitiveProfile $f.Config $f.Root -Options VSyncOff
+        # Account for Windows checkout line endings without touching other sections.
+        $expected = [regex]::Replace($script:sample, '(bUseVSync=)True(?=\r?\nbMotionBlur)', '${1}False')
+        Assert-BytesEqual ([Text.Encoding]::UTF8.GetBytes($expected)) ([IO.File]::ReadAllBytes($f.Config))
+        Assert-BytesEqual $f.Original ([IO.File]::ReadAllBytes($result.Backup))
+    }
+
+    Test-Case 'Manual shadows and effects do not change textures, VSync or FPS' {
+        $f = New-Fixture
+        Set-FortniteCompetitiveProfile $f.Config $f.Root -Options Shadows,Effects | Out-Null
+        $text = [IO.File]::ReadAllText($f.Config)
+        Assert-True ($text -match 'sg.ShadowQuality=0' -and $text -match 'sg.EffectsQuality=0') 'Selected options were not applied.'
+        Assert-True ($text.Contains('sg.TextureQuality=3') -and $text.Contains('bUseVSync=True') -and $text.Contains('FrameRateLimit=165.000000')) 'Unselected settings changed.'
+        Assert-True (@(Get-FortniteProfile).Count -eq 11) 'Manual options mutated the default profile.'
+    }
+
+    Test-Case 'Manual FPS cap changes only the cap and is repeatable and restorable' {
+        $f = New-Fixture
+        Set-FortniteCompetitiveProfile $f.Config $f.Root -Options FpsCap -FrameRateLimit 237 | Out-Null
+        $text = [IO.File]::ReadAllText($f.Config)
+        Assert-True ($text -ceq $script:sample.Replace('FrameRateLimit=165.000000', 'FrameRateLimit=237.000000')) 'FPS option changed unrelated values.'
+        Assert-True ((Set-FortniteCompetitiveProfile $f.Config $f.Root -Options FpsCap -FrameRateLimit 237).Status -eq 'Unchanged') 'FPS apply is not repeatable.'
+        $preview = @(Get-FortniteProfilePreview $f.Config -Options FpsCap -FrameRateLimit 237)
+        Assert-True ($preview.Count -eq 1 -and -not $preview[0].NeedsChange) 'FPS preview disagrees with written value.'
+        Restore-FortniteBackup $f.Config $f.Root | Out-Null
+        Assert-BytesEqual $f.Original ([IO.File]::ReadAllBytes($f.Config))
+    }
+
+    Test-Case 'No selection, unknown options and invalid FPS caps cannot change files' {
+        $f = New-Fixture
+        Assert-Throws { Set-FortniteCompetitiveProfile $f.Config $f.Root -Options @() } 'mindestens'
+        Assert-Throws { Set-FortniteCompetitiveProfile $f.Config $f.Root -Options Unknown } 'Unbekannte'
+        foreach ($invalid in @(0, 29, 1001)) {
+            Assert-Throws { Set-FortniteCompetitiveProfile $f.Config $f.Root -Options FpsCap -FrameRateLimit $invalid } '30 bis 1000'
+        }
+        Assert-BytesEqual $f.Original ([IO.File]::ReadAllBytes($f.Config))
+        Assert-True (-not (Test-Path -LiteralPath $f.Root)) 'Invalid selection created a backup.'
+    }
+
+    Test-Case 'Manual preview and WhatIf never apply selected changes' {
+        $f = New-Fixture
+        $preview = @(Get-FortniteProfilePreview $f.Config -Options MotionBlurOff,FpsCap -FrameRateLimit 240)
+        Assert-True ($preview.Count -eq 2 -and $preview[1].ProfileValue -eq '240.000000') 'Selected preview has the wrong settings.'
+        Set-FortniteCompetitiveProfile $f.Config $f.Root -Options MotionBlurOff,FpsCap -FrameRateLimit 240 -WhatIf
+        Assert-BytesEqual $f.Original ([IO.File]::ReadAllBytes($f.Config))
+        Assert-True (-not (Test-Path -LiteralPath $f.Root)) 'Preview created backups.'
+    }
+
     Test-Case 'Packaged executable checksum and embedded source files' {
         & (Join-Path $PSScriptRoot 'Test-Executable.ps1')
     }

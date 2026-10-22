@@ -10,8 +10,8 @@ using System.Windows.Forms;
 [assembly: AssemblyTitle("Fortnite Tweaks Launcher")]
 [assembly: AssemblyProduct("Fortnite Tweaks")]
 [assembly: AssemblyDescription("Windows launcher for the Fortnite Tweaks graphical interface")]
-[assembly: AssemblyVersion("0.1.0.0")]
-[assembly: AssemblyFileVersion("0.1.0.0")]
+[assembly: AssemblyVersion("0.2.0.0")]
+[assembly: AssemblyFileVersion("0.2.0.0")]
 [assembly: TargetFramework(".NETFramework,Version=v4.8", FrameworkDisplayName = ".NET Framework 4.8")]
 
 internal static class Bootstrap
@@ -21,7 +21,8 @@ internal static class Bootstrap
         { "FortniteTweaks.EntryPoint", "Launcher.ps1" },
         { "FortniteTweaks.Interface", "src/Launcher.psm1" },
         { "FortniteTweaks.Layout", "src/Launcher.xaml" },
-        { "FortniteTweaks.Settings", "src/FortniteTweaks.psm1" }
+        { "FortniteTweaks.Settings", "src/FortniteTweaks.psm1" },
+        { "FortniteTweaks.WindowsSettings", "src/WindowsTweaks.psm1" }
     };
 
     [STAThread]
@@ -45,7 +46,7 @@ internal static class Bootstrap
 
             if (verifyOnly)
             {
-                Console.WriteLine("Payload verified: 4 files; Windows PowerShell found.");
+                Console.WriteLine("Payload verified: " + Payload.GetLength(0) + " files; Windows PowerShell found.");
                 return 0;
             }
 

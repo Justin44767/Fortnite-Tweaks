@@ -8,7 +8,7 @@ Ein eigenes Windows-Tool mit einem Competitive-Grafikprofil, Hardwareanzeige, Vo
 2. Fortnite schließen.
 3. Die EXE doppelt anklicken.
 
-Die einzelne EXE enthält alle vier benötigten Launcher-Dateien. Sie entpackt diese für die Laufzeit in einen eigenen temporären Ordner und entfernt ihn nach dem Beenden. Deine Fortnite-Einstellungen und Sicherungen bleiben an ihren bisherigen Speicherorten. Der Launcher benötigt die in Windows 11 enthaltenen Komponenten .NET Framework 4.8 und Windows PowerShell 5.1. Administratorrechte sind nicht erforderlich.
+Die einzelne EXE enthält alle fünf benötigten Launcher-Dateien. Sie entpackt diese für die Laufzeit in einen eigenen temporären Ordner und entfernt ihn nach dem Beenden. Deine Fortnite-Einstellungen und Sicherungen bleiben an ihren bisherigen Speicherorten. Der Launcher benötigt die in Windows 11 enthaltenen Komponenten .NET Framework 4.8 und Windows PowerShell 5.1. Administratorrechte sind nicht erforderlich.
 
 Die EXE ist **nicht mit einem Herausgeberzertifikat signiert**. Windows kann deshalb einen Hinweis zum unbekannten Herausgeber anzeigen. Die [SHA256-Prüfsumme](dist/Fortnite-Tweaks-Launcher.exe.sha256) ermöglicht den Vergleich mit der veröffentlichten Datei:
 
@@ -18,13 +18,34 @@ Get-FileHash .\Fortnite-Tweaks-Launcher.exe -Algorithm SHA256
 
 Bei einem Startfehler zeigt die EXE die Fehlermeldung und gegebenenfalls den Pfad eines Protokolls unter `%LOCALAPPDATA%\Fortnite-Tweaks\Logs` an.
 
+## Optimierungen manuell auswählen
+
+Im Bereich **Deine Auswahl** sind anfangs alle Häkchen abgewählt. Wähle die gewünschten Optionen und klicke auf **Auswahl mit Sicherung anwenden**. Ein Häkchen bestimmt die nächste Anwendung; es ändert allein noch keinen Wert und zeigt nicht den derzeitigen Aktivierungszustand an. Dieser steht unter der jeweiligen Option. Abwählen setzt bereits angewendete Änderungen nicht zurück: Dafür nutzt du die Dateisicherungen unter **Komplettes Profil und Dateisicherungen**.
+
+| Option | Wirkung und Abwägung |
+| --- | --- |
+| Schatten und Beleuchtung | Niedrige Schatten, globale Beleuchtung und Reflexionen können die GPU entlasten; die Darstellung verändert sich. |
+| Effekte reduzieren | Niedrige Effekte, Nachbearbeitung, Vegetation und Shading können bei grafikintensiven Szenen helfen. |
+| Texturen und Kantenglättung | Mittlere Texturen und niedrige Kantenglättung; der Nutzen hängt von Rendering-Modus und Last ab. |
+| VSync deaktivieren | Kann die Eingabeverzögerung reduzieren, aber Bildrisse verursachen. Bei G-SYNC/VRR hängt die passende Einstellung vom gesamten Setup ab. |
+| Bewegungsunschärfe deaktivieren | Klareres Bild bei Bewegung; kein garantierter FPS-Gewinn. |
+| Eigenes FPS-Limit | Übernimmt ausschließlich bei ausgewählter Option eine ganze Zahl zwischen 30 und 1000. Ein stabiles Limit kann Frametimes und GPU-Warteschlangen verbessern; es erhöht nicht die maximalen FPS. |
+
+Ohne die FPS-Option bleibt das vorhandene FPS-Limit erhalten. Unausgewählte Grafikwerte bleiben ebenfalls erhalten. Jede tatsächliche Änderung erstellt eine Sicherung. Teste möglichst eine Option nach der anderen im selben Szenario und vergleiche FPS und Frametimes. Die Optionen betreffen Rendering und Bilddarstellung; eine Verbesserung des Netzwerk-Pings wird nicht versprochen.
+
+**Energieplan testen** aktiviert auf Wunsch den bereits vorhandenen Windows-Plan **Hohe Leistung**. Der zuvor aktive Plan wird unter `%LOCALAPPDATA%\Fortnite-Tweaks\State\power-plan.json` gespeichert und lässt sich über **Vorherigen Plan wiederherstellen** zurückholen, auch nach dem Schließen des Launchers. Auf deinem Ryzen 5800X kann Ausbalanciert gleich gut oder besser laufen. Hohe Leistung kann Stromverbrauch und Wärme erhöhen; teste den Unterschied. Bietet Windows diesen Plan nicht an, bleibt die Schaltfläche deaktiviert. Es werden keine Energiepläne erzeugt oder Richtlinien umgangen. Ein außerhalb des Launchers ausgewählter anderer Energieplan wird bei der Wiederherstellung nicht überschrieben.
+
+Über **Spielmodus öffnen** und **Spielaufnahmen** erreichst du die Windows-Einstellungen. Dort kannst du Spielmodus beziehungsweise Hintergrundaufnahme selbst ändern. Diese Schaltflächen ändern keine Windows-Einstellungen. **NVIDIA Reflex** stellst du direkt in Fortnite ein, sofern der gewählte Rendering-Modus es anbietet; starte für deinen PC mit **Ein** und vergleiche das Ergebnis.
+
+Das bisherige vollständige Competitive-Profil und alle Dateisicherungen befinden sich im aufklappbaren Bereich **Komplettes Profil und Dateisicherungen**. Die Wiederherstellung einer Datei setzt die gesamte Datei auf diesen Stand zurück, einschließlich des FPS-Limits und späterer Einstellungen.
+
 ## Grafischen Launcher aus dem Quellcode starten
 
 1. Den **gesamten Projektordner** auf deinen Windows-PC herunterladen und gegebenenfalls entpacken.
 2. Fortnite schließen.
 3. **`Start.cmd` doppelt anklicken.**
 
-Der Launcher zeigt deine Hardware, die aktuellen und geplanten Grafikwerte und deine Sicherungen. Mit **Profil mit Sicherung anwenden** trägst du das Profil ein. Zur Wiederherstellung wählst du einen Sicherungszeitpunkt aus; der Launcher fragt vor dem Zurücksetzen der gesamten Datei nach. Über **Datei auswählen** kannst du eine abweichende `GameUserSettings.ini` öffnen. Nach Änderungen im Spiel oder dem Beenden von Fortnite klickst du auf **Aktualisieren**.
+Der Launcher zeigt deine Hardware, die wählbaren Optimierungen, die Profilvorschau und deine Sicherungen. Zur Wiederherstellung wählst du einen Sicherungszeitpunkt aus; der Launcher fragt vor dem Zurücksetzen der gesamten Datei nach. Über **Datei auswählen** kannst du eine abweichende `GameUserSettings.ini` öffnen. Nach Änderungen im Spiel oder dem Beenden von Fortnite klickst du auf **Aktualisieren**.
 
 Windows PowerShell 5.1 und die Windows-Oberfläche WPF sind bereits in Windows 11 enthalten. Der Launcher lädt nichts nach. `Start.cmd` verwendet `RemoteSigned` ausschließlich für den gestarteten PowerShell-Prozess und verändert keine dauerhaft gespeicherte Ausführungsrichtlinie. Signaturanforderungen für heruntergeladene Skripte bleiben bestehen; eine durch deine Organisation vorgegebene Richtlinie hat Vorrang.
 

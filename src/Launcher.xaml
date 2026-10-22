@@ -63,7 +63,9 @@
           <TextBlock Text="DEIN LAUNCHER" Foreground="#7E8CA8" FontSize="10" Margin="0,0,0,12"/>
           <Button Name="RefreshButton" Content="Aktualisieren" Margin="0,0,0,9"/>
           <Button Name="BrowseButton" Content="Datei auswählen" Margin="0,0,0,9"/>
-          <Button Name="OpenBackupsButton" Content="Sicherungen öffnen"/>
+          <Button Name="OpenBackupsButton" Content="Sicherungen öffnen" Margin="0,0,0,9"/>
+          <Button Name="GameModeButton" Content="Spielmodus öffnen" Margin="0,0,0,9" ToolTip="Öffnet den Spielmodus in den Windows-Einstellungen."/>
+          <Button Name="CapturesButton" Content="Spielaufnahmen" ToolTip="Öffnet die Windows-Einstellungen für Spiel- und Hintergrundaufnahmen."/>
         </StackPanel>
         <StackPanel DockPanel.Dock="Bottom" VerticalAlignment="Bottom" Margin="0,30,0,0">
           <TextBlock Text="LOKAL AUF DEINEM PC" Foreground="#7E8CA8" FontSize="10"/>
@@ -77,7 +79,7 @@
         <TextBlock Text="DEIN FORTNITE-SETUP" Foreground="#9985FF" FontWeight="SemiBold" FontSize="11"/>
         <Grid Margin="0,5,0,7">
           <Grid.ColumnDefinitions><ColumnDefinition Width="*"/><ColumnDefinition Width="Auto"/></Grid.ColumnDefinitions>
-          <TextBlock Text="Competitive-Profil" FontSize="29" FontWeight="Bold"/>
+          <TextBlock Text="Manuelle Optimierungen" FontSize="26" FontWeight="Bold" TextWrapping="Wrap"/>
           <Border Grid.Column="1" Background="#1C2940" CornerRadius="14" Padding="12,6" VerticalAlignment="Center" Margin="12,0,0,0">
             <TextBlock Name="StatusText" Text="Wird geprüft" FontSize="12"/>
           </Border>
@@ -90,6 +92,44 @@
         </UniformGrid>
         <TextBlock Text="EINSTELLUNGSDATEI" FontSize="10" Foreground="#8F9DB9"/>
         <TextBlock Name="ConfigPathText" TextWrapping="Wrap" FontSize="11" Foreground="#ABB7CD" Margin="0,5,0,16"/>
+        <Border Style="{StaticResource Card}" Margin="0,0,0,16">
+          <StackPanel>
+            <TextBlock Text="Deine Auswahl" FontSize="18" FontWeight="SemiBold"/>
+            <TextBlock Text="Alle Optionen sind anfangs abgewählt. Erst Anwenden schreibt Änderungen und erstellt eine Sicherung." TextWrapping="Wrap" Foreground="#A8B5CF" Margin="0,6,0,12"/>
+            <ItemsControl Name="ManualOptionsList">
+              <ItemsControl.ItemTemplate>
+                <DataTemplate>
+                  <StackPanel Margin="0,0,0,13">
+                    <CheckBox Content="{Binding Label}" IsChecked="{Binding Selected, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Foreground="#EDF0FA" FontWeight="SemiBold" Cursor="Hand"/>
+                    <TextBlock Text="{Binding Description}" TextWrapping="Wrap" Foreground="#A8B5CF" FontSize="11" Margin="21,4,0,0"/>
+                    <TextBlock Text="{Binding Status}" Foreground="#9985FF" FontSize="10" Margin="21,3,0,0"/>
+                  </StackPanel>
+                </DataTemplate>
+              </ItemsControl.ItemTemplate>
+            </ItemsControl>
+            <StackPanel Orientation="Horizontal" Margin="0,0,0,12">
+              <TextBlock Text="FPS-Limit:" VerticalAlignment="Center" Margin="0,0,10,0"/>
+              <TextBox Name="FpsLimitBox" Text="144" Width="80" Padding="8,5" Background="#101729" Foreground="#EDF0FA" BorderBrush="#394664" ToolTip="Ganze Zahl von 30 bis 1000. Wird nur mit der Option Eigenes FPS-Limit übernommen."/>
+              <TextBlock Text="Nur für die ausgewählte FPS-Option" Foreground="#8F9DB9" VerticalAlignment="Center" Margin="10,0,0,0" FontSize="11"/>
+            </StackPanel>
+            <Button Name="ManualApplyButton" Content="Auswahl mit Sicherung anwenden" Background="#7C5CFF" HorizontalAlignment="Left" IsEnabled="False"/>
+            <TextBlock Text="VSync aus kann Bildrisse verursachen. Ein FPS-Limit erhöht nicht die maximalen FPS; ein passender Wert kann Ruckler und Warteschlangen reduzieren. Den Nutzen im Spiel vergleichen." TextWrapping="Wrap" Foreground="#8F9DB9" FontSize="11" Margin="0,12,0,0"/>
+          </StackPanel>
+        </Border>
+        <Border Style="{StaticResource Card}" Margin="0,0,0,16">
+          <StackPanel>
+            <TextBlock Text="Energieplan testen" FontSize="17" FontWeight="SemiBold"/>
+            <TextBlock Name="PowerStatusText" Foreground="#9985FF" Margin="0,7,0,0" TextWrapping="Wrap"/>
+            <TextBlock Text="Optional: Hohe Leistung kann mehr Strom und Wärme verursachen. Eine Verbesserung gegenüber Ausbalanciert ist systemabhängig. Der vorherige Plan wird gespeichert." TextWrapping="Wrap" Foreground="#A8B5CF" FontSize="11" Margin="0,7,0,12"/>
+            <WrapPanel>
+              <Button Name="PowerEnableButton" Content="Hohe Leistung aktivieren" IsEnabled="False" Margin="0,0,10,8"/>
+              <Button Name="PowerRestoreButton" Content="Vorherigen Plan wiederherstellen" IsEnabled="False" Margin="0,0,0,8"/>
+            </WrapPanel>
+          </StackPanel>
+        </Border>
+        <TextBlock Text="NVIDIA Reflex aktivierst du direkt in Fortnite. Spielmodus und Hintergrundaufnahmen erreichst du links über die Windows-Einstellungen." Foreground="#8F9DB9" FontSize="11" TextWrapping="Wrap" Margin="0,0,0,16"/>
+        <Expander Header="Komplettes Profil und Dateisicherungen" Foreground="#EDF0FA" Margin="0,0,0,16">
+        <StackPanel Margin="0,12,0,0">
         <Grid Margin="0,0,0,9">
           <Grid.ColumnDefinitions><ColumnDefinition Width="*"/><ColumnDefinition Width="Auto"/></Grid.ColumnDefinitions>
           <TextBlock Text="Profilvorschau" FontSize="17" FontWeight="SemiBold"/>
@@ -106,7 +146,7 @@
           </DataGrid.Columns>
         </DataGrid>
         <TextBlock Text="Auflösung, Sichtweite und FPS-Limit bleiben erhalten." Foreground="#8F9DB9" FontSize="11" Margin="0,8,0,13"/>
-        <Button Name="ApplyButton" Content="Profil mit Sicherung anwenden" Background="#7C5CFF" FontWeight="SemiBold" HorizontalAlignment="Left" IsEnabled="False" Padding="21,12"/>
+        <Button Name="ApplyButton" Content="Komplettes Profil mit Sicherung anwenden" FontWeight="SemiBold" HorizontalAlignment="Left" IsEnabled="False" Padding="21,12"/>
         <Border Style="{StaticResource Card}" Margin="0,18,0,16">
           <StackPanel>
             <TextBlock Text="Wiederherstellen" FontSize="16" FontWeight="SemiBold"/>
@@ -118,6 +158,8 @@
             </Grid>
           </StackPanel>
         </Border>
+        </StackPanel>
+        </Expander>
         <TextBlock Text="AKTIVITÄT" Foreground="#8F9DB9" FontSize="10" Margin="0,0,0,7"/>
         <TextBox Name="LogBox" Height="90" IsReadOnly="True" TextWrapping="Wrap" VerticalScrollBarVisibility="Auto"
                  Background="#101729" Foreground="#B5C1D8" BorderBrush="#26314A" Padding="10" FontSize="11"/>

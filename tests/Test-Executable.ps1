@@ -17,6 +17,7 @@ $payload = [ordered]@{
     'FortniteTweaks.Interface' = 'src/Launcher.psm1'
     'FortniteTweaks.Layout' = 'src/Launcher.xaml'
     'FortniteTweaks.Settings' = 'src/FortniteTweaks.psm1'
+    'FortniteTweaks.WindowsSettings' = 'src/WindowsTweaks.psm1'
 }
 if ($assembly.GetManifestResourceNames().Count -ne $payload.Count) { throw 'Wrong number of embedded payload files.' }
 foreach ($name in $payload.Keys) {
@@ -37,7 +38,7 @@ $assembly.ManifestModule.GetPEKind([ref]$kind, [ref]$machine)
 if (($kind -band [Reflection.PortableExecutableKinds]::ILOnly) -eq 0 -or ($kind -band [Reflection.PortableExecutableKinds]::Required32Bit) -ne 0) {
     throw 'Executable should be managed AnyCPU without a 32-bit runtime requirement.'
 }
-Write-Host 'PASS Executable SHA256, AnyCPU flags, and all 4 embedded files match source.'
+Write-Host "PASS Executable SHA256, AnyCPU flags, and all $($payload.Count) embedded files match source."
 
 if ([Environment]::OSVersion.Platform -eq [PlatformID]::Win32NT) {
     $start = New-Object Diagnostics.ProcessStartInfo
@@ -54,7 +55,7 @@ if ([Environment]::OSVersion.Platform -eq [PlatformID]::Win32NT) {
         if (-not $process.WaitForExit(30000)) { $process.Kill(); throw 'Executable verification timed out.' }
         $stdout = $process.StandardOutput.ReadToEnd()
         $stderr = $process.StandardError.ReadToEnd()
-        if ($process.ExitCode -ne 0 -or $stdout -notmatch 'Payload verified: 4 files') {
+        if ($process.ExitCode -ne 0 -or $stdout -notmatch [regex]::Escape("Payload verified: $($payload.Count) files")) {
             throw "Executable verification failed (exit $($process.ExitCode)): $stdout $stderr"
         }
         Write-Host 'PASS Windows executable starts, extracts and verifies its payload, and locates PowerShell.'

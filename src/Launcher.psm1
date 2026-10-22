@@ -1,5 +1,6 @@
 ﻿Set-StrictMode -Version Latest
 Import-Module (Join-Path $PSScriptRoot 'FortniteTweaks.psm1') -Force
+Import-Module (Join-Path $PSScriptRoot 'WindowsTweaks.psm1') -Force
 
 $script:SettingLabels = @{
     'sg.AntiAliasingQuality' = 'Kantenglättung'
@@ -41,6 +42,7 @@ function Update-LauncherState {
     $controls.ConfigPathText.ToolTip = $State.ConfigPath
     $controls.ApplyButton.IsEnabled = $false
     $controls.RestoreButton.IsEnabled = $false
+    $controls.ManualApplyButton.IsEnabled = $false
     $controls.OpenBackupsButton.IsEnabled = [IO.Directory]::Exists($State.BackupRoot)
     $State.LastError = $null
     $State.IsReady = $false
@@ -54,6 +56,26 @@ function Update-LauncherState {
             }
         })
         $controls.ProfileGrid.ItemsSource = $rows
+        $selectedIds = @($State.ManualRows | Where-Object { $_.Selected } | ForEach-Object { $_.Id })
+        $fpsPreview = 144
+        $parsedFps = 0
+        $fpsValid = [int]::TryParse($controls.FpsLimitBox.Text, [ref]$parsedFps) -and $parsedFps -ge 30 -and $parsedFps -le 1000
+        if ($fpsValid) { $fpsPreview = $parsedFps }
+        $definitions = @(Get-FortniteOptimizationOptions)
+        $manualPreview = @(Get-FortniteProfilePreview -ConfigPath $State.ConfigPath -Options @($definitions | ForEach-Object { $_.Id }) -FrameRateLimit $fpsPreview)
+        $State.ManualRows = @($definitions | ForEach-Object {
+            $definition = $_
+            $changed = @($manualPreview | Where-Object { $definition.Keys -contains $_.Setting -and $_.NeedsChange }).Count
+            $status = 'Bereits eingetragen'
+            if ($changed -gt 0) { $status = "$changed Wert(e) ändern" }
+            if ($definition.Id -eq 'FpsCap') {
+                $cap = @($manualPreview | Where-Object { $_.Setting -eq 'FrameRateLimit' })[0]
+                $status = 'Aktuell: ' + $cap.CurrentValue + '  |  Ziel: ' + $cap.ProfileValue
+                if (-not $fpsValid) { $status = 'FPS-Limit prüfen: ganze Zahl von 30 bis 1000' }
+            }
+            [pscustomobject]@{ Id = $definition.Id; Label = $definition.Label; Description = $definition.Description; Selected = ($selectedIds -contains $definition.Id); Status = $status }
+        })
+        $controls.ManualOptionsList.ItemsSource = $State.ManualRows
         $changes = @($preview | Where-Object { $_.NeedsChange }).Count
         $controls.ChangeCountText.Text = "$changes von $($preview.Count) Werten ändern"
         $running = @(Get-Process -ErrorAction Stop | Where-Object {
@@ -78,6 +100,7 @@ function Update-LauncherState {
             $controls.HintText.Text = 'Beende Fortnite und klicke auf Aktualisieren, um Einstellungen zu ändern.'
         } else {
             $State.IsReady = $true
+            $controls.ManualApplyButton.IsEnabled = $true
             $controls.ApplyButton.IsEnabled = $changes -gt 0
             $controls.RestoreButton.IsEnabled = $backups.Count -gt 0
             $controls.StatusText.Foreground = [Windows.Media.Brushes]::LightGreen
@@ -92,6 +115,7 @@ function Update-LauncherState {
     } catch {
         $State.LastError = $_.Exception.Message
         $controls.ProfileGrid.ItemsSource = @()
+        $controls.ManualOptionsList.ItemsSource = @()
         $controls.BackupPicker.ItemsSource = @()
         $controls.BackupPicker.IsEnabled = $false
         $controls.ChangeCountText.Text = ''
@@ -101,6 +125,16 @@ function Update-LauncherState {
             $controls.HintText.Text = 'Starte Fortnite einmal und beende es. Alternativ kannst du die Einstellungsdatei auswählen.'
         } else { $controls.HintText.Text = $State.LastError }
     }
+    $controls.PowerEnableButton.IsEnabled = $false
+    $controls.PowerRestoreButton.IsEnabled = $false
+    try {
+        $power = Get-FortnitePowerPlanState -StatePath $State.PowerStatePath
+        $controls.PowerStatusText.Text = 'Aktiv: ' + $power.ActiveLabel
+        $controls.PowerStatusText.ToolTip = $power.ActiveSchemeId
+        $controls.PowerEnableButton.IsEnabled = ($power.HighPerformanceAvailable -and $power.ActiveSchemeId -ne '8c5e7fda-e8bf-4a96-9a85-a6e23a8c635c')
+        $controls.PowerRestoreButton.IsEnabled = $power.CanRestore
+        if (-not $power.HighPerformanceAvailable) { $controls.PowerStatusText.Text += ' | Hohe Leistung nicht verfügbar' }
+    } catch { $controls.PowerStatusText.Text = 'Nicht verfügbar: ' + $_.Exception.Message }
 }
 
 function Invoke-LauncherAction {
@@ -108,9 +142,43 @@ function Invoke-LauncherAction {
     $failure = $null
     try {
         switch ($Action) {
+            'ApplyManual' {
+                $selectedIds = @($State.ManualRows | Where-Object { $_.Selected } | ForEach-Object { $_.Id })
+                if ($selectedIds.Count -eq 0) { throw 'Wähle mindestens eine Optimierung aus.' }
+                $fps = 144
+                if ($selectedIds -contains 'FpsCap') {
+                    if (-not [int]::TryParse($State.Controls.FpsLimitBox.Text, [ref]$fps) -or $fps -lt 30 -or $fps -gt 1000) {
+                        throw 'Das FPS-Limit muss eine ganze Zahl von 30 bis 1000 sein.'
+                    }
+                }
+                $result = Set-FortniteCompetitiveProfile -ConfigPath $State.ConfigPath -BackupRoot $State.BackupRoot -Options $selectedIds -FrameRateLimit $fps -Confirm:$false
+                if ($result.Status -eq 'Applied') {
+                    $State.Controls.BackupPicker.SelectedItem = $null
+                    Write-LauncherLog $State ('Auswahl angewendet: ' + ($selectedIds -join ', '))
+                    Write-LauncherLog $State ('Sicherung: ' + $result.Backup)
+                } else { Write-LauncherLog $State 'Die ausgewählten Werte sind bereits eingetragen.' }
+            }
+            'PowerEnable' {
+                [void](Enable-FortniteHighPerformance -StatePath $State.PowerStatePath -Confirm:$false)
+                Write-LauncherLog $State 'Energieplan Hohe Leistung aktiv. Vergleiche FPS und Frametimes im Spiel.'
+            }
+            'PowerRestore' {
+                $result = Restore-FortnitePowerPlan -StatePath $State.PowerStatePath -Confirm:$false
+                if ($result.Status -eq 'Restored') { Write-LauncherLog $State 'Vorheriger Energieplan wiederhergestellt.' }
+                else { Write-LauncherLog $State 'Keine gespeicherte Energieplan-Aenderung vorhanden.' }
+            }
+            'GameMode' {
+                Start-Process 'ms-settings:gaming-gamemode' -ErrorAction Stop | Out-Null
+                Write-LauncherLog $State 'Windows-Spielmodus geöffnet. Du änderst den Schalter dort selbst.'
+            }
+            'Captures' {
+                Start-Process 'ms-settings:gaming-gamedvr' -ErrorAction Stop | Out-Null
+                Write-LauncherLog $State 'Windows-Spielaufnahmen geöffnet. Deaktiviere dort bei Bedarf die Hintergrundaufnahme.'
+            }
             'Apply' {
                 $result = Set-FortniteCompetitiveProfile -ConfigPath $State.ConfigPath -BackupRoot $State.BackupRoot -Confirm:$false
                 if ($result.Status -eq 'Applied') {
+                    $State.Controls.BackupPicker.SelectedItem = $null
                     Write-LauncherLog $State 'Profil eingetragen. Starte Fortnite und prüfe die Einstellungen.'
                     Write-LauncherLog $State ("Sicherung: " + $result.Backup)
                 } else { Write-LauncherLog $State 'Das Profil ist bereits eingetragen.' }
@@ -176,15 +244,17 @@ function Invoke-LauncherAction {
 
 function New-FortniteLauncher {
     [CmdletBinding()]
-    param([string]$ConfigPath, [string]$BackupRoot)
+    param([string]$ConfigPath, [string]$BackupRoot, [string]$PowerStatePath)
     if ([Environment]::OSVersion.Platform -ne [PlatformID]::Win32NT) { throw 'Der grafische Launcher benötigt Windows.' }
     if ([Threading.Thread]::CurrentThread.ApartmentState -ne [Threading.ApartmentState]::STA) {
         throw 'Starte den Launcher über Start.cmd oder powershell.exe -NoProfile -STA -File .\Launcher.ps1.'
     }
     if (-not $ConfigPath) { $ConfigPath = Join-Path $env:LOCALAPPDATA 'FortniteGame\Saved\Config\WindowsClient\GameUserSettings.ini' }
     if (-not $BackupRoot) { $BackupRoot = Join-Path $env:LOCALAPPDATA 'Fortnite-Tweaks\Backups' }
+    if (-not $PowerStatePath) { $PowerStatePath = Join-Path $env:LOCALAPPDATA 'Fortnite-Tweaks\State\power-plan.json' }
     $ConfigPath = $ExecutionContext.SessionState.Path.GetUnresolvedProviderPathFromPSPath($ConfigPath)
     $BackupRoot = $ExecutionContext.SessionState.Path.GetUnresolvedProviderPathFromPSPath($BackupRoot)
+    $PowerStatePath = $ExecutionContext.SessionState.Path.GetUnresolvedProviderPathFromPSPath($PowerStatePath)
     Add-Type -AssemblyName PresentationFramework, PresentationCore, WindowsBase
     $xml = New-Object Xml.XmlDocument
     $xml.XmlResolver = $null
@@ -199,13 +269,14 @@ function New-FortniteLauncher {
     $window.MinHeight = [Math]::Min($window.MinHeight, $window.MaxHeight)
     $window.MinWidth = [Math]::Min($window.MinWidth, $window.MaxWidth)
     $controls = @{}
-    foreach ($name in @('RefreshButton', 'BrowseButton', 'OpenBackupsButton', 'ApplyButton', 'RestoreButton', 'BackupPicker', 'StatusText', 'HintText', 'CpuText', 'GpuText', 'RamText', 'ConfigPathText', 'ChangeCountText', 'ProfileGrid', 'LogBox')) {
+    foreach ($name in @('RefreshButton', 'BrowseButton', 'OpenBackupsButton', 'ApplyButton', 'RestoreButton', 'BackupPicker', 'StatusText', 'HintText', 'CpuText', 'GpuText', 'RamText', 'ConfigPathText', 'ChangeCountText', 'ProfileGrid', 'LogBox', 'ManualOptionsList', 'FpsLimitBox', 'ManualApplyButton', 'PowerEnableButton', 'PowerRestoreButton', 'PowerStatusText', 'GameModeButton', 'CapturesButton')) {
         $controls[$name] = $window.FindName($name)
         if ($null -eq $controls[$name]) { throw "Launcher-Steuerelement fehlt: $name" }
     }
     $state = [pscustomobject]@{
         Window = $window; Controls = $controls; ConfigPath = $ConfigPath; BackupRoot = $BackupRoot
         LastError = $null; IsReady = $false; HardwareLoaded = $false; Refresh = $null
+        ManualRows = @(); PowerStatePath = $PowerStatePath
         ConfirmRestore = {
             param($owner, $label)
             $message = "Die gesamte Einstellungsdatei auf die Sicherung vom $label zurücksetzen? Auch spätere Einstellungen im Spiel werden zurückgesetzt. Der aktuelle Stand wird vorher gesichert."
@@ -218,6 +289,8 @@ function New-FortniteLauncher {
     foreach ($pair in @{
         RefreshButton = 'Refresh'; BrowseButton = 'Browse'; OpenBackupsButton = 'OpenBackups'
         ApplyButton = 'Apply'; RestoreButton = 'Restore'
+        ManualApplyButton = 'ApplyManual'; PowerEnableButton = 'PowerEnable'; PowerRestoreButton = 'PowerRestore'
+        GameModeButton = 'GameMode'; CapturesButton = 'Captures'
     }.GetEnumerator()) {
         $controls[$pair.Key].Tag = $pair.Value
         $controls[$pair.Key].Add_Click({
@@ -228,6 +301,7 @@ function New-FortniteLauncher {
     $window.Add_ContentRendered({
         if (-not $state.HardwareLoaded) { & $dispatch -State $state -Action 'Hardware' }
     }.GetNewClosure())
+    $controls.FpsLimitBox.Add_LostFocus({ & $dispatch -State $state -Action 'Refresh' }.GetNewClosure())
     Update-LauncherState $state
     Write-LauncherLog $state 'Launcher gestartet. Es wurden keine Einstellungen verändert.'
     return $state
