@@ -1,5 +1,6 @@
 #ifndef NERO_OPTIONS
 #define NERO_OPTIONS
+#define NERO_DIAGNOSTIC 0 // [0 1 2]
 #define SHADOW_SAMPLES 12 // [4 8 12 16 24]
 #define SHADOW_SOFTNESS 1.5 // [0.5 1.0 1.5 2.0 3.0]
 #define CLOUD_STEPS 24 // [8 12 16 24 40]

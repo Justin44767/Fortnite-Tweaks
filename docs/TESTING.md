@@ -8,12 +8,29 @@ und zusätzliche Schaltervarianten werden geprüft. `tools/validate.py` prüft
 außerdem gerenderte Pixel für Tag/Nacht, Wetter, Dimensionen, Wasseranimation,
 Schatten einschließlich Farbe, Wolken, SSR-Treffer/Ausfall, GBuffer-Beleuchtung,
 PBR, Unterwasserabsorption, TAA-Initialisierung/Reset, Bloom, Belichtung und Ausgabe.
+Seit 0.2.1 werden außerdem der sichtbare Diagnoserahmen und das direkte Auslesen
+der Oberflächennormalen in allen drei Dimensionen gerendert und geprüft.
 
 Der aktuelle maschinenlesbare Bericht entsteht in `build/validation/validation.json`.
 `synthetic-pipeline.png` dort ist ein kleiner technischer Test mit künstlichen
 Tiefen-/Farbtexturen, **kein Minecraft-Screenshot** und kein Qualitätsvergleich.
 Die Pakettests prüfen ZIP-Struktur, Quellgleichheit, Prüfsummen, Profile, Referenzen,
 Reproduzierbarkeit und das gespeicherte Testweltformat.
+
+Zusätzlicher einmaliger Cloud-Check für 0.2.1: Die originale JCPP-Vorverarbeitung
+und GLSL-Transformation aus Iris-Commit
+`671a5c87747d33983d7ed659461a64f46dfcb1f0` (26.3) wurden in einem separaten
+Java-Testtreiber ausgeführt. Die Includes wurden zuvor mit `tools/validate.py`
+aufgelöst. Minecraft-Geräte-/Konfigurationszugriffe und Vertexformat-Metadaten
+wurden durch kontrollierte Testwerte ersetzt; die Transformationsmethoden selbst
+blieben unverändert. Verwendet wurden JCPP 1.4.14 und glsl-transformer 3.0.0-pre3.
+
+Geprüft wurden das Standardprofil in allen drei Dimensionen, Geometrie über den
+Vanilla-Transformationspfad, Terrain/Wasser/Schatten zusätzlich über den Sodium-Pfad,
+alle Nachbearbeitungspässe sowie beide Diagnosemodi. Für beide Clip-Tiefenbereiche
+wurden die erzeugten Programme anschließend mit Mesa kompiliert und verknüpft.
+Dieser Check prüft **weder den vollständigen Iris-Paketlader noch eine laufende
+Minecraft-Renderpipeline** und ist nicht Teil des Python-CI-Workflows.
 
 ## Noch nicht ausgeführt
 

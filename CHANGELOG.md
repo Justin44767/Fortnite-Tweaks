@@ -1,5 +1,16 @@
 # Changelog
 
+## 0.2.1 — 2026-10-25
+
+- Sichtbaren, abschaltbaren NERO-Funktionstest ergänzt: türkis-pinker Rahmen für
+  den finalen Pass und ungefilterte Oberflächennormalen zur Prüfung der Geometriedaten.
+- Deutsche und englische Menütexte sowie Anleitung zur Diagnose eines unveränderten
+  Vanilla-Bildes ergänzt. Normale Darstellung und Qualitätsprofile bleiben erhalten.
+- Zusätzliche Pixelprüfungen für beide Diagnosemodi in allen drei Dimensionen.
+- Iris-Vorverarbeitung/Transformation des 26.3-Quellstands separat geprüft;
+  Minecraft-Laufzeit bleibt ungetestet. Die gemeldete Vanilla-Darstellung ist ohne
+  Ingame-Diagnose oder Iris-Log noch nicht als behoben bestätigt.
+
 ## 0.2.0 — 2026-10-25
 
 - Zielversion von Minecraft Java 1.21.11 auf 26.3 umgestellt.

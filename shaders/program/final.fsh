@@ -1,5 +1,8 @@
 #include "/lib/common.glsl"
 uniform sampler2D colortex0, colortex5, colortex6, depthtex0;
+#if NERO_DIAGNOSTIC == 2
+uniform sampler2D colortex1;
+#endif
 in vec2 texcoord;
 vec3 filmic(vec3 x) { return clamp((x*(2.51*x+0.03))/(x*(2.43*x+0.59)+0.14),0.0,1.0); }
 void main() {
@@ -59,5 +62,16 @@ void main() {
     color=clamp((color-0.5)*contrast+0.5,0.0,1.0);
     color=pow(color,vec3(1.0/2.2));
     color+=(hash13(vec3(gl_FragCoord.xy,float(frameCounter%8)))-0.5)/255.0;
+#if NERO_DIAGNOSTIC == 2
+    // Inspect the geometry output directly, without exposure, bloom or TAA.
+    color=texture(depthtex0,texcoord).r>=0.99999 ? vec3(0.04) : clamp(texture(colortex1,texcoord).rgb,0.0,1.0);
+#endif
+#if NERO_DIAGNOSTIC != 0
+    // A fixed two-color frame proves this final pass is running, even over black
+    // or unchanged scene buffers. It is intentionally independent of lighting.
+    vec2 edge=min(texcoord,1.0-texcoord)*screenSize();
+    float border=max(6.0,min(viewWidth,viewHeight)*0.015);
+    if(min(edge.x,edge.y)<border) color=texcoord.x<0.5 ? vec3(0,1,1) : vec3(1,0,1);
+#endif
     gl_FragColor=vec4(clamp(color,0.0,1.0),1);
 }

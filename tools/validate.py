@@ -309,9 +309,20 @@ def run(output):
         GL.glBindTexture(GL.GL_TEXTURE_2D,resolved[0]); GL.glGenerateMipmap(GL.GL_TEXTURE_2D)
         exposure,exp=gpu.render(gpu.program('composite3'),{'colortex0':resolved[0],'colortex6':black},size=(1,1))
         check('auto exposure stays within documented bounds',.35-1e-5<=exp[0]<=3.+1e-5)
-        _,final=gpu.render(gpu.program('final'),{'colortex0':resolved[0],'colortex5':bloom[0],'colortex6':exposure[0],'depthtex0':depth_tex})
+        final_inputs={'colortex0':resolved[0],'colortex5':bloom[0],'colortex6':exposure[0],'depthtex0':depth_tex}
+        _,final=gpu.render(gpu.program('final'),final_inputs)
         check('postprocessing yields bounded nonblack output',all(-1e-6<=v<=1.000001 for v in final) and max(final[::4])>.2)
         png(output/'synthetic-pipeline.png',gpu.width,gpu.height,final)
+        center=(gpu.height//2*gpu.width+gpu.width//2)*4
+        right=(gpu.width-1)*4
+        for dimension in (0,-1,1):
+            _,frame=gpu.render(gpu.program('final',dimension,{'NERO_DIAGNOSTIC':1}),final_inputs)
+            _,surfaces=gpu.render(gpu.program('final',dimension,{'NERO_DIAGNOSTIC':2}),{**final_inputs,'colortex1':inputs['colortex1']})
+            report['compiled_programs']+=2
+            check(f'diagnostic frame is visible and preserves interior in dimension {dimension}',
+                  frame[:3]==[0.,1.,1.] and frame[right:right+3]==[1.,0.,1.] and difference(frame[center:center+3],final[center:center+3])<1e-5)
+            check(f'diagnostic surfaces read geometry buffer without grading in dimension {dimension}',
+                  difference(surfaces[center:center+3],[.5,1.,.5])<1e-5)
         # Metadata proves which source tree this report corresponds to.
         digest=hashlib.sha256()
         for path in sorted(SHADERS.rglob('*')):

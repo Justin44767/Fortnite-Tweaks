@@ -23,6 +23,27 @@ Framebuffer-Meldungen prüfen. Versionen von Spiel, Iris, Sodium und GPU-Treiber
 zusammen mit dem betroffenen Programm und der vollständigen Fehlermeldung notieren.
 Eine erfolgreiche Auswahl allein beweist nicht, dass alle Renderpasses laufen.
 
+## Funktionstest bei unverändertem Bild
+
+1. Die aktuelle `NeroRealismUltra-26.3.zip` herunterladen und die bisherige Datei
+   im `shaderpacks`-Ordner der verwendeten Instanz ersetzen. Anschließend Minecraft
+   neu starten und genau dieses Paket auswählen.
+2. In den Shader-Einstellungen **NERO-Funktionstest → Rahmen** wählen, anwenden und
+   das Menü schließen. Links muss ein türkiser, rechts ein pinker Bildrand erscheinen.
+   Fehlt schon die Einstellung, ist nicht die Ausgabe 0.2.1 oder neuer geladen.
+3. **NERO-Funktionstest → Oberflächen** zeigt Blockseiten je nach Ausrichtung in
+   verschiedenen Farben und den Himmel dunkel. Hier werden die Geometriedaten direkt
+   angezeigt; Belichtung und Farbprofil beeinflussen diese Ansicht nicht.
+4. Zum Spielen den Funktionstest wieder auf **Aus** stellen und anwenden.
+
+Ein sichtbarer Rahmen bestätigt den finalen NERO-Pass, aber noch nicht die korrekte
+Beleuchtung aller Flächen. Fehlt der Rahmen nach dem Anwenden, zuerst das ausgewählte
+Paket und das Iris-Protokoll prüfen. Ist der Rahmen sichtbar, aber die Oberflächenansicht
+zeigt trotz sichtbarer Blöcke nur eine gleichmäßige Fläche, die Geometriepässe und
+Renderziele anhand des Logs prüfen. Bei einer Meldung bitte das Ergebnis beider Modi,
+die Iris-/Sodium-Versionen und die Zeilen aus `logs/latest.log` direkt nach dem Laden
+mitsenden. Diese Prüfung grenzt die Ursache ein; eine automatische Reparatur ist sie nicht.
+
 Bei zu geringer Leistung zuerst HIGH/MEDIUM, kürzere Schattendistanz, weniger
 Wolken-/Nebel-/Reflexionsschritte und deaktivierte Tiefenunschärfe wählen.
 Nach Auflösungswechseln oder Shader-Neuladen kann die zeitliche Historie kurz neu
