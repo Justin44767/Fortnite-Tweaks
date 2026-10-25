@@ -1,5 +1,17 @@
 # Changelog
 
+## 0.2.2 — 2026-10-25
+
+- Reproduzierten Ladeabsturz in Iris `DispatchingDirectiveHolder` behoben:
+  `colortex2ClearColor=vec4(0.0)` verwendet jetzt vier explizite Nullwerte.
+  Der Iris-Direktivenparser unterstützt die gültige GLSL-Kurzform an dieser Stelle
+  nicht und brach das Laden mit `ArrayIndexOutOfBoundsException` ab; danach lief
+  Minecraft laut Nutzerlog ohne Shader weiter.
+- Regressionstest für explizite numerische ClearColor-Komponenten ergänzt. Der
+  originale Iris-Parser reproduziert den Fehler vor der Änderung und verarbeitet
+  die korrigierte Direktive mit unverändertem Farbwert erfolgreich.
+- Shader-ZIP neu gebaut. Der vollständige Lauf im Minecraft-Client bleibt offen.
+
 ## 0.2.1 — 2026-10-25
 
 - Sichtbaren, abschaltbaren NERO-Funktionstest ergänzt: türkis-pinker Rahmen für

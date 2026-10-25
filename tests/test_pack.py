@@ -66,6 +66,24 @@ class PackTests(unittest.TestCase):
                 for include in re.findall(r'#include "(/[^\"]+)"',path.read_text()):
                     self.assertTrue((ROOT/'shaders'/include.lstrip('/')).is_file())
 
+    def test_iris_clear_colors_have_four_literal_components(self):
+        # Iris reads these values outside the GLSL compiler. GLSL's vec4(scalar)
+        # shorthand crashes DispatchingDirectiveHolder instead of expanding it.
+        declarations=[]
+        for path in (ROOT/'shaders').rglob('*'):
+            if path.suffix not in ('.fsh','.glsl'): continue
+            for name,value in re.findall(r'^\s*const\s+vec4\s+((?:colortex|shadowcolor)\d+ClearColor)\s*=\s*([^;]+);',path.read_text(),re.M):
+                declarations.append(name)
+                with self.subTest(path=path.relative_to(ROOT),directive=name):
+                    constructor=re.fullmatch(r'vec4\s*\(([^()]*)\)',value.strip())
+                    self.assertIsNotNone(constructor,'Iris requires a literal vec4 constructor')
+                    components=constructor[1].split(',')
+                    self.assertEqual(len(components),4,'Iris requires four explicit components, even for zero')
+                    for component in components:
+                        self.assertRegex(component.strip(),r'^[+-]?(?:\d+(?:\.\d*)?|\.\d+)(?:[eE][+-]?\d+)?[fF]?$',
+                                         'Iris requires numeric literals, not GLSL expressions')
+        self.assertTrue(declarations,'No clear-color directives were checked')
+
     def test_profiles_and_menus_reference_real_options(self):
         properties=(ROOT/'shaders/shaders.properties').read_text()
         source='\n'.join(p.read_text() for p in (ROOT/'shaders/lib').glob('*.glsl'))

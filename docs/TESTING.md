@@ -32,13 +32,27 @@ wurden die erzeugten Programme anschließend mit Mesa kompiliert und verknüpft.
 Dieser Check prüft **weder den vollständigen Iris-Paketlader noch eine laufende
 Minecraft-Renderpipeline** und ist nicht Teil des Python-CI-Workflows.
 
+Für 0.2.2 wurde zusätzlich der separate Direktivenpfad geprüft: Die unveränderten
+Iris-Klassen `ConstDirectiveParser` und `DispatchingDirectiveHolder` desselben
+Quellstands reproduzieren mit der alten `colortex2ClearColor=vec4(0.0)`-Direktive
+exakt den gemeldeten `ArrayIndexOutOfBoundsException` an Zeile 232. Mit vier
+expliziten Nullwerten werden die ClearColor-Direktiven erfolgreich eingelesen;
+der resultierende RGBA-Wert bleibt `(0, 0, 0, 0)`. Der neue Python-Pakettest schlägt
+ebenfalls mit der alten Fassung fehl und schützt diesen Vertrag im CI-Workflow.
+Dieser Ladefehler lag außerhalb der früheren GLSL-/Transformationsprüfungen.
+Nach der Korrektur wurden 420 Fragmentquellen (alle Profile, Dimensionen und
+Wurzel-Einstiegspunkte) mit insgesamt 560 ClearColor-Direktiven erfolgreich
+vorverarbeitet und durch den originalen Iris-Direktivenparser verarbeitet.
+
 ## Noch nicht ausgeführt
 
 Minecraft Java 26.3 mit Iris/Sodium wurde hier nicht gestartet. Es gibt keine
 fertige Spielinstallation in dieser Umgebung; Mojang-/Modrinth-Downloadversuche
-lieferten HTTP 403. Kein Bildvergleich mit Vanilla, kein Iris-Shaderlog aus einem
-Spielstart, keine echte GPU-FPS-Messung und kein Test der erzeugten Welt im Spiel
-liegen vor. Erfolgreiche GLSL-Tests ersetzen diese Abnahme nicht.
+lieferten HTTP 403. Ein Nutzerlog bestätigt den oben beschriebenen Ladeabbruch
+und Iris' Rückfall auf normales Rendering. Ein erfolgreicher Spielstart mit der
+korrigierten Fassung, ein Bildvergleich mit Vanilla, eine echte GPU-FPS-Messung
+und ein Test der erzeugten Welt im Spiel sind noch nicht bestätigt.
+Erfolgreiche technische Tests ersetzen diese Abnahme nicht.
 
 ## Neue Testwelt
 

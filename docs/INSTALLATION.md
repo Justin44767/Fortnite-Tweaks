@@ -25,6 +25,12 @@ Eine erfolgreiche Auswahl allein beweist nicht, dass alle Renderpasses laufen.
 
 ## Funktionstest bei unverändertem Bild
 
+Steht im Log `DispatchingDirectiveHolder.processDirective` zusammen mit
+`ArrayIndexOutOfBoundsException: Index 1 out of bounds for length 1`, die ZIP durch
+**Version 0.2.2 oder neuer** ersetzen. In älteren NERO-Ausgaben löst eine verkürzte
+ClearColor-Direktive genau diesen Ladeabsturz aus. Iris fällt anschließend auf
+normales Rendering zurück, obwohl NERO in der Paketauswahl stehen kann.
+
 1. Die aktuelle `NeroRealismUltra-26.3.zip` herunterladen und die bisherige Datei
    im `shaderpacks`-Ordner der verwendeten Instanz ersetzen. Anschließend Minecraft
    neu starten und genau dieses Paket auswählen.

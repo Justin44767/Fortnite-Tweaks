@@ -22,7 +22,8 @@ const int colortex5Format = RGBA16F;
 const int colortex6Format = RGBA16F;
 */
 const vec4 colortex1ClearColor=vec4(0.5,1.0,0.5,1.0);
-const vec4 colortex2ClearColor=vec4(0.0);
+// Iris's directive parser requires four literals; GLSL's scalar shorthand crashes it.
+const vec4 colortex2ClearColor=vec4(0.0,0.0,0.0,0.0);
 const bool colortex4Clear=false;
 const bool colortex6Clear=false;
 const float ambientOcclusionLevel=1.0;
