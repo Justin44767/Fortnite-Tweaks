@@ -1,0 +1,2 @@
+# Development only. The shaderpack has no Python or Java-mod dependency.
+PyOpenGL==3.1.10
