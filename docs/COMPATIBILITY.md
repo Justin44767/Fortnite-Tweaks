@@ -1,17 +1,25 @@
 # Kompatibilität und Pipeline
 
-Ziel: Minecraft Java 1.21.11, Iris für genau diese Spielversion und dessen passende
+Ziel: Minecraft Java 26.3, Iris für genau diese Spielversion und dessen passende
 Sodium-Abhängigkeit. Als Format-/Implementierungsreferenz wurde der offizielle
-[Iris-Zweig 1.21.11](https://github.com/IrisShaders/Iris/tree/0a1fcaae55099356bf53410b4f5302753edb0ffc)
-geprüft. Dieser Stand nennt Iris 1.10.8 und Sodium 0.8.14 für Minecraft 1.21.11.
+[Iris-Zweig 26.3](https://github.com/IrisShaders/Iris/tree/671a5c87747d33983d7ed659461a64f46dfcb1f0)
+geprüft. Dieser Stand nennt Iris 1.11.6 und Sodium 0.9.2 für Minecraft 26.3.
 Das ist eine Quellcodeprüfung, kein Nachweis eines getesteten installierten Builds.
 Für die Installation die tatsächlich veröffentlichte kompatible Kombination wählen.
+Der Iris-Quellbuild verwendet Java 25; beim Spielen die passende, vom Launcher
+bereitgestellte Java-Laufzeit verwenden.
+
+Die benötigten GBuffer-/Composite-Programmnamen, Pack-Eigenschaften, Feature-Flags
+und verwendeten Uniforms wurden gegen diesen Zweig geprüft. Dafür war keine Änderung
+der GLSL-Effekte erforderlich. Die Versionsumstellung aktualisiert Paketnamen,
+Welt-Datenversion, Datapack-Format und Anleitung; eine Ingame-Abnahme für 26.3
+steht weiterhin aus.
 
 Weitere Referenzen: [Iris ShaderDoc](https://github.com/IrisShaders/ShaderDoc),
 Iris `ProgramId`, `ShaderProperties`, `FeatureFlags`, die Dokumentation zu
 Renderzielen, Uniforms und Vertexattributen. Datenversionswerte der Testwelt:
-Minecraft 1.21.11 / DataVersion 4671 / Datapack 94.1, abgeglichen mit
-[mcmeta-Versionsdaten](https://github.com/misode/mcmeta/tree/summary/versions).
+Minecraft 26.3 / DataVersion 5023 / Datapack 121.0, abgeglichen mit
+[mcmeta-Versionsdaten](https://github.com/misode/mcmeta/blob/26.3-summary/version.json).
 Keine GLSL-Dateien anderer Shaderpacks wurden kopiert.
 
 ## Reihenfolge

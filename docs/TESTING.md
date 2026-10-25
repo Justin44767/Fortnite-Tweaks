@@ -17,7 +17,7 @@ Reproduzierbarkeit und das gespeicherte Testweltformat.
 
 ## Noch nicht ausgeführt
 
-Minecraft Java 1.21.11 mit Iris/Sodium wurde hier nicht gestartet. Es gibt keine
+Minecraft Java 26.3 mit Iris/Sodium wurde hier nicht gestartet. Es gibt keine
 fertige Spielinstallation in dieser Umgebung; Mojang-/Modrinth-Downloadversuche
 lieferten HTTP 403. Kein Bildvergleich mit Vanilla, kein Iris-Shaderlog aus einem
 Spielstart, keine echte GPU-FPS-Messung und kein Test der erzeugten Welt im Spiel
@@ -25,8 +25,8 @@ liegen vor. Erfolgreiche GLSL-Tests ersetzen diese Abnahme nicht.
 
 ## Neue Testwelt
 
-1. `Nero-Test-World-1.21.11.zip` entpacken, sodass der Ordner `Nero-Test-World` direkt
-   unter `saves/` der Minecraft-1.21.11-Instanz liegt.
+1. `Nero-Test-World-26.3.zip` entpacken, sodass der Ordner `Nero-Test-World` direkt
+   unter `saves/` der Minecraft-26.3-Instanz liegt.
 2. Diese **neue** kreative Testwelt öffnen. Sie enthält `level.dat` und ein Datapack;
    Minecraft erzeugt die Landschaft beim ersten Öffnen. Der Seed ist `2026012111`.
 3. Das Datapack lädt die benötigten Chunks und baut nach zwei Sekunden ein Becken
@@ -36,7 +36,7 @@ liegen vor. Erfolgreiche GLSL-Tests ersetzen diese Abnahme nicht.
 4. Falls die Szene noch nicht aufgebaut ist, `/reload` und danach bei geladenen
    Chunks `/function nero_test:build` verwenden. Fehlermeldungen protokollieren.
 
-Das separat beigelegte Datapack `Nero-Test-Scene-1.21.11.zip` ist eine Alternative
+Das separat beigelegte Datapack `Nero-Test-Scene-26.3.zip` ist eine Alternative
 für eine **frisch erstellte Testwelt**. Es darf nicht ungeprüft in eine bestehende
 Spielwelt eingesetzt werden: Es ersetzt Blöcke von X/Z −40 bis 40, ungefähr Y 61–104.
 Die Testwelt wurde strukturell geprüft, aber noch nicht mit Minecraft geöffnet.

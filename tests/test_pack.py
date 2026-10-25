@@ -40,7 +40,7 @@ def read_nbt(stream,kind):
 
 class PackTests(unittest.TestCase):
     def test_zip_has_direct_shader_root_and_exact_sources(self):
-        with zipfile.ZipFile(DIST/'NeroRealismUltra-1.21.11.zip') as pack:
+        with zipfile.ZipFile(DIST/'NeroRealismUltra-26.3.zip') as pack:
             self.assertIn('shaders/shaders.properties',pack.namelist())
             self.assertEqual(len(pack.namelist()),len(set(pack.namelist())))
             self.assertFalse(any('..' in Path(name).parts or name.startswith('/') for name in pack.namelist()))
@@ -83,19 +83,21 @@ class PackTests(unittest.TestCase):
             for option in options: self.assertIn(f'option.{option}=',text)
 
     def test_testworld_has_target_version_and_registered_datapack(self):
-        with zipfile.ZipFile(DIST/'Nero-Test-World-1.21.11.zip') as world:
+        with zipfile.ZipFile(DIST/'Nero-Test-World-26.3.zip') as world:
             stream=io.BytesIO(gzip.decompress(world.read('Nero-Test-World/level.dat')))
             self.assertEqual(stream.read(1),b'\x0a')
             self.assertEqual(read_nbt(stream,8),'')
             data=read_nbt(stream,10)['Data']
             self.assertEqual(stream.read(),b'')
-            self.assertEqual(data['DataVersion'],4671)
-            self.assertEqual(data['Version']['Name'],'1.21.11')
+            self.assertEqual(data['DataVersion'],5023)
+            self.assertEqual(data['Version']['Name'],'26.3')
+            self.assertEqual(data['Version']['Id'],5023)
             self.assertEqual(data['GameType'],1)
             self.assertIn('file/Nero-Test-Scene',data['DataPacks']['Enabled'])
             self.assertEqual(set(data['WorldGenSettings']['dimensions']),{'minecraft:overworld','minecraft:the_nether','minecraft:the_end'})
             metadata=json.loads(world.read('Nero-Test-World/datapacks/Nero-Test-Scene/pack.mcmeta'))
-            self.assertEqual(metadata['pack']['min_format'],[94,1])
+            self.assertEqual(metadata['pack']['min_format'],[121,0])
+            self.assertEqual(metadata['pack']['max_format'],[121,0])
 
     def test_scene_functions_resolve_and_fills_fit_default_limit(self):
         files=build.scene_files()

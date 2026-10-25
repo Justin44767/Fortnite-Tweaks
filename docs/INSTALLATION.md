@@ -1,11 +1,11 @@
 # Installation
 
-1. Minecraft **Java Edition 1.21.11** einmal mit dem eigenen Launcher starten.
-2. Eine ausdrücklich für 1.21.11 veröffentlichte Iris-Version und deren passende
+1. Minecraft **Java Edition 26.3** einmal mit dem eigenen Launcher starten.
+2. Eine ausdrücklich für 26.3 veröffentlichte Iris-Version und deren passende
    Sodium-/Loader-Abhängigkeiten installieren. Der offizielle Iris-Installer oder
    ein Launcher mit Abhängigkeitsauflösung hilft dabei. Nicht einfach die neueste
    Iris-Version für eine andere Minecraft-Version wählen.
-3. `NeroRealismUltra-1.21.11.zip` in den `shaderpacks`-Ordner dieser Spielinstanz
+3. `NeroRealismUltra-26.3.zip` in den `shaderpacks`-Ordner dieser Spielinstanz
    kopieren. Unter Windows liegt dieser bei einer Standardinstallation unter
    `%APPDATA%\.minecraft\shaderpacks`. Andere Launcher verwenden eigene Instanzordner.
 4. Minecraft mit dem Iris-Profil starten. Unter Video Settings → Shader Packs

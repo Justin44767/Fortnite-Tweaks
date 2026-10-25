@@ -1,5 +1,14 @@
 # Changelog
 
+## 0.2.0 — 2026-10-25
+
+- Zielversion von Minecraft Java 1.21.11 auf 26.3 umgestellt.
+- Iris-Vertrag gegen den offiziellen 26.3-Zweig geprüft (Iris 1.11.6 / Sodium 0.9.2).
+- Testwelt auf DataVersion 5023 und Datapack-Format 121.0 aktualisiert.
+- Shader, Testszene und Testwelt als `*-26.3.zip` neu gebaut; frühere Artefakte
+  bleiben über den Git-Verlauf erreichbar.
+- GLSL-Effekte unverändert; Minecraft-/Iris-Laufzeittest für 26.3 bleibt ausstehend.
+
 ## 0.1.0 — 2026-10-25
 
 - Fortnite-Tweaks durch das eigenständige Shaderprojekt NERO REALISM ULTRA ersetzt.

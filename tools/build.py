@@ -47,8 +47,8 @@ def world_level():
         'minecraft:the_end':(10,dimension('minecraft:the_end',{'type':(8,'minecraft:the_end')},'minecraft:end')),
     }
     data={
-        'DataVersion':(3,4671),'version':(3,19133),
-        'Version':(10,{'Name':(8,'1.21.11'),'Id':(3,4671),'Snapshot':(1,0),'Series':(8,'main')}),
+        'DataVersion':(3,5023),'version':(3,19133),
+        'Version':(10,{'Name':(8,'26.3'),'Id':(3,5023),'Snapshot':(1,0),'Series':(8,'main')}),
         'LevelName':(8,'NERO REALISM ULTRA - Render Test'),
         'GameType':(3,1),'allowCommands':(1,1),'hardcore':(1,0),'Difficulty':(1,1),
         'initialized':(1,1),'SpawnX':(3,0),'SpawnY':(3,71),'SpawnZ':(3,28),
@@ -62,7 +62,7 @@ def world_level():
 
 def scene_files():
     files={
-        'pack.mcmeta':json.dumps({'pack':{'description':'NERO test scene for Minecraft Java 1.21.11','min_format':[94,1],'max_format':[94,1]}},indent=2).encode(),
+        'pack.mcmeta':json.dumps({'pack':{'description':'NERO test scene for Minecraft Java 26.3','min_format':[121,0],'max_format':[121,0]}},indent=2).encode(),
         'data/minecraft/tags/function/load.json':b'{"values":["nero_test:load"]}\n',
         'data/nero_test/function/load.mcfunction':b'execute unless data storage nero_test:state initialized run function nero_test:init\n',
         'data/nero_test/function/init.mcfunction':b'data modify storage nero_test:state initialized set value 1b\nforceload add -48 -48 48 48\nschedule function nero_test:build 40t replace\n',
@@ -117,12 +117,12 @@ def build(output_directory=None):
     shaderfiles={p.relative_to(ROOT).as_posix():p.read_bytes() for p in sorted((ROOT/'shaders').rglob('*')) if p.is_file()}
     for name in ['README.md','CHANGELOG.md','docs/EFFECTS.md','docs/INSTALLATION.md','docs/TESTING.md','docs/COMPATIBILITY.md','docs/BRIEF.md']:
         shaderfiles[name]=(ROOT/name).read_bytes()
-    archive(dist/'NeroRealismUltra-1.21.11.zip',shaderfiles)
+    archive(dist/'NeroRealismUltra-26.3.zip',shaderfiles)
     scene=scene_files()
-    archive(dist/'Nero-Test-Scene-1.21.11.zip',scene)
+    archive(dist/'Nero-Test-Scene-26.3.zip',scene)
     world={'Nero-Test-World/level.dat':world_level(), 'Nero-Test-World/README.txt':(ROOT/'docs/TESTING.md').read_bytes()}
     world.update({'Nero-Test-World/datapacks/Nero-Test-Scene/'+name:content for name,content in scene.items()})
-    archive(dist/'Nero-Test-World-1.21.11.zip',world)
+    archive(dist/'Nero-Test-World-26.3.zip',world)
 
 
 if __name__=='__main__':

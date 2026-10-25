@@ -2,8 +2,10 @@
 
 **Beyond Vanilla. Beyond Realism.**
 
-Eigenständiges GLSL-Shaderpack für **Minecraft Java 1.21.11 mit Iris und Sodium**.
+Eigenständiges GLSL-Shaderpack für **Minecraft Java 26.3 mit Iris und Sodium**.
 Es ersetzt das bisherige Fortnite-Tweaks-Projekt in diesem Repository.
+Die aktuelle Zielversion ist 26.3; der unveränderte ursprüngliche Entwicklungsauftrag
+in `docs/BRIEF.md` beschreibt noch die frühere Zielversion 1.21.11.
 
 Das Paket implementiert dynamische gefilterte Schatten, animiertes Wasser mit
 Brechung und Screen-Space-Spiegelungen, volumetrische Wolken, beleuchteten Nebel,
@@ -11,7 +13,7 @@ Tag/Nacht-Himmel, Normal-/Specular-Mapping, SSAO und eine begrenzte indirekte
 Screen-Space-Beleuchtung. TAA, Bloom, Belichtungsanpassung, Farbprofile und optional
 Tiefenunschärfe sowie Kamerabewegungsunschärfe ergänzen die Pipeline.
 
-**Status: erste technische Testversion (0.1.0).** Die Shader werden in einem echten
+**Status: technische Testversion (0.2.0).** Die Shader werden in einem echten
 OpenGL-Kontext kompiliert und mit synthetischen Eingaben gerendert. Ein Lauf mit
 Minecraft/Iris, die Abnahme der sichtbaren Qualität und reale Leistungsmessungen
 stehen noch aus. Das ist kein Nachweis der visuellen Qualität von Complementary,
@@ -19,9 +21,9 @@ Bliss, Photon, BSL oder SEUS. Es wurde kein Code dieser Shaderpacks übernommen.
 
 ## Downloads und Installation
 
-- [NeroRealismUltra-1.21.11.zip](dist/NeroRealismUltra-1.21.11.zip)
-- [Neue Testwelt](dist/Nero-Test-World-1.21.11.zip)
-- [Testszene als Datapack](dist/Nero-Test-Scene-1.21.11.zip)
+- [NeroRealismUltra-26.3.zip](dist/NeroRealismUltra-26.3.zip)
+- [Neue Testwelt](dist/Nero-Test-World-26.3.zip)
+- [Testszene als Datapack](dist/Nero-Test-Scene-26.3.zip)
 
 Das Shader-ZIP unverändert in `.minecraft/shaderpacks` legen und in Iris auswählen.
 Es enthält `shaders/` direkt auf ZIP-Ebene. Eine eigene Mod-JAR ist nicht nötig.
