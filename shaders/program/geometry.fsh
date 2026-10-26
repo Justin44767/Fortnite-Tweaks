@@ -16,10 +16,10 @@ flat in float material;
 const int colortex0Format = RGBA16F;
 const int colortex1Format = RGBA16F;
 const int colortex2Format = RGBA8;
-const int colortex3Format = RGBA16F;
 const int colortex4Format = RGBA16F;
 const int colortex5Format = RGBA16F;
 const int colortex6Format = RGBA16F;
+const int colortex7Format = RGBA16F;
 */
 const vec4 colortex1ClearColor=vec4(0.5,1.0,0.5,1.0);
 // Iris's directive parser requires four literals; GLSL's scalar shorthand crashes it.
@@ -90,7 +90,7 @@ void main() {
         if(behind.z>view.z) { refractUV=uv; behind=viewFromDepth(uv,texture(depthtex1,uv).r); }
         float thickness=min(length(behind-view),40.0);
         vec3 absorption=exp(-vec3(0.28,0.075,0.035)*thickness/max(WATER_CLARITY,0.1));
-        vec3 transmitted=texture(colortex3,refractUV).rgb*absorption;
+        vec3 transmitted=texture(colortex7,refractUV).rgb*absorption;
         transmitted+=vec3(0.015,0.11,0.15)*(1.0-absorption)*mix(0.12,1.0,daylight());
         transmitted*=1.0+caustics(world)*exp(-thickness*0.12)*0.14*daylight();
         vec3 reflection=reflectedScene(view,n,rough);

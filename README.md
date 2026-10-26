@@ -13,7 +13,7 @@ Tag/Nacht-Himmel, Normal-/Specular-Mapping, SSAO und eine begrenzte indirekte
 Screen-Space-Beleuchtung. TAA, Bloom, Belichtungsanpassung, Farbprofile und optional
 Tiefenunschärfe sowie Kamerabewegungsunschärfe ergänzen die Pipeline.
 
-**Status: technische Testversion (0.2.2).** Die Shader werden in einem echten
+**Status: technische Testversion (0.2.3).** Die Shader werden in einem echten
 OpenGL-Kontext kompiliert und mit synthetischen Eingaben gerendert. Ein Lauf mit
 Minecraft/Iris, die Abnahme der sichtbaren Qualität und reale Leistungsmessungen
 stehen noch aus. Das ist kein Nachweis der visuellen Qualität von Complementary,
@@ -35,6 +35,11 @@ Sieht das Bild trotz aktiviertem NERO wie Vanilla aus, unter Shader-Einstellunge
 rechts ein pinker Rahmen erscheinen. Der Modus **Oberflächen** zeigt zusätzlich
 die Geometriedaten. [Auswertung des Funktionstests](docs/INSTALLATION.md#funktionstest-bei-unverändertem-bild).
 Der Funktionstest ist standardmäßig aus.
+
+**Wasserkorrektur in 0.2.3:** Brechung und Spiegelungen lesen jetzt den Szenenhintergrund
+aus einem für Iris-Geometriepässe zugänglichen Puffer. Zuvor konnte Wasser stattdessen
+die Blocktextur lesen und dadurch falsche Farben zeigen. Der Fehler wurde im GPU-Test
+reproduziert; die vollständige Darstellung in Minecraft muss noch bestätigt werden.
 
 **Ladekorrektur in 0.2.2:** Der Absturz `DispatchingDirectiveHolder.processDirective`
 mit `ArrayIndexOutOfBoundsException: Index 1 out of bounds for length 1` wurde

@@ -1,7 +1,8 @@
 #ifndef NERO_REFLECTIONS
 #define NERO_REFLECTIONS
 #include "/lib/atmosphere.glsl"
-uniform sampler2D depthtex1, colortex3;
+// Opaque snapshot written by deferred; accessible from geometry and fullscreen passes.
+uniform sampler2D depthtex1, colortex7;
 vec3 projectView(vec3 p) {
     vec4 q=gbufferProjection*vec4(p,1);
     return vec3(q.xy/q.w*0.5+0.5+jitter(frameCounter)/screenSize(),q.z/q.w*0.5+0.5);
@@ -32,8 +33,8 @@ vec4 traceReflection(vec3 origin,vec3 direction,float roughness) {
             vec2 border=min(hit,1.0-hit);
             float confidence=smoothstep(0.0,0.08,min(border.x,border.y))*(1.0-f*0.4);
             vec2 blur=vec2(roughness*roughness*6.0)/screenSize();
-            vec3 reflected=texture(colortex3,hit).rgb*0.4;
-            reflected+=(texture(colortex3,hit+vec2(blur.x,0)).rgb+texture(colortex3,hit-vec2(blur.x,0)).rgb+texture(colortex3,hit+vec2(0,blur.y)).rgb+texture(colortex3,hit-vec2(0,blur.y)).rgb)*0.15;
+            vec3 reflected=texture(colortex7,hit).rgb*0.4;
+            reflected+=(texture(colortex7,hit+vec2(blur.x,0)).rgb+texture(colortex7,hit-vec2(blur.x,0)).rgb+texture(colortex7,hit+vec2(0,blur.y)).rgb+texture(colortex7,hit-vec2(0,blur.y)).rgb)*0.15;
             return vec4(reflected,confidence);
         }
         previousT=t;

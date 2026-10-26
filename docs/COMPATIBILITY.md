@@ -44,10 +44,17 @@ Keine GLSL-Dateien anderer Shaderpacks wurden kopiert.
 | colortex0 | RGBA16F | lineares HDR-Bild |
 | colortex1 | RGBA16F | Weltnormale, Roughness |
 | colortex2 | RGBA8 | lineare Albedo und Materialkennung |
-| colortex3 | RGBA16F | opaker Farbschnappschuss; keine transparente Feedback-Schleife |
 | colortex4 | RGBA16F | persistente TAA-Farbe und lineare Blickraumtiefe |
 | colortex5 | RGBA16F | horizontal gefilterter Bloom |
 | colortex6 | RGBA16F, 1×1 | persistente Belichtung |
+| colortex7 | RGBA16F | opaker Farbschnappschuss; keine transparente Feedback-Schleife |
+
+`deferred` schreibt mit `DRAWBUFFERS:07` das Bild gleichzeitig nach `colortex0`
+und `colortex7`. Wasser und Spiegelungen lesen den Schnappschuss aus `colortex7`.
+Iris bindet `colortex0` bis `colortex3` ausschließlich in Vollbildpässen
+(`IrisSamplers.addRenderTargetSamplers`, Startindex 4 für Geometrie). Die frühere
+Nutzung von `colortex3` im Wasserpass war deshalb fehlerhaft, obwohl der GLSL-Code
+kompilierte. `colortex3` wird seit 0.2.3 nicht mehr vom Shaderpack verwendet.
 
 Iris übernimmt das Ping-Pong der Composite-/Deferred-Ziele. `colortex4Clear=false`
 und `colortex6Clear=false` erhalten die Historien; der Code verwirft uninitialisierte

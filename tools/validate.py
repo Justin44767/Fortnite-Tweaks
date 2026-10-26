@@ -96,10 +96,24 @@ class GPU:
                 GL.glDeleteProgram(program)
                 raise RuntimeError(f'{label}: {message}')
             self.programs.append(program)
+            # IrisSamplers.addRenderTargetSamplers starts at colortex4 for world
+            # passes. An unbound sampler silently reads texture unit 0 (the atlas).
+            name=Path(label).stem
+            if name.startswith('gbuffers_') or name=='shadow':
+                unavailable={*(f'colortex{i}' for i in range(4)),'gcolor','gdepth','gnormal','composite'}
+                invalid=self.samplers(program)&unavailable
+                if invalid: raise AssertionError(f'{label}: Iris does not bind {sorted(invalid)} in geometry passes')
             return program
         finally:
             for shader in shaders:
                 GL.glDeleteShader(shader)
+
+    def samplers(self, program):
+        result=set()
+        for i in range(GL.glGetProgramiv(program,GL.GL_ACTIVE_UNIFORMS)):
+            name,_,kind=GL.glGetActiveUniform(program,i)
+            if kind==GL.GL_SAMPLER_2D: result.add(bytes(name).split(b'\0')[0].decode())
+        return result
 
     def program(self, name, dimension=0, options=None):
         folder = SHADERS / f'world{dimension}'
@@ -139,6 +153,8 @@ class GPU:
             self.uniform(program, name, value)
 
     def render(self, program, inputs=None, overrides=None, attachments=1, size=None, draw=None):
+        missing=self.samplers(program)-set(inputs or {})
+        if missing: raise AssertionError(f'Render test has unbound samplers: {sorted(missing)}')
         w,h = size or (self.width,self.height)
         outputs = [self.texture(width=w,height=h) for _ in range(attachments)]
         GL.glBindFramebuffer(GL.GL_FRAMEBUFFER,self.fbo)
@@ -275,11 +291,11 @@ def run(output):
                 depth.extend((d,d,d,1.))
                 scene.extend((8. if x>gpu.width*3//4 else .3,.2,.1,1.))
         depth_tex=gpu.texture(pixels=depth); scene_tex=gpu.texture(pixels=scene)
-        ssr=probe('SSR hit','lib/reflections.glsl','traceReflection(vec3(0,0,-1),vec3(0,0,-1),0.1)',{'depthtex1':depth_tex,'colortex3':scene_tex})
+        ssr=probe('SSR hit','lib/reflections.glsl','traceReflection(vec3(0,0,-1),vec3(0,0,-1),0.1)',{'depthtex1':depth_tex,'colortex7':scene_tex})
         check('SSR ray march finds an opaque depth intersection',ssr[3]>.2 and ssr[0]>.1)
-        ssr_miss=probe('SSR miss','lib/reflections.glsl','traceReflection(vec3(0,0,-1),vec3(0,0,1),0.1)',{'depthtex1':depth_tex,'colortex3':scene_tex})
+        ssr_miss=probe('SSR miss','lib/reflections.glsl','traceReflection(vec3(0,0,-1),vec3(0,0,1),0.1)',{'depthtex1':depth_tex,'colortex7':scene_tex})
         check('SSR rejects rays leaving the view volume',ssr_miss[3]==0.)
-        material_inputs={'gtexture':gpu.texture((.5,.6,.3,1.)),'normals':gpu.texture((.5,.5,1.,1.)),'specular':gpu.texture((0.,0.,0.,1.)),'shadowtex0':sky,'shadowtex1':sky,'shadowcolor0':sky,'depthtex1':depth_tex,'colortex3':scene_tex}
+        material_inputs={'gtexture':gpu.texture((.5,.6,.3,1.)),'normals':gpu.texture((.5,.5,1.,1.)),'specular':gpu.texture((0.,0.,0.,1.)),'shadowtex0':sky,'shadowtex1':sky,'shadowcolor0':sky,'depthtex1':depth_tex,'colortex7':scene_tex}
         sun={'sunPosition':(0.,.7,.7),'shadowLightPosition':(0.,.7,.7)}
         terrain_program=gpu.program('gbuffers_terrain')
         _,terrain=gpu.render(terrain_program,material_inputs,sun,attachments=3,draw=gpu.geometry())
@@ -291,9 +307,20 @@ def run(output):
         _,water=gpu.render(water_program,material_inputs,{**sun,'frameTimeCounter':0.},attachments=3,draw=gpu.geometry(100))
         _,water_next=gpu.render(water_program,material_inputs,{**sun,'frameTimeCounter':2.},attachments=3,draw=gpu.geometry(100))
         check('water pass visibly refracts and animates the opaque scene',difference(water,terrain)>.05 and difference(water,water_next)>.0001)
+        _,atlas_changed=gpu.render(water_program,{**material_inputs,'gtexture':gpu.texture((1.,0.,1.,1.))},{**sun,'frameTimeCounter':0.},attachments=3,draw=gpu.geometry(100))
+        check('water transmission does not sample the block atlas',difference(water,atlas_changed)<1e-6)
+        _,background_changed=gpu.render(water_program,{**material_inputs,'colortex7':gpu.texture((.1,.2,1.,1.))},{**sun,'frameTimeCounter':0.},attachments=3,draw=gpu.geometry(100))
+        check('water transmission responds to the opaque scene snapshot',difference(water,background_changed)>.02)
         synthetic={**inputs,'depthtex0':depth_tex,'colortex0':scene_tex}
         opaque,_=gpu.render(deferred,synthetic,attachments=2)
-        composite_inputs={**synthetic,'colortex0':opaque[0],'colortex3':opaque[1],'depthtex1':depth_tex,**{k:sky for k in ['shadowtex0','shadowtex1','shadowcolor0']}}
+        # Bind outputs using the pack's actual directive, not hard-coded test wiring.
+        targets=re.search(r'DRAWBUFFERS:([0-9]+)',expand(SHADERS/'world0/deferred.fsh'))[1]
+        opaque_bindings=dict(zip((f'colortex{i}' for i in targets),opaque,strict=True))
+        snapshot_inputs={name:tex for name,tex in material_inputs.items() if not name.startswith('colortex')}
+        # Missing/misrouted outputs now fail render's sampler check instead of
+        # silently reading the atlas or a manually supplied stand-in texture.
+        gpu.render(water_program,{**snapshot_inputs,**opaque_bindings},sun,attachments=3,draw=gpu.geometry(100))
+        composite_inputs={**synthetic,**opaque_bindings,'depthtex1':depth_tex,**{k:sky for k in ['shadowtex0','shadowtex1','shadowcolor0']}}
         composite=gpu.program('composite')
         fogged,fog=gpu.render(composite,composite_inputs)
         _,underwater=gpu.render(composite,composite_inputs,{'isEyeInWater':1})

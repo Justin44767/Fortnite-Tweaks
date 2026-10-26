@@ -1,5 +1,21 @@
 # Changelog
 
+## 0.2.3 — 2026-10-26
+
+- Szenenschnappschuss von `colortex3` nach `colortex7` verschoben. Iris bindet
+  `colortex0` bis `colortex3` nur in Vollbildpässen; der Wasserpass las deshalb
+  über den ungebundenen Sampler die Blocktextur statt des Hintergrundbildes.
+- Deferred-Ausgabe, Wasserbrechung und Screen-Space-Spiegelungen gemeinsam auf
+  den neuen HDR-Puffer umgestellt. Er bleibt getrennt von den Schreibzielen des
+  Wasserpasses; die Qualitätsprofile und Effekte bleiben erhalten.
+- GPU-Regression reproduziert die falsche Pink-/Grünfärbung vor der Änderung und
+  bestätigt danach die Unabhängigkeit der Wasserfarbe von der Blocktextur sowie
+  ihre Abhängigkeit vom Szenenhintergrund.
+- Validierung prüft aktive Sampler gegen die Iris-Geometrieeinschränkung, verlangt
+  explizite Texturbindungen und verbindet Deferred-Ausgaben anhand von DRAWBUFFERS.
+- ZIP neu gebaut. Ob sämtliche gemeldeten Grafikfehler damit verschwinden, bleibt
+  durch einen Spieltest zu bestätigen; Voxy wurde nicht als Ursache nachgewiesen.
+
 ## 0.2.2 — 2026-10-25
 
 - Reproduzierten Ladeabsturz in Iris `DispatchingDirectiveHolder` behoben:

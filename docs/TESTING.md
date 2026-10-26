@@ -44,6 +44,23 @@ Nach der Korrektur wurden 420 Fragmentquellen (alle Profile, Dimensionen und
 Wurzel-Einstiegspunkte) mit insgesamt 560 ClearColor-Direktiven erfolgreich
 vorverarbeitet und durch den originalen Iris-Direktivenparser verarbeitet.
 
+## Texturbindung seit 0.2.3
+
+Der Wasserpass las bis 0.2.2 `colortex3`, obwohl Iris diesen Sampler in
+Geometriepässen nicht bindet. Die früheren Tests hatten die Textur ausdrücklich
+gebunden und diese Einschränkung damit übergangen. Ein GPU-Test mit der tatsächlichen
+Bindungsbeschränkung reproduzierte den Fehler: Nur die Blocktextur von Pink nach Grün
+zu wechseln veränderte die Wasserfarbe stark, obwohl der Hintergrund identisch blieb.
+Mit dem nun durchgehend verwendeten `colortex7` beträgt diese Bilddifferenz null.
+Ein separat geänderter Szenenhintergrund beeinflusst das Wasser weiterhin.
+
+`tools/validate.py` prüft jetzt alle aktiven Geometrie-Sampler gegen die Iris-Regel
+und verlangt für jeden aktiven Sampler eine explizite Testbindung. Die Ausgabe
+des Deferred-Passes wird anhand seiner `DRAWBUFFERS`-Direktive an Wasser und
+Nachbearbeitung weitergegeben. Der bisherige Fehler lässt diese Prüfungen scheitern.
+Das ist ein gezielter technischer Nachweis; er bestätigt nicht, dass damit alle
+vom Nutzer gemeldeten Grafikprobleme im Spiel verschwinden.
+
 ## Noch nicht ausgeführt
 
 Minecraft Java 26.3 mit Iris/Sodium wurde hier nicht gestartet. Es gibt keine

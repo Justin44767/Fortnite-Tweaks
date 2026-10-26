@@ -1,7 +1,7 @@
 #include "/lib/atmosphere.glsl"
 uniform sampler2D colortex0, colortex1, colortex2, depthtex0;
 in vec2 texcoord;
-/* DRAWBUFFERS:03 */
+/* DRAWBUFFERS:07 */
 void main() {
     float depth=texture(depthtex0,texcoord).r;
     vec3 view=viewFromDepth(texcoord,depth), ray=worldDirection(view);
@@ -38,5 +38,6 @@ void main() {
         color=renderClouds(ray,color,length(view));
     }
     gl_FragData[0]=vec4(color,1);
+    // colortex7 is readable by gbuffers_water; colortex0..3 are fullscreen-only in Iris.
     gl_FragData[1]=vec4(color,1);
 }

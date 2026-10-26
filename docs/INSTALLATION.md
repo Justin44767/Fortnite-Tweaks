@@ -25,6 +25,12 @@ Eine erfolgreiche Auswahl allein beweist nicht, dass alle Renderpasses laufen.
 
 ## Funktionstest bei unverändertem Bild
 
+Bei falsch gefärbtem Wasser zunächst die aktuelle ZIP **0.2.3 oder neuer** verwenden.
+Ältere Versionen lasen den Wasserhintergrund aus einem in Iris-Geometriepässen
+nicht gebundenen Puffer. Dadurch konnte das Wasser Farben der Blocktexturen anzeigen.
+Die alte Datei ersetzen und Minecraft neu starten; der NERO-Funktionstest sollte
+für normale Darstellung auf **Aus** stehen. Voxy wurde nicht als Fehlerursache bestätigt.
+
 Steht im Log `DispatchingDirectiveHolder.processDirective` zusammen mit
 `ArrayIndexOutOfBoundsException: Index 1 out of bounds for length 1`, die ZIP durch
 **Version 0.2.2 oder neuer** ersetzen. In älteren NERO-Ausgaben löst eine verkürzte
