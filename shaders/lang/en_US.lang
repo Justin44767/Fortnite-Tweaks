@@ -59,3 +59,7 @@ option.PBR.comment=Partial labPBR decoding; no parallax occlusion mapping.
 option.TAA.comment=Camera reprojection and history clipping; check moving objects for ghosting.
 option.DOF.comment=Focus follows the center of the image. Enabled in Cinematic Extreme.
 option.MOTION_BLUR.comment=Camera motion only; no per-object velocity buffer. Disabled by default.
+option.SATURATION.comment=Default 0.9 for more restrained colors. 1.0 gives full saturation.
+option.CONTRAST.comment=Default 0.95 for softer shadows and highlights. Black stays black.
+option.BLOOM_STRENGTH.comment=Default 0.08 for a subtle glow.
+option.SHARPENING.comment=Default 0.08 reduces harsh edges and sharpening halos.

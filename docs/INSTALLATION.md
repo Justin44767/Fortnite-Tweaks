@@ -23,6 +23,25 @@ Framebuffer-Meldungen prüfen. Versionen von Spiel, Iris, Sodium und GPU-Treiber
 zusammen mit dem betroffenen Programm und der vollständigen Fehlermeldung notieren.
 Eine erfolgreiche Auswahl allein beweist nicht, dass alle Renderpasses laufen.
 
+## Weichere Farben ab 0.2.4
+
+Die aktualisierte ZIP ersetzt die bisherige Datei. Minecraft anschließend neu
+starten. Die neue Standardabstimmung verwendet folgende Einstellungen:
+
+| Menü | Einstellung | Wert |
+|---|---|---|
+| Kamera und Nachbearbeitung | Farbprofil | Realistic |
+| Kamera und Nachbearbeitung | Sättigung | 0.9 |
+| Kamera und Nachbearbeitung | Kontrast | 0.95 |
+| Kamera und Nachbearbeitung | Bloom-Stärke | 0.08 |
+| Kamera und Nachbearbeitung | Schärfung | 0.08 |
+| Licht und Schatten | Umgebungsverdeckung | 0.55 |
+
+Iris kann zuvor selbst gespeicherte Werte behalten. In diesem Fall die oben
+genannten Regler anpassen und anwenden. Alternativ alle Shader-Einstellungen
+zurücksetzen und das gewünschte Qualitätsprofil erneut wählen. Die Farbwerte
+sind unabhängig von LOW/HIGH/ULTRA; das Qualitätsprofil stellt sie nicht zurück.
+
 ## Funktionstest bei unverändertem Bild
 
 Bei falsch gefärbtem Wasser zunächst die aktuelle ZIP **0.2.3 oder neuer** verwenden.

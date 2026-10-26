@@ -59,3 +59,7 @@ option.PBR.comment=Vereinfachte labPBR-Auswertung. Kein Parallax Occlusion Mappi
 option.TAA.comment=Kamerareprojektion mit History-Clipping. Bei bewegten Objekten auf Ghosting prüfen.
 option.DOF.comment=Fokus auf die Bildmitte. Standardmäßig aus, in Cinematic Extreme an.
 option.MOTION_BLUR.comment=Nur Kamerabewegung; keine Objektbewegungsvektoren. Standardmäßig aus.
+option.SATURATION.comment=Standard 0.9 für zurückhaltendere Farben. 1.0 entspricht voller Sättigung.
+option.CONTRAST.comment=Standard 0.95 für weichere Schatten und Lichter. Schwarz bleibt schwarz.
+option.BLOOM_STRENGTH.comment=Standard 0.08 für einen dezenten Lichtschein.
+option.SHARPENING.comment=Standard 0.08 reduziert harte Kanten und helle Schärfungssäume.

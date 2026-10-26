@@ -24,7 +24,7 @@
 | Belichtung | Globale Luminanz aus Mipmaps, 1×1-History mit zeitlicher Anpassung | Keine lokale Belichtungsanpassung |
 | Tiefenunschärfe | Fokus aus Bildmitte, tiefengeprüfte Disk-Abtastung | Vereinfachter Bokeh-Filter; Konturfehler möglich, standardmäßig aus |
 | Motion Blur | Reprojektion anhand der Kamerabewegung | Keine individuelle Objektbewegungsunschärfe; standardmäßig aus |
-| Farbe | Filmic-Tonemapping, Realistic/Cinematic/Vibrant/Natural/Dark Fantasy/Custom | Custom entspricht eigenen Kontrast-/Sättigungs-/Belichtungswerten |
+| Farbe | Filmic-Tonemapping, Kontrastkurve um Mittelgrau mit erhaltenem Schwarzpunkt, Realistic/Cinematic/Vibrant/Natural/Dark Fantasy/Custom | Standard: Sättigung 0,90 / Kontrast 0,95. Custom entspricht eigenen Kontrast-/Sättigungs-/Belichtungswerten |
 
 Die Verfahren sind in GLSL implementiert. Die technischen GPU-Prüfungen erfassen
 ausgewählte Eigenschaften; keine Zeile dieser Tabelle behauptet einen bestandenen

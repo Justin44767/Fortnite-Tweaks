@@ -59,7 +59,9 @@ void main() {
     color*=vec3(0.86,0.91,1.04); saturation*=0.78; contrast*=1.13;
 #endif
     color=mix(vec3(luminance(color)),color,saturation);
-    color=clamp((color-0.5)*contrast+0.5,0.0,1.0);
+    // Compress around middle gray without adding a gray floor to black pixels.
+    // Lower contrast opens shadows and lowers highlights while keeping black black.
+    color=clamp(0.18*pow(max(color,vec3(0))/0.18,vec3(contrast)),0.0,1.0);
     color=pow(color,vec3(1.0/2.2));
     color+=(hash13(vec3(gl_FragCoord.xy,float(frameCounter%8)))-0.5)/255.0;
 #if NERO_DIAGNOSTIC == 2

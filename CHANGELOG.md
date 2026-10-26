@@ -1,5 +1,18 @@
 # Changelog
 
+## 0.2.4 — 2026-10-26
+
+- Natürlichere Standardabstimmung: Sättigung 1,00 → 0,90 und Kontrast 1,00 → 0,95.
+- Kontrast wird um Mittelgrau mit einer Potenzkurve angepasst. Niedrigere Werte
+  öffnen Schatten und dämpfen Lichter, ohne Schwarz durch einen grauen Offset zu ersetzen.
+- Bloom 0,12 → 0,08, Schärfung 0,15 → 0,08 und Umgebungsverdeckung 0,70 → 0,55
+  für weniger Lichtschein, Schärfungssäume und dunkle Kontaktkanten.
+- Zielhelligkeit der automatischen Belichtung 0,25 → 0,22; feiner abgestufte
+  Farbregler und aktualisierte deutsche/englische Hilfetexte.
+- Vergleich anhand gerenderter HDR-Farbflächen: geringere Farbstärke, weichere
+  Schatten/Lichter, Schwarz erhalten und Helligkeitsverlauf monoton. Keine
+  Minecraft-Aufnahme; die visuelle Beurteilung im Spiel bleibt erforderlich.
+
 ## 0.2.3 — 2026-10-26
 
 - Szenenschnappschuss von `colortex3` nach `colortex7` verschoben. Iris bindet

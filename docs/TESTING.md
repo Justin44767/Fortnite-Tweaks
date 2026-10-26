@@ -61,6 +61,14 @@ Nachbearbeitung weitergegeben. Der bisherige Fehler lässt diese Prüfungen sche
 Das ist ein gezielter technischer Nachweis; er bestätigt nicht, dass damit alle
 vom Nutzer gemeldeten Grafikprobleme im Spiel verschwinden.
 
+Für die Farbabstimmung von 0.2.4 wurden zusätzlich die alte und neue Ausgabe
+derselben synthetischen HDR-Farbflächen über den finalen Shader gerendert.
+Bei identischer Belichtung und ohne Bloom bleiben neutrale Graustufen monoton
+und Schwarz innerhalb der Dithering-Toleranz schwarz. Dunkles Grau wird leicht
+angehoben, helles Grau abgesenkt und die Kanalspreizung der Grün-, Wasserblau-,
+Himmelsblau- und Warmlicht-Proben kleiner. Diese technische Vergleichsprüfung
+ist kein Minecraft-Bildvergleich und keine allgemeine Zusage visueller Qualität.
+
 ## Noch nicht ausgeführt
 
 Minecraft Java 26.3 mit Iris/Sodium wurde hier nicht gestartet. Es gibt keine

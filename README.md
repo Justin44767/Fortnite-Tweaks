@@ -13,7 +13,7 @@ Tag/Nacht-Himmel, Normal-/Specular-Mapping, SSAO und eine begrenzte indirekte
 Screen-Space-Beleuchtung. TAA, Bloom, Belichtungsanpassung, Farbprofile und optional
 Tiefenunschärfe sowie Kamerabewegungsunschärfe ergänzen die Pipeline.
 
-**Status: technische Testversion (0.2.3).** Die Shader werden in einem echten
+**Status: technische Testversion (0.2.4).** Die Shader werden in einem echten
 OpenGL-Kontext kompiliert und mit synthetischen Eingaben gerendert. Ein Lauf mit
 Minecraft/Iris, die Abnahme der sichtbaren Qualität und reale Leistungsmessungen
 stehen noch aus. Das ist kein Nachweis der visuellen Qualität von Complementary,
@@ -29,6 +29,12 @@ Das Shader-ZIP unverändert in `.minecraft/shaderpacks` legen und in Iris auswä
 Es enthält `shaders/` direkt auf ZIP-Ebene. Eine eigene Mod-JAR ist nicht nötig.
 Iris, Sodium und Minecraft werden nicht mitgeliefert.
 Die vollständige [Installationsanleitung](docs/INSTALLATION.md) nennt die Schritte.
+
+**Natürlichere Abstimmung ab 0.2.4:** Sättigung 0,90, Kontrast 0,95, dezenteres Bloom
+und weniger Schärfung. Schatten werden sanfter, ohne Schwarz grau anzuheben;
+helle Flächen und die automatische Belichtung fallen zurückhaltender aus.
+Falls Iris eigene Werte aus einer älteren Version gespeichert hat, die
+[neuen Farbwerte](docs/INSTALLATION.md#weichere-farben-ab-024) übernehmen.
 
 Sieht das Bild trotz aktiviertem NERO wie Vanilla aus, unter Shader-Einstellungen
 **NERO-Funktionstest → Rahmen** einschalten und anwenden. Links muss ein türkiser,
