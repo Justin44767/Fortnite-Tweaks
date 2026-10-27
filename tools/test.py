@@ -28,6 +28,10 @@ class PlaceTests(unittest.TestCase):
   sources=[i.find("Properties/ProtectedString[@name='Source']").text for i in self.items if i.get('class') in ['Script','LocalScript','ModuleScript']]
   files=list((ROOT/'src').rglob('*.luau'));self.assertEqual(len(sources),len(files))
   for f in files:self.assertIn(f.read_text(),sources,str(f))
+ def test_no_opaque_starter_loading_screen(self):
+  starter=self.names['StarterGui'][0]
+  self.assertFalse(any(i.get('class')=='ScreenGui' and i.find("Properties/string[@name='Name']").text=='Loading' for i in starter.iter('Item')))
+  self.assertNotIn('LoadingLabel',self.names)
  def test_catalog_handlers_assets_and_products_resolve(self):
   catalog=(ROOT/'src/shared/Catalog.luau').read_text()
   events=(ROOT/'src/server/ChaosEvents.luau').read_text();games=(ROOT/'src/server/Minigames.luau').read_text()
@@ -84,7 +88,7 @@ def main():
  files=sorted(str(p) for p in (ROOT/'src').rglob('*.luau'))
  subprocess.run([args.compiler,'--null',*files],check=True)
  subprocess.run([args.luau,'tests/rules.spec.luau'],cwd=ROOT,check=True)
- sources={"DataService":(ROOT/'src/server/DataService.luau').read_text(),"Scope":(ROOT/'src/shared/Scope.luau').read_text()}
+ sources={"DataService":(ROOT/'src/server/DataService.luau').read_text(),"Scope":(ROOT/'src/shared/Scope.luau').read_text(),"InterfaceRoot":(ROOT/'src/client/InterfaceRoot.luau').read_text()}
  # Keep relative require paths in the tests directory; cleanup even after failures.
  generated=ROOT/'tests/.runtime-generated.luau'
  try:

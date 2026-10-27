@@ -21,6 +21,7 @@
 | `server/Cosmetics` | Ausrüstung, verschweißte Modelle, Trails und Aura |
 | `server/Party` | Serverinterne Einladungen und Gruppen |
 | `client/Main` | Responsive Menüs, Touch-/Gamepad-Aktionen, Vorschauen, HUD |
+| `client/InterfaceRoot` | Oberfläche früh starten, alte Ladebildschirme auch bei später Replikation/Respawn entfernen |
 | `client/Effects` | Lokale Partikel, Sounds, Pet-Folgen, Posen und Kameraeffekte |
 
 Ein Spieler ist erst nach erfolgreichem Profil-Load für Runden zugelassen. Späte Beitritte warten bis zur nächsten Runde; Disconnects entfernen Teilnehmer. Die Runde besitzt alle temporären Maps und Verbindungen über einen Scope. Cleanup läuft in umgekehrter Reihenfolge, sodass Event-Modifikationen vor den ursprünglichen Charakterwerten zurückgesetzt werden. Abgebrochene oder fehlgeschlagene Runden vergeben keine Siegbelohnungen.

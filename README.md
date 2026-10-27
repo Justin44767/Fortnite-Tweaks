@@ -30,7 +30,7 @@ Die Datei enthält eine gebaute Lobby, alle 15 Arena-Modelle, 18 eigene Requisit
 
 ## Prüfstatus und Grenzen
 
-Version **1.0.0**, 27. Oktober 2026. Luau-Kompilierung, isolierte Spiel-/Wirtschaftsregeln, Speicherfehler mit Test-Doubles und die XML-/Paketstruktur werden mit `tools/test.py` geprüft. Der genaue Stand steht in [docs/TESTING.md](docs/TESTING.md).
+Version **1.0.1**, 27. Oktober 2026. Der alte Vollbild-Ladebildschirm wurde entfernt, damit er die Spielwelt nicht verdeckt. Luau-Kompilierung, isolierte Spiel-/Wirtschaftsregeln, Speicherfehler und die Reihenfolge beim Laden der Oberfläche mit Test-Doubles sowie die XML-/Paketstruktur werden mit `tools/test.py` geprüft. Der genaue Stand steht in [docs/TESTING.md](docs/TESTING.md).
 
 **Roblox Studio ist in der Cloud-Umgebung nicht verfügbar. Das Öffnen in Studio, echte Roblox-Physik, zwei echte Testclients, mobile Geräte und Live-DataStores wurden hier nicht getestet.** Das Projekt ist eine vollständige importierbare Implementierung, noch keine in Roblox abgenommene Veröffentlichung. Fehler aus dem Studio-Output sind für die letzte Integrationsprüfung maßgeblich.
 

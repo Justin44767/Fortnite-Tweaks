@@ -1,5 +1,5 @@
 return {
-    Version = "1.0.0",
+    Version = "1.0.1",
     Title = "NERO CHAOS PARTY",
     Tagline = "ALLES GEHT SCHIEF!",
     MaxPlayers = 16,

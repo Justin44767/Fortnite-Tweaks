@@ -5,22 +5,50 @@ local Rules=require("../src/shared/Rules")
 local records={} local failWrites=false local writes=0
 local services={}
 local objectMethods={}
+local function signal()
+    local connections={}
+    return {
+        Connect=function(_,callback)
+            local connection={Connected=true,Callback=callback}
+            function connection:Disconnect() self.Connected=false end
+            table.insert(connections,connection) return connection
+        end,
+        Fire=function(_,...)
+            for _,connection in table.clone(connections) do
+                if connection.Connected then connection.Callback(...) end
+            end
+        end,
+        Count=function()
+            local n=0 for _,connection in connections do if connection.Connected then n+=1 end end return n
+        end,
+    }
+end
 local mt={__index=function(o,k)
-    return objectMethods[k] or o._props[k] or o._children[k]
+    if objectMethods[k] then return objectMethods[k] end
+    if o._props[k]~=nil then return o._props[k] end
+    return o._children[k]
 end,__newindex=function(o,k,v)
     if k=="Parent" then
         local old=o._props.Parent if old and old._children then old._children[o.Name]=nil end
         if v and v._children then v._children[o.Name]=o end
+        o._props[k]=v
+        if v and v.ChildAdded then v.ChildAdded:Fire(o) end
+        return
     end
     o._props[k]=v
 end}
 local function object(class,name)
-    return setmetatable({_props={ClassName=class,Name=name or class},_children={},_type="Instance"},mt)
+    return setmetatable({_props={ClassName=class,Name=name or class,ChildAdded=signal(),Destroying=signal()},_children={},_type="Instance"},mt)
 end
 function objectMethods:FindFirstChild(name) return self._children[name] end
+function objectMethods:GetChildren() local list={} for _,child in self._children do table.insert(list,child) end return list end
+function objectMethods:IsA(class) return self.ClassName==class end
 function objectMethods:SetAttribute(key,value) self._props[key]=value end
 function objectMethods:Kick(message) self.Kicked=message self.Parent=nil end
-function objectMethods:Destroy() self.Parent=nil self.Destroyed=true end
+function objectMethods:Destroy()
+    if self.Destroyed then return end
+    self.Destroying:Fire() self.Parent=nil self.Destroyed=true
+end
 function objectMethods:WaitForChild(name) return assert(self._children[name],name) end
 local function player(id) local p=object("Player","P"..id) p.UserId=id p.Parent=object("Players") return p end
 services.Players={}
@@ -41,6 +69,7 @@ local config={DataStoreName="Test",StudioPersistence=false,SessionLeaseSeconds=1
 local delayed={}
 local fakeTask={spawn=function() end,wait=function() return 0 end,delay=function(_,fn) table.insert(delayed,fn) end}
 local env=setmetatable({game={GetService=function(_,name) return services[name] end},Instance={new=object},task=fakeTask,
+    Enum={ZIndexBehavior={Sibling="Sibling"}},
     require=function(name) if name=="Rules" then return Rules elseif name=="Config" then return config else error(name) end end,
     typeof=function(v) return if type(v)=="table" and v._type then v._type else typeof(v) end,
     warn=function() end},{__index=getfenv()})
@@ -99,5 +128,35 @@ test("delayed event callbacks are cancelled after cleanup",function()
     table.clear(delayed) local s=Scope.new() local called=false s:Delay(1,function() called=true end) s:Clean()
     for _,callback in delayed do callback() end assert(not called)
     local o=object("Part") s:Add(o) assert(o.Destroyed)
+end)
+local InterfaceRoot=loadModule("InterfaceRoot")
+test("interface removes an existing loading screen without removing other UI",function()
+    local container=object("PlayerGui")
+    local loading=object("ScreenGui","Loading") loading.Enabled=true loading.Parent=container
+    local unrelated=object("ScreenGui","OtherInterface") unrelated.Parent=container
+    local root=InterfaceRoot.Create(container)
+    assert(loading.Destroyed and loading.Enabled==false)
+    assert(root.Parent==container and root.ResetOnSpawn==false and unrelated.Parent==container)
+end)
+test("late StarterGui replication cannot cover the ready interface",function()
+    local container=object("PlayerGui") local root=InterfaceRoot.Create(container)
+    local loading=object("ScreenGui","Loading") loading.Enabled=true loading.Parent=container
+    assert(loading.Destroyed and loading.Parent==nil and loading.Enabled==false)
+    assert(root.Parent==container and container:FindFirstChild("Loading")==nil)
+end)
+test("respawn loading copies are removed while HUD remains; non-GUI names are preserved",function()
+    local container=object("PlayerGui") local root=InterfaceRoot.Create(container)
+    for _=1,3 do
+        local loading=object("ScreenGui","Loading") loading.Parent=container assert(loading.Destroyed)
+        assert(root.Parent==container and not root.Destroyed)
+    end
+    local frame=object("Frame","Loading") frame.Parent=container assert(not frame.Destroyed)
+end)
+test("interface replacement and destruction release old listeners",function()
+    local container=object("PlayerGui") local first=InterfaceRoot.Create(container)
+    assert(container.ChildAdded:Count()==1)
+    local second=InterfaceRoot.Create(container)
+    assert(first.Destroyed and second.Parent==container and container.ChildAdded:Count()==1)
+    second:Destroy() assert(container.ChildAdded:Count()==0)
 end)
 print("Runtime double tests:",count)

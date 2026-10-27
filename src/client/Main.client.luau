@@ -7,6 +7,8 @@ local GuiService=game:GetService("GuiService")
 local Social=game:GetService("SocialService")
 local Run=game:GetService("RunService")
 local player=Players.LocalPlayer
+local InterfaceRoot=require(script.Parent:WaitForChild("InterfaceRoot"))
+local gui=InterfaceRoot.Create(player:WaitForChild("PlayerGui"))
 local Shared=RS:WaitForChild("Shared")
 local Catalog=require(Shared.Catalog)
 local Rules=require(Shared.Rules)
@@ -18,8 +20,6 @@ local profile=Rules.NewProfile() local sessionOnly=false local isOwner=false loc
 local round={} local party={Members={}} local invitation=nil local current=nil local selected=nil local shopCategory="Alle"
 local voteButtons={} local noticeSerial=0 local musicActive=false
 local palette={Background=Color3.fromRGB(22,25,46),Panel=Color3.fromRGB(36,41,68),Card=Color3.fromRGB(53,59,90),Accent=Color3.fromRGB(122,101,255),Pink=Color3.fromRGB(255,112,170),Gold=Color3.fromRGB(255,218,94),Mint=Color3.fromRGB(100,235,195),Text=Color3.fromRGB(246,247,255),Muted=Color3.fromRGB(190,197,220)}
-local gui=Instance.new("ScreenGui") gui.Name="NeroInterface" gui.ResetOnSpawn=false gui.ZIndexBehavior=Enum.ZIndexBehavior.Sibling gui.DisplayOrder=10 gui.Parent=player:WaitForChild("PlayerGui")
-local loading=player.PlayerGui:FindFirstChild("Loading") if loading then loading:Destroy() end
 local function make(class,props,parent)
     local obj=Instance.new(class) for k,v in props do obj[k]=v end obj.Parent=parent return obj
 end

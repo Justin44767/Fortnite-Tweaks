@@ -6,10 +6,10 @@
 
 Die Prüfungen verwenden den offiziellen Luau-Compiler/Interpreter und Python. Sie ersetzen keinen Roblox-Studio-Test.
 
-- Syntax-/Bytecode-Kompilierung aller 16 Luau-Dateien.
+- Syntax-/Bytecode-Kompilierung aller 17 Luau-Dateien.
 - 19 ausgeführte Regeltests: Profilstruktur, ungültige Zahlen, Käufe, Tagesfolgen, Glücksradverteilung, doppelte Belohnungen, XP-Schwellen, Meilensteine, Quests, Abstimmungen, Race-/Score-/Survival-Sieger, begrenzte Belege und längere Wirtschaftssimulation.
-- 9 ausgeführte Tests mit Dienst-Doubles: Profil speichern/laden, konkurrierende Sitzungssperre, abgelaufene Sperre, verlorene Sperre, beschädigtes Profil, Load-/Save-Ausfälle und Wiederholversuche sowie Scope-Aufräumen/Abbruch verzögerter Callbacks.
-- 8 Python-Prüfungen: vollständige Arenen/Spawns, eingebettete Original-Sources, Katalog-/Handler-/Asset-Verweise, interaktive Lobby, gültige Geometriezahlen, eindeutige XML-Eigenschaften/Referenzen, Audio und ZIP-Prüfsummen.
+- 13 ausgeführte Tests mit Dienst-Doubles: Profil speichern/laden, konkurrierende Sitzungssperre, abgelaufene Sperre, verlorene Sperre, beschädigtes Profil, Load-/Save-Ausfälle und Wiederholversuche, Scope-Aufräumen/Abbruch verzögerter Callbacks sowie frühe/späte Ladebildschirme, Respawn und Aufräumen der Oberfläche.
+- 9 Python-Prüfungen: vollständige Arenen/Spawns, eingebettete Original-Sources, Katalog-/Handler-/Asset-Verweise, interaktive Lobby, gültige Geometriezahlen, eindeutige XML-Eigenschaften/Referenzen, Audio, ZIP-Prüfsummen und Ausschluss des alten Vollbild-Ladebildschirms.
 - Optionaler Abgleich aller serialisierten Studio-Eigenschaften und Enum-Werte gegen den Roblox-API-Dump.
 - Reproduzierbarkeit: zwei Builds müssen dieselben SHA-256-Prüfsummen ergeben.
 
@@ -21,6 +21,7 @@ Diese Liste ist bewusst **offen**, keine vorgetäuschte Testbestätigung.
 
 - [ ] `.rbxlx` in aktuellem Roblox Studio öffnen; Output auf Fehler prüfen.
 - [ ] Play: Lobby sichtbar, HUD geladen, Eingaben funktionieren, Countdown startet.
+- [ ] Nach Beitritt und Respawn verdeckt kein dunkler Vollbild-Ladebildschirm die Welt; hinter geschlossenen Menüs bleibt die Welt sichtbar.
 - [ ] Server mit zwei echten Studio-Testclients: drei Optionen, getrennte Stimmen, Änderung einer Stimme, Entscheidung, beide werden teleportiert.
 - [ ] Jedes der 15 Minispiele über das Owner-Panel auswählen und mit zwei Clients bis zum korrekten Ergebnis spielen.
 - [ ] Plattformabstände, Ente-/Roboter-Wegsuche, Sumo-Rückstoß, Türen-Checkpoints und Ring-Erreichbarkeit in echter Physik prüfen.

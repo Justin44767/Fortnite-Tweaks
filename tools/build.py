@@ -269,8 +269,9 @@ def build():
  server=item('ServerScriptService','ServerScriptService');scripts(server,ROOT/'src/server')
  starter=item('StarterPlayer','StarterPlayer',CharacterWalkSpeed=16.0,CharacterJumpPower=50.0)
  clients=item('StarterPlayerScripts','StarterPlayerScripts',starter);scripts(clients,ROOT/'src/client')
- gui=item('StarterGui','StarterGui');screen=item('ScreenGui','Loading',gui,ResetOnSpawn=False)
- item('TextLabel','LoadingLabel',screen,Size=typed('UDim2',(1,0,1,0)),BackgroundColor3=rgb((21,24,45)),Text='NERO CHAOS PARTY\nParty wird vorbereitet …',TextColor3=rgb((255,255,255)),TextSize=32.0,Font=typed('token',19))
+ # UI is created by the client. An opaque StarterGui loading screen can arrive
+ # after client startup and cover the world indefinitely, so no template is shipped.
+ gui=item('StarterGui','StarterGui')
  light=item('Lighting','Lighting',Brightness=2.5,ClockTime=14.0,GlobalShadows=True,Ambient=rgb((120,115,145)),OutdoorAmbient=rgb((150,150,170)))
  item('Atmosphere','PartyAtmosphere',light,Density=.18,Offset=.1,Color=rgb((205,225,255)),Decay=rgb((160,165,200)),Glare=.1,Haze=.8)
  sound=item('SoundService','SoundService',RespectFilteringEnabled=True)
