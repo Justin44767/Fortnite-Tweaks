@@ -49,6 +49,10 @@ class PlaceTests(unittest.TestCase):
    cf=i.find("Properties/CoordinateFrame[@name='CFrame']")
    self.assertTrue(all(math.isfinite(float(v.text)) for v in cf))
  def test_zip_and_checksums(self):
+  with zipfile.ZipFile(ROOT/'dist/NeroChaosParty-Download.zip') as z:
+   self.assertIsNone(z.testzip())
+   self.assertEqual(z.read('NeroChaosParty.rbxlx'),(ROOT/'dist/NeroChaosParty.rbxlx').read_bytes())
+   self.assertIn('START-HIER.txt',z.namelist())
   with zipfile.ZipFile(ROOT/'dist/NeroChaosParty-Source.zip') as z:
    self.assertIsNone(z.testzip())
    for p in (ROOT/'src').rglob('*.luau'):self.assertEqual(z.read(p.relative_to(ROOT).as_posix()),p.read_bytes())

@@ -278,6 +278,15 @@ def build():
  xml(roots,ROOT/'dist/NeroChaosParty.rbxlx')
  xml([lobby],ROOT/'assets/models/Lobby.rbxmx');xml([maps],ROOT/'assets/models/Maps.rbxmx');xml([assets],ROOT/'assets/models/Assets.rbxmx')
  audio()
+ # Browsers display raw .rbxlx as text. This ZIP downloads as a binary attachment.
+ with zipfile.ZipFile(ROOT/'dist/NeroChaosParty-Download.zip','w',compression=zipfile.ZIP_DEFLATED) as z:
+  for name,data in [
+   ('NeroChaosParty.rbxlx',(ROOT/'dist/NeroChaosParty.rbxlx').read_bytes()),
+   ('START-HIER.txt',('NERO CHAOS PARTY\n\n1. ZIP entpacken (Windows: Rechtsklick > Alle extrahieren).\n'
+    '2. Roblox Studio starten.\n3. File > Open from File waehlen.\n'
+    '4. Die entpackte NeroChaosParty.rbxlx auswaehlen.\n5. Play druecken.\n\n'
+    'Studio-Mehrspielertests stehen noch aus. Im Studio werden Daten standardmaessig nur fuer die Sitzung gespeichert.\n').encode('utf-8'))]:
+   info=zipfile.ZipInfo(name,date_time=(2026,10,27,0,0,0));info.compress_type=zipfile.ZIP_DEFLATED;z.writestr(info,data)
  with zipfile.ZipFile(ROOT/'dist/NeroChaosParty-Source.zip','w',compression=zipfile.ZIP_DEFLATED) as z:
   for folder in ['src','assets','docs','tools','tests']:
    for f in sorted((ROOT/folder).rglob('*')):

@@ -2,7 +2,7 @@
 
 ## Fertige Studio-Datei
 
-`dist/NeroChaosParty.rbxlx` vollständig herunterladen (auf GitHub **Download raw file**, nicht die HTML-Seite speichern). In Roblox Studio mit **File → Open from File** öffnen. Die Lobby ist bereits im Workspace sichtbar. Alle Arena-Vorlagen liegen in **ServerStorage → Maps**; Modelle für Pets und Requisiten in **ReplicatedStorage → Assets**.
+`dist/NeroChaosParty-Download.zip` herunterladen und entpacken (Windows: Rechtsklick → **Alle extrahieren**). Die darin enthaltene `NeroChaosParty.rbxlx` in Roblox Studio mit **File → Open from File** öffnen. Das ZIP verhindert, dass der Browser die Studio-Datei als Text anzeigt. Die Lobby ist bereits im Workspace sichtbar. Alle Arena-Vorlagen liegen in **ServerStorage → Maps**; Modelle für Pets und Requisiten in **ReplicatedStorage → Assets**.
 
 Mit **Play** startet das Spiel. Der erste Countdown beginnt, sobald ein Spieler samt Charakter und Profil bereit ist. Es folgen 15 Sekunden Pause, 12 Sekunden Abstimmung und das gewählte Spiel. Neue Spieler steigen in der nächsten Runde ein. AFK-Spieler setzen aus. Solo-Tests funktionieren; Hot Potato verwendet allein einen Kühlpunkt am rechten Bumper.
 

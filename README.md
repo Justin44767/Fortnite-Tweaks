@@ -4,11 +4,11 @@
 
 Roblox-Partyspiel für 2–16 Spieler, mit Solo-Unterstützung. Dieses Repository enthält jetzt das Roblox-Projekt; es ersetzt NERO REALISM ULTRA vollständig.
 
-**[Studio-Datei herunterladen](https://github.com/Justin44767/Fortnite-Tweaks/raw/refs/heads/main/dist/NeroChaosParty.rbxlx)** · **[Quellcode + Modelle + Audio als ZIP](https://github.com/Justin44767/Fortnite-Tweaks/raw/refs/heads/main/dist/NeroChaosParty-Source.zip)**
+**[Spiel herunterladen – ZIP mit Studio-Datei](https://github.com/Justin44767/Fortnite-Tweaks/raw/refs/heads/main/dist/NeroChaosParty-Download.zip)** · **[Quellcode + Modelle + Audio als ZIP](https://github.com/Justin44767/Fortnite-Tweaks/raw/refs/heads/main/dist/NeroChaosParty-Source.zip)**
 
 ## Starten
 
-1. `dist/NeroChaosParty.rbxlx` herunterladen und in **Roblox Studio → File → Open from File** öffnen.
+1. `NeroChaosParty-Download.zip` über den Link oben herunterladen und entpacken. Die enthaltene `NeroChaosParty.rbxlx` in **Roblox Studio → File → Open from File** öffnen.
 2. **Play** startet die Lobby und die automatische Rundenfolge. Bei Studio-Tests sind Daten standardmäßig nur für die Sitzung gültig; das HUD zeigt `STUDIO`.
 3. Für Multiplayer unter **Test → Server & Clients** mindestens **2 Clients** starten. Ein einzelner Spieler kann ebenfalls spielen.
 4. Zum Veröffentlichen **File → Publish to Roblox** verwenden. In den Experience-Einstellungen 16 Spieler pro Server und vorzugsweise R15 einstellen. Die Veröffentlichung auf Roblox muss über dein Roblox-Konto erfolgen.
