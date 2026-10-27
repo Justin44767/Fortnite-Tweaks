@@ -1,0 +1,23 @@
+{
+  "name": "NeroChaosParty",
+  "tree": {
+    "$className": "DataModel",
+    "Workspace": {
+      "$properties": {"Gravity": 196.2, "StreamingEnabled": false},
+      "Lobby": {"$path": "assets/models/Lobby.rbxmx"}
+    },
+    "ReplicatedStorage": {
+      "Shared": {"$path": "src/shared"},
+      "Assets": {"$path": "assets/models/Assets.rbxmx"}
+    },
+    "ServerStorage": {"Maps": {"$path": "assets/models/Maps.rbxmx"}},
+    "ServerScriptService": {"$path": "src/server"},
+    "StarterPlayer": {
+      "$properties": {"CharacterWalkSpeed": 16, "CharacterJumpPower": 50},
+      "StarterPlayerScripts": {"$path": "src/client"}
+    },
+    "StarterGui": {"$className": "StarterGui"},
+    "Lighting": {"$properties": {"Brightness": 2.5, "ClockTime": 14, "GlobalShadows": true}},
+    "SoundService": {"$properties": {"RespectFilteringEnabled": true}}
+  }
+}

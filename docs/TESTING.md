@@ -1,126 +1,43 @@
-# Teststatus und Testwelt
+# Teststatus — 27. Oktober 2026
 
-## Bereits ausgeführt
+## Cloud-Prüfungen
 
-In der Linux-Cloud: GLSL-Kompilierung und Programmlinking in einem echten Mesa
-OpenGL-4.5-Compatibility-Kontext (llvmpipe). Fünf Qualitätsprofile in drei Dimensionen
-und zusätzliche Schaltervarianten werden geprüft. `tools/validate.py` prüft
-außerdem gerenderte Pixel für Tag/Nacht, Wetter, Dimensionen, Wasseranimation,
-Schatten einschließlich Farbe, Wolken, SSR-Treffer/Ausfall, GBuffer-Beleuchtung,
-PBR, Unterwasserabsorption, TAA-Initialisierung/Reset, Bloom, Belichtung und Ausgabe.
-Seit 0.2.1 werden außerdem der sichtbare Diagnoserahmen und das direkte Auslesen
-der Oberflächennormalen in allen drei Dimensionen gerendert und geprüft.
+`python3 tools/test.py --luau /path/to/luau --compiler /path/to/luau-compile [--api-dump /path/to/API-Dump.json]`
 
-Der aktuelle maschinenlesbare Bericht entsteht in `build/validation/validation.json`.
-`synthetic-pipeline.png` dort ist ein kleiner technischer Test mit künstlichen
-Tiefen-/Farbtexturen, **kein Minecraft-Screenshot** und kein Qualitätsvergleich.
-Die Pakettests prüfen ZIP-Struktur, Quellgleichheit, Prüfsummen, Profile, Referenzen,
-Reproduzierbarkeit und das gespeicherte Testweltformat.
+Die Prüfungen verwenden den offiziellen Luau-Compiler/Interpreter und Python. Sie ersetzen keinen Roblox-Studio-Test.
 
-Zusätzlicher einmaliger Cloud-Check für 0.2.1: Die originale JCPP-Vorverarbeitung
-und GLSL-Transformation aus Iris-Commit
-`671a5c87747d33983d7ed659461a64f46dfcb1f0` (26.3) wurden in einem separaten
-Java-Testtreiber ausgeführt. Die Includes wurden zuvor mit `tools/validate.py`
-aufgelöst. Minecraft-Geräte-/Konfigurationszugriffe und Vertexformat-Metadaten
-wurden durch kontrollierte Testwerte ersetzt; die Transformationsmethoden selbst
-blieben unverändert. Verwendet wurden JCPP 1.4.14 und glsl-transformer 3.0.0-pre3.
+- Syntax-/Bytecode-Kompilierung aller 16 Luau-Dateien.
+- 19 ausgeführte Regeltests: Profilstruktur, ungültige Zahlen, Käufe, Tagesfolgen, Glücksradverteilung, doppelte Belohnungen, XP-Schwellen, Meilensteine, Quests, Abstimmungen, Race-/Score-/Survival-Sieger, begrenzte Belege und längere Wirtschaftssimulation.
+- 9 ausgeführte Tests mit Dienst-Doubles: Profil speichern/laden, konkurrierende Sitzungssperre, abgelaufene Sperre, verlorene Sperre, beschädigtes Profil, Load-/Save-Ausfälle und Wiederholversuche sowie Scope-Aufräumen/Abbruch verzögerter Callbacks.
+- 8 Python-Prüfungen: vollständige Arenen/Spawns, eingebettete Original-Sources, Katalog-/Handler-/Asset-Verweise, interaktive Lobby, gültige Geometriezahlen, eindeutige XML-Eigenschaften/Referenzen, Audio und ZIP-Prüfsummen.
+- Optionaler Abgleich aller serialisierten Studio-Eigenschaften und Enum-Werte gegen den Roblox-API-Dump.
+- Reproduzierbarkeit: zwei Builds müssen dieselben SHA-256-Prüfsummen ergeben.
 
-Geprüft wurden das Standardprofil in allen drei Dimensionen, Geometrie über den
-Vanilla-Transformationspfad, Terrain/Wasser/Schatten zusätzlich über den Sodium-Pfad,
-alle Nachbearbeitungspässe sowie beide Diagnosemodi. Für beide Clip-Tiefenbereiche
-wurden die erzeugten Programme anschließend mit Mesa kompiliert und verknüpft.
-Dieser Check prüft **weder den vollständigen Iris-Paketlader noch eine laufende
-Minecraft-Renderpipeline** und ist nicht Teil des Python-CI-Workflows.
+Der Speicher-Test verwendet einen kontrollierten DataStore-Ersatz. Er bestätigt Codepfade für Sperren/Fehler, **keine** Verbindung zum Roblox-Backend. XML-Prüfungen bestätigen die Lieferstruktur, **keinen** erfolgreichen Studio-Import. Die Cloud-Umgebung hat keine Roblox-Laufzeit.
 
-Für 0.2.2 wurde zusätzlich der separate Direktivenpfad geprüft: Die unveränderten
-Iris-Klassen `ConstDirectiveParser` und `DispatchingDirectiveHolder` desselben
-Quellstands reproduzieren mit der alten `colortex2ClearColor=vec4(0.0)`-Direktive
-exakt den gemeldeten `ArrayIndexOutOfBoundsException` an Zeile 232. Mit vier
-expliziten Nullwerten werden die ClearColor-Direktiven erfolgreich eingelesen;
-der resultierende RGBA-Wert bleibt `(0, 0, 0, 0)`. Der neue Python-Pakettest schlägt
-ebenfalls mit der alten Fassung fehl und schützt diesen Vertrag im CI-Workflow.
-Dieser Ladefehler lag außerhalb der früheren GLSL-/Transformationsprüfungen.
-Nach der Korrektur wurden 420 Fragmentquellen (alle Profile, Dimensionen und
-Wurzel-Einstiegspunkte) mit insgesamt 560 ClearColor-Direktiven erfolgreich
-vorverarbeitet und durch den originalen Iris-Direktivenparser verarbeitet.
+## Noch nicht durchgeführt: verbindliche Studio-Abnahme
 
-## Texturbindung seit 0.2.3
+Diese Liste ist bewusst **offen**, keine vorgetäuschte Testbestätigung.
 
-Der Wasserpass las bis 0.2.2 `colortex3`, obwohl Iris diesen Sampler in
-Geometriepässen nicht bindet. Die früheren Tests hatten die Textur ausdrücklich
-gebunden und diese Einschränkung damit übergangen. Ein GPU-Test mit der tatsächlichen
-Bindungsbeschränkung reproduzierte den Fehler: Nur die Blocktextur von Pink nach Grün
-zu wechseln veränderte die Wasserfarbe stark, obwohl der Hintergrund identisch blieb.
-Mit dem nun durchgehend verwendeten `colortex7` beträgt diese Bilddifferenz null.
-Ein separat geänderter Szenenhintergrund beeinflusst das Wasser weiterhin.
+- [ ] `.rbxlx` in aktuellem Roblox Studio öffnen; Output auf Fehler prüfen.
+- [ ] Play: Lobby sichtbar, HUD geladen, Eingaben funktionieren, Countdown startet.
+- [ ] Server mit zwei echten Studio-Testclients: drei Optionen, getrennte Stimmen, Änderung einer Stimme, Entscheidung, beide werden teleportiert.
+- [ ] Jedes der 15 Minispiele über das Owner-Panel auswählen und mit zwei Clients bis zum korrekten Ergebnis spielen.
+- [ ] Plattformabstände, Ente-/Roboter-Wegsuche, Sumo-Rückstoß, Türen-Checkpoints und Ring-Erreichbarkeit in echter Physik prüfen.
+- [ ] Alle 25 Events auslösen; nach Event-/Rundenende Gravitation, Größe, Geschwindigkeit, Kamera, Steuerung und Sichtbarkeit prüfen.
+- [ ] Tod, Respawn, Disconnect, Beitritt mitten in einer Runde, AFK, Rundenabbruch und gleichzeitig erreichte Ziele prüfen.
+- [ ] R6/R15-Ragdoll: automatisches Aufstehen, kein hängenbleibender Charakter, normale Steuerung nach Ende.
+- [ ] Coins/XP/Wins korrekt; Siege, Quests und Tagesclaims mehrfach anfordern und auf doppelte Belohnungen prüfen.
+- [ ] Studio-Persistenz aktivieren: kaufen, ausrüsten, verlassen, Server neu starten, Coins/Inventar/Settings/Claims wiederhergestellt.
+- [ ] Zwei getrennte Server mit gleicher Test-UserId: aktive Sperre verhindert parallelen Profilbesitz; alte Daten nicht überschrieben.
+- [ ] Globale Leaderboards nach erfolgreichem Save und Update-Intervall prüfen.
+- [ ] Shop, Vorschau, alle 9 Pets/Favoriten, alle Cosmetics und 10 Emotes auf beiden Clients sichtbar.
+- [ ] Alle 10 Lobby-Items verwenden; Minispiele erlauben keine Lobby-Items.
+- [ ] Touch-Emulator in Hoch-/Querformat: Menü scrollen, Shop bedienen, springen, Item und Schubs; anschließend echtes Smartphone testen.
+- [ ] Gamepad-Navigation und Standardbewegung testen.
+- [ ] Freunde einladen, Gruppen beitreten/verlassen, privaten Server starten.
+- [ ] Normaler Spieler kann keine Owner-Aktionen ausführen; ungültige Remote-Namen/IDs/Beträge und schnelle Requests verwerfen.
+- [ ] Eigene Audio-Dateien hochladen, Berechtigungen setzen und jeden Sound im veröffentlichten Spiel prüfen.
+- [ ] 16 Spieler bzw. entsprechender Studio-Lasttest: Frametimes, Speicher, Netzwerk, wiederholte Runden und Cleanup messen.
 
-`tools/validate.py` prüft jetzt alle aktiven Geometrie-Sampler gegen die Iris-Regel
-und verlangt für jeden aktiven Sampler eine explizite Testbindung. Die Ausgabe
-des Deferred-Passes wird anhand seiner `DRAWBUFFERS`-Direktive an Wasser und
-Nachbearbeitung weitergegeben. Der bisherige Fehler lässt diese Prüfungen scheitern.
-Das ist ein gezielter technischer Nachweis; er bestätigt nicht, dass damit alle
-vom Nutzer gemeldeten Grafikprobleme im Spiel verschwinden.
-
-Für die Farbabstimmung von 0.2.4 wurden zusätzlich die alte und neue Ausgabe
-derselben synthetischen HDR-Farbflächen über den finalen Shader gerendert.
-Bei identischer Belichtung und ohne Bloom bleiben neutrale Graustufen monoton
-und Schwarz innerhalb der Dithering-Toleranz schwarz. Dunkles Grau wird leicht
-angehoben, helles Grau abgesenkt und die Kanalspreizung der Grün-, Wasserblau-,
-Himmelsblau- und Warmlicht-Proben kleiner. Diese technische Vergleichsprüfung
-ist kein Minecraft-Bildvergleich und keine allgemeine Zusage visueller Qualität.
-
-## Noch nicht ausgeführt
-
-Minecraft Java 26.3 mit Iris/Sodium wurde hier nicht gestartet. Es gibt keine
-fertige Spielinstallation in dieser Umgebung; Mojang-/Modrinth-Downloadversuche
-lieferten HTTP 403. Ein Nutzerlog bestätigt den oben beschriebenen Ladeabbruch
-und Iris' Rückfall auf normales Rendering. Ein erfolgreicher Spielstart mit der
-korrigierten Fassung, ein Bildvergleich mit Vanilla, eine echte GPU-FPS-Messung
-und ein Test der erzeugten Welt im Spiel sind noch nicht bestätigt.
-Erfolgreiche technische Tests ersetzen diese Abnahme nicht.
-
-## Neue Testwelt
-
-1. `Nero-Test-World-26.3.zip` entpacken, sodass der Ordner `Nero-Test-World` direkt
-   unter `saves/` der Minecraft-26.3-Instanz liegt.
-2. Diese **neue** kreative Testwelt öffnen. Sie enthält `level.dat` und ein Datapack;
-   Minecraft erzeugt die Landschaft beim ersten Öffnen. Der Seed ist `2026012111`.
-3. Das Datapack lädt die benötigten Chunks und baut nach zwei Sekunden ein Becken
-   mit verschiedenen Wassertiefen, Bäume, Gras, einen Steinberg mit Schnee,
-   Fackeln/Laternen, farbiges Glas sowie Metallproben. Es versetzt Spieler an den
-   ersten Kamerapunkt. Der Bereich um X/Z 0 wird dabei absichtlich neu gebaut.
-4. Falls die Szene noch nicht aufgebaut ist, `/reload` und danach bei geladenen
-   Chunks `/function nero_test:build` verwenden. Fehlermeldungen protokollieren.
-
-Das separat beigelegte Datapack `Nero-Test-Scene-26.3.zip` ist eine Alternative
-für eine **frisch erstellte Testwelt**. Es darf nicht ungeprüft in eine bestehende
-Spielwelt eingesetzt werden: Es ersetzt Blöcke von X/Z −40 bis 40, ungefähr Y 61–104.
-Die Testwelt wurde strukturell geprüft, aber noch nicht mit Minecraft geöffnet.
-
-## Vergleich mit identischer Kamera
-
-Für beide Aufnahmen dieselbe Auflösung, FOV (z. B. 70), Sichtweite, Ressourcenpakete
-und Kamera verwenden. Kamera nicht bewegen; erst ohne Shader, dann mit NERO HIGH
-aufnehmen. Nach Umschalten etwa fünf Sekunden für die Belichtungs-/TAA-History warten.
-Die Tageszeit vor beiden Bildern mit derselben Funktion setzen.
-
-| Prüfung | Befehl / Vorgehen | Erwartete sichtbare Änderung |
-|---|---|---|
-| Wasser | `/function nero_test:camera_water`, `nero_test:noon` | Wellen, Fresnel, Spiegelung, tiefenabhängige Absorption |
-| Wald | `/function nero_test:camera_forest`, `nero_test:sunset` | bewegte Blätter und Schatten, warmer Himmel, Lichtstrahlen |
-| Materialien | `/function nero_test:camera_materials` | verschieden raue/metallische Oberflächen, Glastransmission |
-| Nacht | `/function nero_test:night` | dunklerer Himmel, Sterne, Mondlicht und warmes Blocklicht |
-| Regen/Gewitter | `/function nero_test:rain` / `nero_test:storm` | dichtere Wolken, nasse Flächen, Regennebel |
-| Unterwasser | ins Becken fliegen | Wasserabsorption, Caustics-Näherung, leichte Verzerrung |
-| Nether | `/function nero_test:nether` | rote Atmosphäre, Lava/Emission; sicher im Kreativmodus fliegen |
-| End | `/function nero_test:end` | eigener kosmischer Himmel und violette Atmosphäre |
-| Rückkehr | `/function nero_test:overworld` | Ausgangsszene wieder sichtbar |
-
-Jeder Kurzname in der Tabelle ist eine Funktion und wird mit `/function` aufgerufen.
-Zusätzlich alle fünf Profile laden, TAA bei Bewegung prüfen, DOF/Motion Blur
-einschalten, Menütexte kontrollieren und bei Wasser sowie farbigem Glas auf
-Sortierfehler achten. Helle/schwarze Flächen, Ghosting, verschwindendes Wasser und
-Shaderfehler gelten als Fehler, nicht als bestandene Tests.
-
-`logs/latest.log`, GPU/Treiber, Iris-/Sodium-Version, Profil und Screenshotpaare
-aufbewahren. Die Version erst nach dieser Abnahme als ingame getestet bezeichnen.
+Bei Fehlern: Minispiel/Event, Anzahl Clients, Avatar-Typ und vollständigen Studio-Output notieren. Es gibt keine garantierte Framerate oder Garantie gegen Plattformausfälle.

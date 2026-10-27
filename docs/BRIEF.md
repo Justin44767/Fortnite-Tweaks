@@ -1,716 +1,972 @@
-# NERO REALISM ULTRA – ULTIMATE PHOTOREALISTIC MINECRAFT SHADER
-## Minecraft 1.21.11 • Iris Shaders • Ultra Realistic Graphics • Cinematic Lighting
+# NERO CHAOS PARTY – ALLES GEHT SCHIEF!
+## ULTIMATE FUNNY ROBLOX MULTIPLAYER GAME
+### Roblox Studio • Lustige Minispiele • Ragdoll • Verrückte Events • Freunde • Coins • Pets
 
 # HAUPTAUFGABE
 
-Entwickle einen vollständig funktionsfähigen, extrem realistischen Minecraft-Shader namens:
+Erstelle ein vollständig spielbares, hochwertiges Roblox-Multiplayer-Spiel namens:
 
-**NERO REALISM ULTRA**
+**NERO CHAOS PARTY – ALLES GEHT SCHIEF!**
 
-Der Shader soll Minecraft optisch in eine beeindruckende, nahezu fotorealistische Welt verwandeln.
+Das Spiel soll extrem lustig, chaotisch, bunt und abwechslungsreich sein.
 
-Orientiere dich an der visuellen Qualität von:
+Spieler sollen gemeinsam mit Freunden verrückte Minispiele spielen und dabei völlig unerwartete Dinge erleben.
 
-- Complementary Unbound
-- Bliss Shaders
-- Photon Shaders
-- BSL Shaders
-- SEUS PTGI
+Der besondere Reiz des Spiels ist, dass jederzeit etwas Lustiges passieren kann.
 
-Entwickle dabei einen eigenständigen Shader mit eigenem GLSL-Code.
+Beispiele:
 
-Das Ergebnis soll deutlich realistischer als Vanilla Minecraft aussehen.
+- Riesige Bananen fallen vom Himmel.
+- Der Boden verschwindet.
+- Spieler werden plötzlich winzig.
+- Ein riesiger NPC verfolgt alle.
+- Spieler rutschen auf Bananenschalen aus.
+- Ein Tornado wirbelt alle herum.
+- Die Schwerkraft verändert sich.
+- Jeder wird plötzlich extrem schnell.
+- Spieler werden in Ragdolls verwandelt.
+- Die Arena beginnt sich zu drehen.
+- Zufällige Spieler bekommen einen riesigen Kopf.
+- Alle müssen vor einer gigantischen Ente fliehen.
 
-## WICHTIGSTE ANFORDERUNGEN
+Das Spiel muss vollständig in Roblox Studio entwickelt werden.
 
-- Minecraft Java 1.21.11
-- Iris Shaders
-- Sodium-kompatibel
-- Extrem realistische Beleuchtung
-- Dynamische Schatten
-- Realistisches Wasser
-- Spiegelungen
-- Volumetrische Wolken
-- Volumetrischer Nebel
-- Realistische Sonnenstrahlen
-- Globale Beleuchtung, soweit technisch umsetzbar
-- Realistische Tag-Nacht-Beleuchtung
-- PBR-Materialien
-- Ambient Occlusion
-- Realistische Himmel
-- Cinematic Color Grading
-- Depth of Field
-- Motion Blur optional
-- Bloom
-- TAA Anti-Aliasing
-- Unterschiedliche Grafikprofile
-- Fertige Shader-ZIP-Datei
+## PLATTFORMEN
 
-**WICHTIG: Der Shader muss sichtbare grafische Veränderungen bewirken. Keine Vanilla-Grafik mit lediglich veränderten Farben!**
+- PC
+- Android
+- iPhone
+- Tablet
+- Gamepad, soweit unterstützt
 
----
+## TECHNIK
 
-# 1. SHADER ENGINE
+- Roblox Studio
+- Luau
+- ServerScripts
+- LocalScripts
+- ModuleScripts
+- RemoteEvents
+- DataStoreService
+- TweenService
+- Physics
+- Moderne Roblox-APIs
 
-Entwickle einen echten GLSL-Shaderpack für die Iris-kompatible Minecraft-Shaderpipeline.
-
-Verwende die passenden Shaderpasses, darunter je nach unterstützter Pipeline:
-
-- Shadow Pass
-- GBuffer Passes
-- Composite Passes
-- Deferred Lighting
-- Final Pass
-- Temporal Processing
-- Depth Buffer Processing
-
-Implementiere eine echte Shaderpipeline und nicht nur eine Konfigurationsdatei.
-
-Prüfe die technischen Anforderungen der verwendeten Iris-Version.
-
-Keine leeren Shaderdateien.
-
-Keine reinen Platzhaltereffekte.
+Keine Fake-Buttons und keine leeren Spielmodi.
 
 ---
 
-# 2. ULTRA REALISTIC LIGHTING
+# 1. SPIELPRINZIP
 
-Implementiere ein hochwertiges Beleuchtungssystem.
+Erstelle ein Multiplayer-Partyspiel für ungefähr 2 bis 16 Spieler pro Server.
 
-## SUNLIGHT
+## SPIELABLAUF
 
-- Physikalisch inspirierte Sonnenbeleuchtung
-- Dynamische Sonnenrichtung
-- Realistische Tagesfarben
-- Weiche Sonnenschatten
-- Sonnenlicht durch Blätter
-- Natürlich beleuchtete Landschaften
-- Warme Sonnenuntergänge
-- Kühle Morgenbeleuchtung
+1. Spieler betreten eine große bunte Lobby.
+2. Ein Countdown beginnt.
+3. Drei zufällige Minispiele stehen zur Abstimmung.
+4. Spieler stimmen ab.
+5. Ein Minispiel wird ausgewählt.
+6. Alle Spieler werden in die Arena teleportiert.
+7. Das Spiel startet.
+8. Während der Runde können verrückte Events passieren.
+9. Gewinner erhalten Coins, XP und Wins.
+10. Alle gelangen wieder in die Lobby.
+11. Die nächste Runde beginnt automatisch.
 
-## GLOBAL ILLUMINATION
+Eine Runde soll normalerweise 60 bis 150 Sekunden dauern.
 
-Implementiere die bestmögliche technisch umsetzbare indirekte Beleuchtung.
-
-Nutze geeignete Verfahren wie:
-
-- Screen Space Global Illumination
-- Screen Space Ambient Lighting
-- Indirect Diffuse Approximation
-- Temporale Lichtakkumulation
-
-Eine echte Path-Tracing-Implementierung nur dann angeben, wenn entsprechende Ray- beziehungsweise Path-Tracing-Verfahren tatsächlich implementiert wurden.
-
-## LIGHT SOURCES
-
-Fackeln, Laternen und andere Lichtquellen sollen eine glaubwürdige Beleuchtung erzeugen.
-
-- Warmes Fackellicht
-- Weiche Lichtübergänge
-- Lichtreflexionen
-- Nachtbeleuchtung
-- Individuelle Lichtfarben, soweit technisch unterstützt
+Das Spiel soll auch mit wenigen Spielern funktionieren.
 
 ---
 
-# 3. REALISTIC SHADOW SYSTEM
+# 2. ULTIMATE FUNNY MINIGAMES
 
-Implementiere hochwertige dynamische Schatten.
+Erstelle mindestens 15 unterschiedliche, tatsächlich spielbare Minispiele.
+
+## MINIGAME 1 – THE FLOOR IS LAVA
+
+Die Lava steigt langsam.
+
+Spieler müssen auf Plattformen springen.
+
+Zufällige Plattformen können verschwinden.
+
+Der letzte überlebende Spieler gewinnt.
+
+## MINIGAME 2 – GIANT BANANA ATTACK
+
+Riesige Bananen fallen vom Himmel.
+
+Spieler müssen ausweichen.
+
+Getroffene Spieler fliegen mit einem lustigen Ragdoll-Effekt weg.
+
+## MINIGAME 3 – DON'T PRESS THE BUTTON
+
+In der Mitte steht ein riesiger roter Knopf.
+
+Wenn ein Spieler ihn drückt, passiert ein zufälliges Chaos-Ereignis.
+
+Beispiele:
+
+- Explosion mit ungefährlichem Rückstoß
+- Riesiger Gummiball
+- Alle werden klein
+- Zufällige Teleportation
+- Gravitation verändert sich
+
+## MINIGAME 4 – ESCAPE THE GIANT DUCK
+
+Eine gigantische Ente verfolgt die Spieler.
+
+Die Spieler müssen einen Ausgang finden.
+
+Die Ente besitzt lustige Bewegungen und Soundeffekte.
+
+## MINIGAME 5 – SLIPPERY FLOOR
+
+Der gesamte Boden wird extrem rutschig.
+
+Spieler müssen versuchen, nicht von der Plattform zu fallen.
+
+## MINIGAME 6 – RANDOM DISASTERS
+
+Alle paar Sekunden passiert eine neue Katastrophe.
+
+- Tornado
+- Meteoriten
+- Riesige Schneebälle
+- Blitz
+- Flut
+- Erdbeben
+
+## MINIGAME 7 – MUSICAL PLATFORMS
+
+Musik läuft.
+
+Sobald sie stoppt, müssen Spieler auf einer sicheren Plattform stehen.
+
+Unsichere Plattformen verschwinden.
+
+## MINIGAME 8 – CRAZY RACE
+
+Ein verrücktes Hindernisrennen.
+
+Mit:
+
+- Drehenden Balken
+- Beweglichen Plattformen
+- Trampolinen
+- Rutschflächen
+- Fallenden Hindernissen
+
+## MINIGAME 9 – HOT POTATO
+
+Ein Spieler hält eine heiße Kartoffel.
+
+Er muss sie vor Ablauf des Countdowns an einen anderen Spieler weitergeben.
+
+Wer sie am Ende hält, wird mit einem lustigen Effekt aus der Runde geworfen.
+
+## MINIGAME 10 – GIANT HEAD MODE
+
+Alle Spieler bekommen riesige Köpfe.
+
+Sie müssen einen Hindernisparcours bewältigen.
+
+Die veränderte Kopfgröße kann das Balancieren erschweren.
+
+## MINIGAME 11 – COLOR PANIC
+
+Eine Farbe wird angezeigt.
+
+Die Spieler müssen schnell auf ein Feld dieser Farbe laufen.
+
+Alle anderen Farben verschwinden.
+
+## MINIGAME 12 – TNT RUN
+
+Der Boden verschwindet kurz nachdem ein Spieler darüberläuft.
+
+Wer am längsten überlebt, gewinnt.
+
+## MINIGAME 13 – FLYING CHAOS
+
+Alle Spieler haben extrem niedrige Schwerkraft.
+
+Sie müssen durch schwebende Ringe gelangen.
+
+Windböen verändern ihre Flugrichtung.
+
+## MINIGAME 14 – SUMO PUSH
+
+Spieler stehen auf einer runden Plattform.
+
+Sie können sich gegenseitig mit einem lustigen, begrenzten Schubser wegstoßen.
+
+Wer zuletzt auf der Plattform steht, gewinnt.
+
+## MINIGAME 15 – THE WRONG DOOR
+
+Es gibt mehrere Türen.
+
+Nur einige führen weiter.
+
+Andere führen zu lustigen Ereignissen:
+
+- Rutsche
+- Schleuder
+- Farbexplosion
+- Mini-Labyrinth
+- Rückteleportation
+
+Erstelle für jedes Minispiel echte Spielregeln, Siegbedingungen, Arena-Modelle und Spielmechaniken.
+
+---
+
+# 3. RANDOM CHAOS EVENTS
+
+**DAS IST EINE DER WICHTIGSTEN FUNKTIONEN.**
+
+Erstelle mindestens 25 zufällige Chaos-Effekte.
+
+Beispiele:
+
+1. Giant Head
+2. Tiny Players
+3. Low Gravity
+4. Super Speed
+5. Banana Rain
+6. Falling Ducks
+7. Tornado
+8. Random Ragdoll
+9. Slippery Floor
+10. Giant Beach Ball
+11. Reverse Controls
+12. Bouncing Players
+13. Random Teleport
+14. Invisible Platforms
+15. Rainbow Fog
+16. Giant NPC Attack
+17. Meteor Shower
+18. Everyone Jumps
+19. Crazy Camera
+20. Flying Furniture
+21. Giant Chicken Invasion
+22. Color Explosion
+23. Moving Walls
+24. Rocket Launch
+25. Double Jump Madness
+
+## REGELN
+
+Events müssen:
+
+- Tatsächlich funktionieren
+- Zeitlich begrenzt sein
+- Sauber beendet werden
+- Spieler nicht dauerhaft beschädigen
+- Im Multiplayer synchronisiert werden
+- Nicht zu Serverabstürzen führen
+
+---
+
+# 4. RAGDOLL PHYSICS
+
+Erstelle ein lustiges Ragdoll-System.
 
 ## FUNKTIONEN
 
-- High Resolution Shadow Maps
-- Soft Shadows
-- Contact Shadows
-- Variable Shadow Softness
-- Shadow Filtering
-- Shadow Bias Correction
-- Sun Shadows
-- Moon Shadows, soweit unterstützt
-- Transparent Shadow Effects
-- Vegetation Shadows
+- Spieler können umfallen
+- Lustige Flugbewegungen
+- Ragdoll bei Explosion
+- Ragdoll bei Sturz
+- Ragdoll bei Schleuder-Effekt
+- Automatisches Aufstehen
+- Animationen
 
-## SHADOW QUALITY
+Die Spieler dürfen nicht dauerhaft im Boden stecken bleiben.
 
-LOW
-
-MEDIUM
-
-HIGH
-
-ULTRA
-
-EXTREME
-
-Unterstütze einstellbare Schattenauflösungen und Schattendistanzen.
-
-Die Schatten sollen sich mit der Tageszeit verändern.
+Nach einem Ragdoll-Effekt sollen sie ihre normale Steuerung zurückbekommen.
 
 ---
 
-# 4. ULTRA REALISTIC WATER
+# 5. FUNNY ITEMS
 
-**DAS IST EINE DER WICHTIGSTEN FUNKTIONEN!**
+Erstelle lustige benutzbare Gegenstände.
 
-Das Wasser soll optisch stark von Vanilla abweichen.
+## ITEMS
 
-## WATER FEATURES
-
-- Realistische Wasseroberfläche
-- Animierte Wellen
-- Sonnenreflexionen
-- Spiegelung von Himmel und Landschaft
-- Screen Space Reflections
-- Fresnel Reflections
-- Realistische Lichtbrechung
-- Unterwasserverzerrung
-- Wassertransparenz
-- Wasserfarbe abhängig von Tiefe
-- Wasserbewegungen
-- Sanfte Wellenanimation
-- Reflektierende Wasseroberfläche
-
-## UNDERWATER
-
-- Unterwassernebel
-- Lichtstrahlen unter Wasser
-- Realistische Lichtabsorption
-- Farbveränderung mit Tiefe
-- Verbesserte Sicht unter Wasser
-- Unterwasser-Caustics
-
-Das Wasser soll beim ersten Aktivieren des Shaderpacks sofort sichtbar anders aussehen.
-
----
-
-# 5. VOLUMETRIC CLOUDS
-
-Erstelle beeindruckende 3D-Wolken.
+- Banana Peel
+- Giant Hammer
+- Rubber Chicken
+- Water Blaster
+- Confetti Cannon
+- Spring Boots
+- Bubble Gun
+- Toy Rocket
+- Party Horn
+- Giant Beach Ball
 
 ## FUNKTIONEN
 
-- Volumetric Clouds
-- Raymarched Cloud Rendering
-- Realistische Wolkenformen
-- Unterschiedliche Wolkenhöhen
-- Dynamische Wolkenbewegung
-- Sonnenbeleuchtete Wolken
-- Wolkenschatten
-- Sonnenuntergang in Wolken
-- Dunkle Gewitterwolken
-- Lichtstreuung in Wolken
+- Eigenes Modell
+- Eigene Animation
+- Eigene Sounds
+- Benutzung im Spiel
+- Cooldown
+- Gegenstands-Vorschau
 
-## CLOUD SETTINGS
+Die Gegenstände sollen hauptsächlich für lustige Effekte sorgen.
 
-- Cloud Quality
-- Cloud Density
-- Cloud Height
-- Cloud Speed
-- Cloud Lighting
-- Cloud Shadows
-
-Erstelle unterschiedliche Wetterstimmungen.
-
-Die Wolken sollen nicht einfach wie normale Minecraft-Blockwolken aussehen.
+Sie dürfen Minispiele nicht unfair beeinflussen.
 
 ---
 
-# 6. REALISTIC SKY & ATMOSPHERE
+# 6. GROẞE PARTY-LOBBY
 
-Implementiere einen realistischen Himmel.
+Erstelle eine wunderschöne, farbenfrohe Lobby.
 
-## DAY SKY
+## LOBBY FEATURES
 
-- Atmosphärische Lichtstreuung
-- Blauer Himmel
-- Natürliches Sonnenlicht
-- Horizontdunst
-- Realistische Wolken
-- Sichtbare Sonnenstreuung
+- Große Party-Arena
+- Bunte Gebäude
+- Springbrunnen
+- Trampoline
+- Riesige Rutschen
+- Shops
+- Pets-Shop
+- Spin Wheel
+- Leaderboards
+- VIP-Bereich
+- AFK-Zone
+- Fotobereich
+- Animierte Dekoration
+- Musik
+- Countdown
 
-## SUNSET
+Die Lobby soll viele kleine interaktive Dinge enthalten.
 
-- Orange-roter Himmel
-- Goldene Sonnenstrahlen
-- Violette Wolken
-- Warme Landschaftsbeleuchtung
-- Atmosphärischer Horizont
-
-## NIGHT SKY
-
-- Realistische Sterne
-- Milchstraßen-Effekt optional
-- Mondbeleuchtung
-- Leichte atmosphärische Streuung
-- Dunkle Landschaft
-- Realistische Nachtfarben
-
-Der Himmel soll sich flüssig mit der Minecraft-Tageszeit verändern.
+Keine leere Baseplate verwenden.
 
 ---
 
-# 7. VOLUMETRIC FOG & GOD RAYS
+# 7. COINS SYSTEM
 
-Erstelle volumetrische Lichteffekte.
+Erstelle eine Ingame-Währung namens:
+
+**CHAOS COINS**
+
+## COINS VERDIENEN
+
+- Minispiel gewinnen
+- Runde überleben
+- An Runden teilnehmen
+- Daily Rewards
+- Quests
+- Achievements
+
+## BEISPIELBELOHNUNGEN
+
+Rundenteilnahme: 5 Coins
+
+Runde überlebt: 15 Coins
+
+Minispiel gewonnen: 30 Coins
+
+Daily Reward: 50 Coins
+
+Alle Coins dauerhaft speichern.
+
+Kauf- und Belohnungsaktionen serverseitig überprüfen.
+
+---
+
+# 8. PET SYSTEM
+
+Erstelle lustige Pets.
+
+## PETS
+
+- Mini Duck
+- Banana Pet
+- Mini Dragon
+- Rainbow Cat
+- Dancing Chicken
+- Ghost
+- Robot
+- Flying Donut
+- Mini Dinosaur
 
 ## FUNKTIONEN
 
-- Volumetric Fog
-- Atmospheric Fog
-- Distance Fog
-- Morning Mist
-- Forest Fog
-- Light Shafts
-- God Rays
-- Sunlight Through Trees
-- Fog Density Settings
+- Pet ausrüsten
+- Pet entfernen
+- Spieler folgen
+- Schwebebewegungen
+- Animationen
+- Pet-Favoriten
+- Pet-Sammlung
+- Pet-Vorschau
 
-Besonders in Wäldern sollen Sonnenstrahlen zwischen Bäumen sichtbar sein.
-
----
-
-# 8. PBR MATERIALS
-
-Unterstütze hochwertige Materialdarstellung.
-
-## MATERIAL FEATURES
-
-- Normal Mapping
-- Specular Mapping
-- Roughness
-- Metallic Reflections
-- Material Response
-- Parallax Occlusion Mapping, soweit unterstützt
-- PBR Resource Pack Compatibility
-
-## MATERIALIEN
-
-- Stein
-- Holz
-- Glas
-- Metall
-- Erde
-- Sand
-- Schnee
-- Wasser
-- Blätter
-
-Ohne passende PBR-Texturen soll der Shader sinnvolle Fallback-Materialeigenschaften verwenden.
-
-Er darf keine zusätzlichen Texturen voraussetzen, die nicht im Paket enthalten sind.
+Pets sollen hauptsächlich kosmetisch sein.
 
 ---
 
-# 9. SCREEN SPACE REFLECTIONS
+# 9. SKINS & COSMETICS
 
-Implementiere Spiegelungseffekte.
+Erstelle einen Cosmetics-Shop.
+
+## KATEGORIEN
+
+- Trails
+- Hats
+- Wings
+- Funny Costumes
+- Ragdoll Effects
+- Victory Animations
+- Emotes
+- Auras
+- Pets
+
+## BEISPIELE
+
+- Rainbow Trail
+- Banana Hat
+- Giant Crown
+- Angel Wings
+- Disco Aura
+- Confetti Victory
+- Dancing Chicken Costume
+
+Alle Cosmetics müssen visuell funktionieren.
+
+---
+
+# 10. EMOTE SYSTEM
+
+Erstelle lustige Emotes.
+
+## EMOTES
+
+- Dance
+- Backflip
+- Spin
+- Laugh
+- Cry
+- Chicken Dance
+- Robot Dance
+- Banana Dance
+- Victory Pose
+- Crazy Jump
+
+Erstelle ein Emote-Wheel.
+
+PC:
+
+**B**
+
+Mobile:
+
+Eigener Emote-Button.
+
+---
+
+# 11. SPIN WHEEL
+
+Erstelle ein tägliches Glücksrad mit kostenlosen Ingame-Belohnungen.
+
+## BELOHNUNGEN
+
+- Coins
+- Cosmetics
+- Trails
+- Emotes
+- Pets
+
+Jeder Spieler kann das Rad standardmäßig einmal pro Tag drehen.
+
+Die Belohnungen müssen serverseitig bestimmt und gespeichert werden.
+
+Keine Echtgeld-Wetteinsätze oder auszahlbaren Glücksspielgewinne.
+
+---
+
+# 12. DAILY REWARDS
+
+Erstelle tägliche Belohnungen.
+
+Tag 1: 25 Coins
+
+Tag 2: 50 Coins
+
+Tag 3: 75 Coins
+
+Tag 4: 100 Coins
+
+Tag 5: 150 Coins
+
+Tag 6: 200 Coins
+
+Tag 7: Überraschungs-Cosmetic
+
+Daily Rewards müssen gespeichert werden.
+
+---
+
+# 13. LEVEL & XP
+
+Erstelle ein Fortschrittssystem.
 
 ## FUNKTIONEN
 
-- Water Reflections
-- Wet Surface Reflections
-- Metallic Reflections
-- Reflection Quality Settings
-- Reflection Distance
-- Reflection Roughness
+- Player Level
+- XP Bar
+- Level-Up Animation
+- Level Rewards
+- Player Profile
 
-Verwende technisch geeignete Screen-Space-Verfahren und sinnvolle Fallbacks für nicht sichtbare Bildbereiche.
+## LEVEL-BELOHNUNGEN
 
-Keine vollständigen Ray-Tracing-Reflexionen behaupten, wenn sie nicht implementiert wurden.
+Level 5: Coins
 
----
+Level 10: Trail
 
-# 10. REALISTIC WEATHER
+Level 20: Emote
 
-Erstelle dynamische Wettereinflüsse.
+Level 30: Pet
 
-## RAIN
-
-- Dunklere Umgebung
-- Nasse Oberflächen
-- Reflektierender Boden
-- Regeneffekte
-- Gewitterstimmung
-- Niedrigere Wolkendecke
-- Regennebel
-
-## SNOW
-
-- Kalte Beleuchtung
-- Natürliches Schneelicht
-- Leichte Schneereflexionen
-- Winterliche Atmosphäre
-
-## THUNDERSTORM
-
-- Blitzbeleuchtung
-- Dunkle Wolken
-- Volumetrischer Nebel
-- Dramatisches Licht
+Level 50: Exklusives Cosmetic
 
 ---
 
-# 11. REALISTIC VEGETATION
+# 14. PLAYER PROFILE
 
-Bäume und Pflanzen sollen lebendiger aussehen.
+Erstelle ein Spielerprofil.
+
+## STATISTIKEN
+
+- Wins
+- Coins
+- Level
+- XP
+- Games Played
+- Games Won
+- Time Played
+- Owned Pets
+- Owned Cosmetics
+- Achievements
+
+Spielerdaten dauerhaft speichern.
+
+---
+
+# 15. LEADERBOARDS
+
+Erstelle Ranglisten für:
+
+- Most Wins
+- Highest Level
+- Most Playtime
+
+Die Leaderboards sollen echte gespeicherte Spielerwerte anzeigen.
+
+---
+
+# 16. FRIENDS & PARTY SYSTEM
+
+Spieler sollen gemeinsam mit Freunden spielen können.
 
 ## FUNKTIONEN
 
-- Waving Leaves
-- Waving Grass
-- Waving Flowers
-- Wind Animation
-- Soft Vegetation Shadows
-- Realistic Leaf Lighting
+- Roblox-Freunde einladen
+- Freundesgruppen
+- Gemeinsam in der Lobby bleiben
+- Gemeinsames Matchmaking, soweit für die Serverarchitektur erforderlich
+- Party-Mitglieder anzeigen
+- Private Server unterstützen
 
-Die Bewegung soll dezent und natürlich sein.
-
-Keine übertriebene Animation.
+Wenn ein Spieler mit seinen Freunden spielt, sollen sie möglichst gemeinsam dieselben Minispiele erleben.
 
 ---
 
-# 12. CINEMATIC POST PROCESSING
+# 17. MOBILE CONTROLS
 
-Erstelle professionelle Post-Processing-Effekte.
+Das Spiel muss vollständig auf Smartphones funktionieren.
+
+## STEUERUNG
+
+- Bewegungsjoystick
+- Springen
+- Item-Button
+- Emote-Button
+- Shop-Button
+- Menü-Button
+
+Alle UI-Elemente müssen auf Touchscreens gut bedienbar sein.
+
+---
+
+# 18. MODERNES USER INTERFACE
+
+Erstelle ein hochwertiges, buntes Roblox-UI.
+
+## HAUPTMENÜ
+
+PLAY
+
+PETS
+
+SHOP
+
+EMOTES
+
+REWARDS
+
+PROFILE
+
+SETTINGS
+
+## HUD
+
+- Coins
+- Wins
+- Level
+- Aktuelles Minispiel
+- Countdown
+- Überlebende Spieler
+
+## DESIGN
+
+- Moderne abgerundete Buttons
+- Smooth Transitions
+- Animierte Icons
+- Bunte Effekte
+- Hover Animation auf PC
+- Touch Animation auf Mobile
+
+Keine Fake-Buttons.
+
+---
+
+# 19. ADMIN & OWNER PANEL
+
+Erstelle ein geschütztes Owner-Panel.
 
 ## FUNKTIONEN
 
-- Cinematic Bloom
-- Tonemapping
-- Color Grading
-- Auto Exposure
-- Contrast Control
-- Saturation Control
-- Depth of Field
-- Motion Blur optional
-- Filmic Highlights
-- Temporal Anti-Aliasing
-- Sharpening
+- Minispiel auswählen
+- Runde starten
+- Runde beenden
+- Chaos-Event starten
+- Test-Coins vergeben
+- Test-Wins verwalten
+- Spieler teleportieren
+- Moderation
+- Serverstatus prüfen
 
-## COLOR PROFILES
+## SICHERHEIT
 
-REALISTIC
+Owner-Rechte ausschließlich über Roblox UserId und serverseitige Rollenprüfung vergeben.
 
-CINEMATIC
+Normale Spieler dürfen keine Admin-Aktionen auslösen.
 
-VIBRANT
-
-NATURAL
-
-DARK FANTASY
-
-CUSTOM
-
-Alle Effekte müssen konfigurierbar sein.
+Keine fest eingebaute geheime Hintertür.
 
 ---
 
-# 13. NETHER & END GRAPHICS
+# 20. SOUNDS & ANIMATIONS
 
-Der Shader soll auch in anderen Dimensionen funktionieren.
+Erstelle eine lustige Atmosphäre.
 
-## NETHER
+## SOUNDS
 
-- Atmosphärischer roter Nebel
-- Glühende Lava
-- Verbesserte Lava-Beleuchtung
-- Vulkanische Stimmung
-- Angepasste Schatten
-- Dimension-spezifisches Color Grading
+- Cartoon Bounce
+- Funny Fall
+- Rubber Chicken
+- Duck Quack
+- Party Horn
+- Victory Sound
+- Countdown Sound
+- Funny Explosion
+- Level Up Sound
 
-## END
+## ANIMATIONEN
 
-- Kosmischer Himmel
-- Mystische Beleuchtung
-- Violette Atmosphäre
-- Verbesserte Partikeleffekte
-- Dunkle Schatten
-- Eigenständige End-Farbpalette
+- Ragdoll
+- Victory Dance
+- Funny Fall
+- Spin
+- Jump
+- Pet Animation
+- Emote Animation
 
-Implementiere dimensionsabhängige Effekte, ohne die Lesbarkeit des Spiels zu zerstören.
-
----
-
-# 14. GRAPHICS PRESETS
-
-Erstelle ein Shader-Einstellungsmenü mit mindestens fünf Profilen.
-
-## LOW
-
-Für schwächere Hardware.
-
-## MEDIUM
-
-Ausgewogene Leistung.
-
-## HIGH
-
-Hohe Grafikqualität.
-
-## ULTRA
-
-Sehr realistische Beleuchtung, Wasser und Schatten.
-
-## CINEMATIC EXTREME
-
-Maximale visuelle Qualität.
-
-- Hochwertige Schatten
-- Volumetrische Wolken
-- SSR
-- SSGI, soweit implementiert
-- Hochwertiger Bloom
-- Realistisches Wasser
-- Detaillierter Nebel
-- Verbesserte Materialeffekte
-
-Performance darf abhängig von der Grafikkarte variieren.
+Verwende eigene oder rechtmäßig nutzbare Audio- und Grafikdateien.
 
 ---
 
-# 15. WICHTIG – NICHT WIE VANILLA
+# 21. SAVE SYSTEM
 
-Ich möchte ausdrücklich keine Shader-Version, die fast genauso wie normales Minecraft aussieht.
+Nutze DataStoreService.
 
-Der Unterschied muss sofort sichtbar sein.
+Speichere:
 
-Beim Aktivieren müssen besonders folgende Effekte deutlich erkennbar sein:
+- Coins
+- Wins
+- Level
+- XP
+- Owned Cosmetics
+- Owned Pets
+- Equipped Cosmetics
+- Equipped Pets
+- Daily Rewards
+- Achievements
+- Settings
+- Playtime
 
-1. Dynamische Sonnenschatten
-2. Vollständig anderes Wasser
-3. Realistische Wolken
-4. Sonnenstrahlen
-5. Verbesserte Beleuchtung
-6. Atmosphärischer Himmel
-7. Reflexionen
-8. Realistische Nachtbeleuchtung
-9. Volumetrischer Nebel
-10. Neue Licht- und Farbwirkung
+Erstelle:
 
-Erstelle eine Testwelt mit Wasser, Bäumen, Bergen, Fackeln und Glas.
-
-Vergleiche Vanilla Minecraft und NERO REALISM ULTRA anhand identischer Kameraansichten.
-
-Wenn kein deutlicher Unterschied sichtbar ist, untersuche den Shader-Ladeprozess und die Renderpasses.
-
-Ein kompilierender Shader gilt nicht automatisch als visuell funktionierend.
-
----
-
-# 16. SHADERPACK DATEISTRUKTUR
-
-Erstelle einen vollständigen Iris-kompatiblen Shaderpack.
-
-Dateiname:
-
-**NeroRealismUltra-1.21.11.zip**
-
-Beispielhafte Struktur:
-
-NeroRealismUltra/
-
-  shaders/
-
-    shaders.properties
-
-    lib/
-
-      lighting/
-
-      shadows/
-
-      water/
-
-      clouds/
-
-      atmosphere/
-
-      reflections/
-
-      materials/
-
-      postprocessing/
-
-    world0/
-
-    world-1/
-
-    world1/
-
-    gbuffers_*.vsh
-
-    gbuffers_*.fsh
-
-    composite*.vsh
-
-    composite*.fsh
-
-    final.vsh
-
-    final.fsh
-
-    shadow.vsh
-
-    shadow.fsh
-
-    weitere notwendige Shaderdateien
-
-Verwende nur tatsächlich durch die gewählte Iris-Shaderpipeline unterstützte Shaderprogramme, Dateien und Konventionen.
-
-Sämtliche GLSL-Dateien müssen echten Shadercode enthalten.
-
-Die ZIP-Datei soll die erforderliche Struktur besitzen, damit Iris sie direkt als Shaderpack erkennt.
+- Automatische Speicherung
+- Speichern beim Verlassen
+- Fehlerbehandlung
+- Wiederholversuche bei temporären Speicherfehlern
+- Schutz gegen doppelte Belohnungen
 
 ---
 
-# 17. PERFORMANCE OPTIMIZATION
+# 22. GAME ENGINE & ARCHITECTURE
 
-Optimiere den Shader, ohne die Grafikqualität unnötig zu verschlechtern.
+Entwickle das Spiel in Roblox Studio mit Luau.
 
-## FUNKTIONEN
+Nutze eine klare Projektstruktur.
 
-- Adaptive Quality Settings
-- Temporal Reprojection
-- Reduced Raymarch Steps
-- Shadow Distance Settings
-- Reflection Quality Settings
-- Cloud Quality Settings
-- Optimized GLSL
-- Performance Presets
+## BEISPIEL
 
-Erstelle keine unnötigen Renderpasses.
+NeroChaosParty/
 
-Vermeide:
+ReplicatedStorage/
 
-- Shader Compilation Errors
-- Schwarze Bildschirme
-- Unsichtbares Wasser
-- Kaputte Schatten
-- Extreme Bildfehler
-- Flackernde Beleuchtung
-- Ghosting durch temporale Effekte
+    Shared/
 
----
+    Modules/
 
-# 18. TESTING & DEBUGGING
+    Remotes/
 
-Teste den Shader mit Minecraft Java 1.21.11 und einer dazu kompatiblen Iris-Version.
+ServerScriptService/
 
-## TESTS
+    GameManager/
 
-- Shader wird von Iris erkannt
-- Shader lässt sich auswählen
-- Shader wird erfolgreich geladen
-- Hauptwelt wird korrekt dargestellt
-- Wasser ist sichtbar verändert
-- Schatten funktionieren
-- Wolken funktionieren
-- Sonnenstrahlen funktionieren
-- Nether funktioniert
-- End funktioniert
-- Nachtbeleuchtung funktioniert
-- Regen funktioniert
-- Shader-Einstellungen funktionieren
-- Keine kritischen GLSL-Fehler
-- Kein unbeabsichtigter Vanilla-Fallback
+    RoundManager/
 
-Prüfe die Shader-Logs.
+    MinigameManager/
 
-Wenn ein Effekt nicht funktioniert, behebe die Ursache im Shadercode.
+    ChaosEventManager/
 
-Keine Shaderfunktionen als getestet bezeichnen, wenn kein echter Minecraft-Test durchgeführt wurde.
+    PlayerDataManager/
 
----
+    CoinManager/
 
-# 19. BUILD & RELEASE
+    RewardManager/
 
-**ICH MÖCHTE EIN FERTIGES SHADERPACK ALS ZIP-DATEI.**
+    ShopManager/
 
-Liefere:
+    AdminManager/
 
-1. NeroRealismUltra-1.21.11.zip
-2. Vollständige GLSL-Shaderdateien
-3. Shader-Konfiguration
-4. Qualitätsprofile
-5. Installationsanleitung
-6. README
-7. Changelog
-8. Dokumentation aller Grafikeffekte
+StarterPlayer/
 
-Der Shader soll kein Java-Mod sein und benötigt keine eigene JAR-Datei.
+    StarterPlayerScripts/
 
-## INSTALLATION
+StarterGui/
 
-1. Minecraft Java 1.21.11 installieren.
-2. Iris Shaders und die benötigten kompatiblen Abhängigkeiten installieren.
-3. Shader-ZIP in `.minecraft/shaderpacks` kopieren.
-4. Minecraft starten.
-5. Video Settings öffnen.
-6. Shader Packs öffnen.
-7. NERO REALISM ULTRA auswählen.
-8. Shader aktivieren.
-9. Grafikeinstellungen anpassen.
+    MainMenu/
+
+    HUD/
+
+    Shop/
+
+    Pets/
+
+    Rewards/
+
+    Profile/
+
+    Settings/
+
+ServerStorage/
+
+    Minigames/
+
+    Items/
+
+    Pets/
+
+Workspace/
+
+    Lobby/
+
+    Arenas/
+
+    Decorations/
+
+    Interactables/
+
+Ergänze alle tatsächlich erforderlichen Scripts, Models, Animationen und UI-Objekte.
 
 ---
 
-# 20. ABSCHLIESSENDER ENTWICKLUNGSAUFTRAG
+# 23. MINIGAME SYSTEM
 
-Entwickle jetzt:
+Entwickle ein modulares System.
 
-**NERO REALISM ULTRA – ULTIMATE PHOTOREALISTIC MINECRAFT SHADER**
+Jedes Minispiel soll:
 
-Priorisiere:
+- Eine eigene Map besitzen
+- Eine Startfunktion besitzen
+- Spieler teleportieren
+- Regeln anzeigen
+- Siegbedingungen prüfen
+- Verlierer ausscheiden lassen
+- Gewinner bestimmen
+- Belohnungen vergeben
+- Das Spielfeld bereinigen
+- Spieler wieder in die Lobby bringen
 
-1. Funktionierendes Iris-Shaderpack
-2. Deutlich veränderte Beleuchtung
-3. Dynamische Schatten
-4. Realistisches Wasser
-5. Atmosphärischer Himmel
-6. Volumetrische Wolken
-7. Sonnenstrahlen
-8. Volumetrischer Nebel
-9. Reflexionen
-10. Indirekte Beleuchtung
-11. PBR-Unterstützung
-12. Wettereffekte
-13. Nether und End
-14. Cinematic Color Grading
-15. Shader-Menü
-16. Performance-Profile
-17. Fehlerbehebung
-18. Fertige ZIP-Datei
+Implementiere ein zuverlässiges RoundManager-System.
 
-## ENTWICKLUNGSREGELN
+Wenn Spieler während einer Runde die Verbindung verlieren, muss die Runde weiterlaufen können.
 
-- Keine Fake-Effekte
-- Keine leeren Shaderdateien
-- Keine bloß umbenannten Vanilla-Shader
-- Keine kopierten Complementary-Unbound-Dateien
-- Keine erfundenen Ray-Tracing-Funktionen
-- Keine kaputten Renderpasses
-- Keine ungetesteten Funktionen als fertig ausgeben
-- Kein bloßer Farbfilter als Ersatz für echte Beleuchtung
-- Keine Kompilierungsfehler ignorieren
+---
 
-Erstelle die echte Shaderpipeline mit vollständigem GLSL-Code.
+# 24. PERFORMANCE
 
-Teste besonders, dass Wasser, Schatten, Wolken und Licht sichtbar funktionieren.
+Das Spiel soll auch auf mobilen Geräten möglichst flüssig laufen.
 
-Wenn einzelne fortgeschrittene Verfahren nicht verfügbar sind, verwende hochwertige kompatible Alternativen und dokumentiere die Unterschiede.
+## OPTIMIERUNG
+
+- Begrenzte Partikel
+- Optimierte Physik
+- Sparsame Ragdoll-Simulation
+- Wiederverwendung von Effekten
+- Reduzierte Netzwerklast
+- Optimierte NPCs
+- Streaming bei großen Maps
+- Grafikqualität-Einstellungen
+- Mobile UI Scaling
+
+Ziel:
+
+60 FPS auf geeigneten Smartphones und PCs, ohne eine feste Leistungssteigerung zu garantieren.
+
+---
+
+# 25. FERTIGES ROBLOX-STUDIO-PROJEKT
+
+**ICH MÖCHTE EIN FERTIGES ROBLOX-SPIEL UND NICHT NUR CODE.**
+
+Erstelle ein vollständiges Roblox-Studio-Projekt.
+
+## LIEFERDATEIEN
+
+- NeroChaosParty.rbxl oder NeroChaosParty.rbxlx
+- Vollständiger Luau-Quellcode
+- Alle Minigame-Maps
+- Lobby
+- Modelle
+- UI
+- Sounds
+- Animationen
+- Pets
+- Cosmetics
+- README
+- Installationsanleitung
+
+Wenn eine Roblox-Studio-Projektdatei direkt erzeugt werden kann, liefere diese.
+
+Wenn Roblox Studio in der Entwicklungsumgebung nicht verfügbar ist, stelle stattdessen ein vollständig importierbares Projekt mit allen Scripts, Assets und einer reproduzierbaren Anleitung bereit.
+
+Keine leere Projektdatei.
+
+Keine reine Baseplate.
+
+---
+
+# 26. TESTING
+
+Teste:
+
+- Das Spiel startet.
+- Lobby funktioniert.
+- Minigame Voting funktioniert.
+- Countdown funktioniert.
+- Spieler werden teleportiert.
+- Alle 15 Minispiele funktionieren.
+- Gewinner werden richtig erkannt.
+- Coins werden vergeben.
+- Coins bleiben gespeichert.
+- Pets funktionieren.
+- Ragdoll funktioniert.
+- Chaos Events funktionieren.
+- Shop funktioniert.
+- Emotes funktionieren.
+- Mobile Controls funktionieren.
+- Mehrere Spieler können gemeinsam spielen.
+- Keine kaputten Scripts.
+- Keine unbehandelten Serverfehler.
+- Keine Fake-Buttons.
+
+Teste Multiplayer mit mindestens zwei echten Roblox-Studio-Testclients.
+
+Kennzeichne ausdrücklich, wenn einzelne Tests nicht durchgeführt werden konnten.
+
+---
+
+# 27. ENDGÜLTIGER ENTWICKLUNGSAUFTRAG
+
+Erstelle jetzt:
+
+**NERO CHAOS PARTY – ALLES GEHT SCHIEF!**
+
+Entwickle zuerst eine vollständig spielbare Kernversion mit:
+
+1. Schöner Party-Lobby
+2. Funktionierendem RoundManager
+3. Minigame Voting
+4. Mindestens 5 vollständig spielbaren Minispielen
+5. Ragdoll-System
+6. Random Chaos Events
+7. Coins und Wins
+8. Datenspeicherung
+9. Shop
+10. Modernem HUD
+
+Erweitere diese anschließend auf mindestens 15 funktionierende Minispiele und die weiteren beschriebenen Systeme.
+
+## REGELN
+
+- Keine Fake-Buttons
+- Keine leeren Maps
+- Keine funktionslosen Minispiele
+- Keine nicht funktionierenden Shops
+- Kein vorgetäuschter Multiplayer
+- Keine verlorenen Spielerstände
+- Keine unsicheren Admin-Remotes
+- Keine kopierten geschützten Roblox-Spielinhalte
+- Keine erfundenen Tests
 
 ## ENDZIEL
 
-Ein Minecraft Shader, der sich visuell an hochwertigen Shaderpacks wie Complementary Unbound orientiert und Minecraft eine beeindruckende, realistische Atmosphäre verleiht.
+Ein extrem lustiges, buntes Roblox-Multiplayer-Spiel, das man stundenlang mit Freunden spielen kann.
 
-Die Landschaft soll mit realistischen Sonnenstrahlen, Schatten, weichem Licht, reflektierendem Wasser, volumetrischen Wolken und einer cineastischen Farbgebung dargestellt werden.
+Jede Runde soll anders sein.
 
-Der Shader soll beim Aktivieren sofort erkennbar sein und Minecraft optisch deutlich verändern.
+Spieler sollen lachen, wenn sie von riesigen Bananen getroffen werden, über Hindernisse stolpern oder durch die Arena fliegen.
 
-Erstelle eine vollständig installierbare ZIP-Datei:
+Neue Minispiele und Chaos-Events sollen später einfach ergänzt werden können.
 
-**NeroRealismUltra-1.21.11.zip**
+Erstelle das vollständige Spiel als spielbares Roblox-Studio-Projekt.
 
-**NERO REALISM ULTRA**
+# NERO CHAOS PARTY
+## ALLES GEHT SCHIEF!
 
-**BEYOND VANILLA. BEYOND REALISM.**
+**RUN. FALL. LAUGH. REPEAT.**

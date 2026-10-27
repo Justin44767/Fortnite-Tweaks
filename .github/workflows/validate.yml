@@ -1,0 +1,20 @@
+name: Validate Roblox project
+on: [push, pull_request]
+jobs:
+  offline:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Build pinned official Luau tools
+        run: |
+          git clone https://github.com/luau-lang/luau.git /tmp/luau
+          git -C /tmp/luau checkout 32c28089305f488f901aaf1dbf3fd1cb65fa3d11
+          make -C /tmp/luau config=release -j2 luau luau-compile
+      - name: Rebuild and validate
+        run: |
+          python3 tools/build.py
+          python3 tools/test.py --luau /tmp/luau/luau --compiler /tmp/luau/luau-compile
+          git diff --exit-code -- dist assets

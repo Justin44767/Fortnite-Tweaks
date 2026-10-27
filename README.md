@@ -1,94 +1,52 @@
-# NERO REALISM ULTRA
+# NERO CHAOS PARTY
 
-**Beyond Vanilla. Beyond Realism.**
+**ALLES GEHT SCHIEF! — RUN. FALL. LAUGH. REPEAT.**
 
-Eigenständiges GLSL-Shaderpack für **Minecraft Java 26.3 mit Iris und Sodium**.
-Es ersetzt das bisherige Fortnite-Tweaks-Projekt in diesem Repository.
-Die aktuelle Zielversion ist 26.3; der unveränderte ursprüngliche Entwicklungsauftrag
-in `docs/BRIEF.md` beschreibt noch die frühere Zielversion 1.21.11.
+Roblox-Partyspiel für 2–16 Spieler, mit Solo-Unterstützung. Dieses Repository enthält jetzt das Roblox-Projekt; es ersetzt NERO REALISM ULTRA vollständig.
 
-Das Paket implementiert dynamische gefilterte Schatten, animiertes Wasser mit
-Brechung und Screen-Space-Spiegelungen, volumetrische Wolken, beleuchteten Nebel,
-Tag/Nacht-Himmel, Normal-/Specular-Mapping, SSAO und eine begrenzte indirekte
-Screen-Space-Beleuchtung. TAA, Bloom, Belichtungsanpassung, Farbprofile und optional
-Tiefenunschärfe sowie Kamerabewegungsunschärfe ergänzen die Pipeline.
+**[Studio-Datei herunterladen](https://github.com/Justin44767/Fortnite-Tweaks/raw/refs/heads/main/dist/NeroChaosParty.rbxlx)** · **[Quellcode + Modelle + Audio als ZIP](https://github.com/Justin44767/Fortnite-Tweaks/raw/refs/heads/main/dist/NeroChaosParty-Source.zip)**
 
-**Status: technische Testversion (0.2.4).** Die Shader werden in einem echten
-OpenGL-Kontext kompiliert und mit synthetischen Eingaben gerendert. Ein Lauf mit
-Minecraft/Iris, die Abnahme der sichtbaren Qualität und reale Leistungsmessungen
-stehen noch aus. Das ist kein Nachweis der visuellen Qualität von Complementary,
-Bliss, Photon, BSL oder SEUS. Es wurde kein Code dieser Shaderpacks übernommen.
+## Starten
 
-## Downloads und Installation
+1. `dist/NeroChaosParty.rbxlx` herunterladen und in **Roblox Studio → File → Open from File** öffnen.
+2. **Play** startet die Lobby und die automatische Rundenfolge. Bei Studio-Tests sind Daten standardmäßig nur für die Sitzung gültig; das HUD zeigt `STUDIO`.
+3. Für Multiplayer unter **Test → Server & Clients** mindestens **2 Clients** starten. Ein einzelner Spieler kann ebenfalls spielen.
+4. Zum Veröffentlichen **File → Publish to Roblox** verwenden. In den Experience-Einstellungen 16 Spieler pro Server und vorzugsweise R15 einstellen. Die Veröffentlichung auf Roblox muss über dein Roblox-Konto erfolgen.
+5. Optional Owner-UserIds, VIP-Gäste und eigene Audio-Asset-IDs in `ReplicatedStorage → Shared → Config` eintragen. Bei einer persönlich erstellten Experience wird deren Creator automatisch als Owner erkannt; bei Gruppen-Experiences die Owner-UserIds explizit eintragen.
 
-- [NeroRealismUltra-26.3.zip](dist/NeroRealismUltra-26.3.zip)
-- [Neue Testwelt](dist/Nero-Test-World-26.3.zip)
-- [Testszene als Datapack](dist/Nero-Test-Scene-26.3.zip)
+Die Datei enthält eine gebaute Lobby, alle 15 Arena-Modelle, 18 eigene Requisiten-/Pet-Modelle und sämtliche Scripts. Maps liegen in `ServerStorage/Maps` und werden für Runden geklont. Die dynamische Oberfläche wird beim Spielen erstellt.
 
-Das Shader-ZIP unverändert in `.minecraft/shaderpacks` legen und in Iris auswählen.
-Es enthält `shaders/` direkt auf ZIP-Ebene. Eine eigene Mod-JAR ist nicht nötig.
-Iris, Sodium und Minecraft werden nicht mitgeliefert.
-Die vollständige [Installationsanleitung](docs/INSTALLATION.md) nennt die Schritte.
+## Enthalten
 
-**Natürlichere Abstimmung ab 0.2.4:** Sättigung 0,90, Kontrast 0,95, dezenteres Bloom
-und weniger Schärfung. Schatten werden sanfter, ohne Schwarz grau anzuheben;
-helle Flächen und die automatische Belichtung fallen zurückhaltender aus.
-Falls Iris eigene Werte aus einer älteren Version gespeichert hat, die
-[neuen Farbwerte](docs/INSTALLATION.md#weichere-farben-ab-024) übernehmen.
+- Automatische Runden, Abstimmung über drei Minispiele, Timer, Gewinnerauswertung und Rückkehr in die Lobby.
+- **15 unterschiedliche Spiele**: Lava, Bananenregen, roter Knopf, Entenflucht, Eisfläche, Katastrophen, Musical Platforms, Hindernisrennen, Hot Potato, Riesenkopf-Parcours, Color Panic, TNT Run, Flugringe, Sumo und falsche Türen.
+- **25 zeitlich begrenzte Chaos-Events**, Ragdolls mit Wiederaufstehen, serverseitig geprüfte Schubser.
+- Farbige Party-Lobby mit Shops, Brunnen, Tanzfläche, Trampolinen, Rutsche, Fotowand, Glücksrad und Ranglisten.
+- Chaos Coins, Wins, XP/Level, einmalige Quests, Achievements, tägliche Geschenke, kostenloses Glücksrad und Meilenstein-Belohnungen.
+- 9 kosmetische Pets mit Vorschau, Favoriten und Folgen; Trails, Hüte, Flügel, Kostüm, Aura, Ragdoll-/Sieger-Effekte und 10 prozedural animierte Emotes.
+- 10 kostenlose Lobby-Items mit eigenen Modellen und Cooldowns. Gewertete Minispiele verwenden ihre eigenen Regeln.
+- Maus-, Touch- und Gamepad-Bedienung, Party-Gruppen auf demselben Server, Roblox-Freundeseinladungen und Unterstützung für private Server.
+- Servergeprüftes Owner-Panel, DataStore-Profile mit Sitzungssperren, Wiederholversuchen, automatischem Speichern und Schutz vor doppelten Runden-/Tagesbelohnungen.
 
-Sieht das Bild trotz aktiviertem NERO wie Vanilla aus, unter Shader-Einstellungen
-**NERO-Funktionstest → Rahmen** einschalten und anwenden. Links muss ein türkiser,
-rechts ein pinker Rahmen erscheinen. Der Modus **Oberflächen** zeigt zusätzlich
-die Geometriedaten. [Auswertung des Funktionstests](docs/INSTALLATION.md#funktionstest-bei-unverändertem-bild).
-Der Funktionstest ist standardmäßig aus.
+## Prüfstatus und Grenzen
 
-**Wasserkorrektur in 0.2.3:** Brechung und Spiegelungen lesen jetzt den Szenenhintergrund
-aus einem für Iris-Geometriepässe zugänglichen Puffer. Zuvor konnte Wasser stattdessen
-die Blocktextur lesen und dadurch falsche Farben zeigen. Der Fehler wurde im GPU-Test
-reproduziert; die vollständige Darstellung in Minecraft muss noch bestätigt werden.
+Version **1.0.0**, 27. Oktober 2026. Luau-Kompilierung, isolierte Spiel-/Wirtschaftsregeln, Speicherfehler mit Test-Doubles und die XML-/Paketstruktur werden mit `tools/test.py` geprüft. Der genaue Stand steht in [docs/TESTING.md](docs/TESTING.md).
 
-**Ladekorrektur in 0.2.2:** Der Absturz `DispatchingDirectiveHolder.processDirective`
-mit `ArrayIndexOutOfBoundsException: Index 1 out of bounds for length 1` wurde
-reproduziert und durch eine Iris-kompatible ClearColor-Direktive behoben. Bei diesem
-Fehler die alte ZIP ersetzen. Ein vollständiger Spieltest steht weiterhin aus.
+**Roblox Studio ist in der Cloud-Umgebung nicht verfügbar. Das Öffnen in Studio, echte Roblox-Physik, zwei echte Testclients, mobile Geräte und Live-DataStores wurden hier nicht getestet.** Das Projekt ist eine vollständige importierbare Implementierung, noch keine in Roblox abgenommene Veröffentlichung. Fehler aus dem Studio-Output sind für die letzte Integrationsprüfung maßgeblich.
 
-## Profile
-
-| Profil | Schatten | Distanz | Wolkenschritte | SSR | Indirektes Screen-Space-Licht |
-|---|---:|---:|---:|---|---|
-| LOW | 512 | 48 | 8 | aus, Himmel als Reflexionsersatz | aus |
-| MEDIUM | 1024 | 80 | 12 | 12 Schritte | aus |
-| HIGH | 2048 | 128 | 16 | 16 Schritte | an |
-| ULTRA (Standard) | 2048 | 128 | 24 | 24 Schritte | an |
-| CINEMATIC EXTREME | 4096 | 192 | 40 | 48 Schritte | an |
-
-Alle Profile behalten Schatten, eigenes Wasser, Wolken und atmosphärische
-Beleuchtung. EXTREME aktiviert zusätzlich Tiefenunschärfe. Für den ersten Start
-empfiehlt sich HIGH; es gibt keine gemessene FPS-Zusage. Schattenauflösung,
-Distanz, Filterung, Wasser, Wolken, Nebel und Nachbearbeitung sind einzeln einstellbar.
+Audio funktioniert zunächst über mit Roblox ausgelieferte kurze Effekttöne. Zehn selbst erzeugte WAV-Dateien liegen unter `assets/audio`; für eigene Duck-/Chicken-/Musikklänge müssen sie in Roblox hochgeladen und ihre Asset-IDs in `Config.Audio` eingetragen werden. Es werden keine fremden Spiele, Audio-Samples oder Animation-IDs kopiert. Emotes, Pet-Bewegungen und Requisitenanimationen entstehen im Code.
 
 ## Entwicklung
 
-Python 3.10+ genügt zum reproduzierbaren Paketbau. Für die technischen Rendertests
-werden PyOpenGL und ein EGL/OpenGL-Treiber mit Compatibility-Profil benötigt.
+- [Installation, Veröffentlichung, Audio und Speicherung](docs/INSTALLATION.md)
+- [Alle Spiele, Events und Systeme](docs/FEATURES.md)
+- [Architektur und Erweiterungen](docs/ARCHITECTURE.md)
+- [Testprotokoll und Studio-Abnahme](docs/TESTING.md)
+- [Originalauftrag](docs/BRIEF.md)
 
-```bash
-python3 -m venv .venv
-.venv/bin/pip install -r requirements-dev.txt
-python3 tools/generate_programs.py
-.venv/bin/python tools/validate.py
+```sh
 python3 tools/build.py
-python3 -m unittest discover -s tests -v
+python3 tools/test.py --luau /path/to/luau --compiler /path/to/luau-compile
 ```
 
-Die Cloud-Werkzeuge liegen außerhalb des Repositorys; siehe die gespeicherten
-Umgebungsanweisungen. Der bisherige PowerShell-Workflow wird nicht mehr benötigt.
-Die erzeugten ZIPs und SHA256-Dateien liegen in `dist/`.
-
-## Dokumentation
-
-- [Effekte, Verfahren und Grenzen](docs/EFFECTS.md)
-- [Kompatibilität und Pipeline](docs/COMPATIBILITY.md)
-- [Testwelt, Vergleichsansichten und Teststatus](docs/TESTING.md)
-- [Änderungen](CHANGELOG.md)
-- [Unveränderter Entwicklungsauftrag](docs/BRIEF.md)
+Der Builder verwendet nur die Python-Standardbibliothek. Er erzeugt die `.rbxlx`, einzelne `.rbxmx`-Modelle, originale Audio-Dateien, das Quellcode-ZIP und SHA-256-Prüfsummen reproduzierbar. Alternativ unterstützt `default.project.json` einen Rojo-Workflow; die generierten Modelle müssen vorher vorhanden sein.

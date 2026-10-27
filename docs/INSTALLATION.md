@@ -1,81 +1,56 @@
-# Installation
+# Installation und Veröffentlichung
 
-1. Minecraft **Java Edition 26.3** einmal mit dem eigenen Launcher starten.
-2. Eine ausdrücklich für 26.3 veröffentlichte Iris-Version und deren passende
-   Sodium-/Loader-Abhängigkeiten installieren. Der offizielle Iris-Installer oder
-   ein Launcher mit Abhängigkeitsauflösung hilft dabei. Nicht einfach die neueste
-   Iris-Version für eine andere Minecraft-Version wählen.
-3. `NeroRealismUltra-26.3.zip` in den `shaderpacks`-Ordner dieser Spielinstanz
-   kopieren. Unter Windows liegt dieser bei einer Standardinstallation unter
-   `%APPDATA%\.minecraft\shaderpacks`. Andere Launcher verwenden eigene Instanzordner.
-4. Minecraft mit dem Iris-Profil starten. Unter Video Settings → Shader Packs
-   **NERO REALISM ULTRA** auswählen und Shader aktivieren.
-5. Zunächst HIGH wählen. Im Shader-Einstellungsmenü Wasser, Wolken und Schatten
-   prüfen. Ein PBR-Ressourcenpaket ist optional; ohne eines gelten die eingebauten
-   Standardmaterialien.
+## Fertige Studio-Datei
 
-Die ZIP nicht zusätzlich in einen äußeren `NeroRealismUltra/`-Ordner verpacken.
-Das Paket ist ein Shaderpack, keine Mod-JAR. Es benötigt keine herunterzuladenden
-Noise-Texturen; Wolken, Wellen, Sterne und Caustics werden im GLSL erzeugt.
+`dist/NeroChaosParty.rbxlx` vollständig herunterladen (auf GitHub **Download raw file**, nicht die HTML-Seite speichern). In Roblox Studio mit **File → Open from File** öffnen. Die Lobby ist bereits im Workspace sichtbar. Alle Arena-Vorlagen liegen in **ServerStorage → Maps**; Modelle für Pets und Requisiten in **ReplicatedStorage → Assets**.
 
-Bei Fehlern `logs/latest.log` derselben Spielinstanz auf Iris-, GLSL-, Shader- und
-Framebuffer-Meldungen prüfen. Versionen von Spiel, Iris, Sodium und GPU-Treiber
-zusammen mit dem betroffenen Programm und der vollständigen Fehlermeldung notieren.
-Eine erfolgreiche Auswahl allein beweist nicht, dass alle Renderpasses laufen.
+Mit **Play** startet das Spiel. Der erste Countdown beginnt, sobald ein Spieler samt Charakter und Profil bereit ist. Es folgen 15 Sekunden Pause, 12 Sekunden Abstimmung und das gewählte Spiel. Neue Spieler steigen in der nächsten Runde ein. AFK-Spieler setzen aus. Solo-Tests funktionieren; Hot Potato verwendet allein einen Kühlpunkt am rechten Bumper.
 
-## Weichere Farben ab 0.2.4
+Für einen echten Mehrspielertest **Test → Server & Clients → 2 Clients → Start** verwenden. Für Smartphone-/Gamepad-Tests zusätzlich den Studio-Geräteemulator bzw. einen Controller nutzen. Die Standardsteuerung von Roblox bleibt vorhanden.
 
-Die aktualisierte ZIP ersetzt die bisherige Datei. Minecraft anschließend neu
-starten. Die neue Standardabstimmung verwendet folgende Einstellungen:
+## Experience konfigurieren
 
-| Menü | Einstellung | Wert |
-|---|---|---|
-| Kamera und Nachbearbeitung | Farbprofil | Realistic |
-| Kamera und Nachbearbeitung | Sättigung | 0.9 |
-| Kamera und Nachbearbeitung | Kontrast | 0.95 |
-| Kamera und Nachbearbeitung | Bloom-Stärke | 0.08 |
-| Kamera und Nachbearbeitung | Schärfung | 0.08 |
-| Licht und Schatten | Umgebungsverdeckung | 0.55 |
+1. Über **Publish to Roblox** eine Experience unter deinem Konto oder deiner Gruppe erstellen.
+2. Maximal **16 Spieler** pro Server setzen; PC, Mobilgeräte und gewünschte Controller-Plattformen freigeben. R15 wird empfohlen; das Ragdoll-System berücksichtigt auch R6-Gelenke.
+3. Bei Gruppenbesitz in `ReplicatedStorage/Shared/Config` unter `OwnerUserIds` deine numerische Roblox UserId ergänzen. Anzeigenamen vergeben keine Rechte. Bei persönlichem Besitz hat der Place-Creator automatisch Owner-Rechte.
+4. Optional `VipUserIds` für den sozialen Lounge-Zugang pflegen. Es gibt keine Gamepass-Käufe oder Gameplay-Boni. Der VIP-Bereich ist Teil der offenen Party-Lobby, keine Sicherheitszone.
+5. Für Freunde dieselbe Experience teilen oder im Spiel **PARTY → ROBLOX-FREUNDE EINLADEN** verwenden. Roblox kann Einladungen in Studio oder aufgrund von Kontoeinstellungen ablehnen; das Spiel zeigt dann eine Erklärung. Private Server funktionieren mit derselben Rundenfolge.
+6. Nach der Abnahme Zugriffsrechte/Veröffentlichungsstatus im Creator Dashboard setzen. GitHub-Veröffentlichung lädt keine Experience zu Roblox hoch.
 
-Iris kann zuvor selbst gespeicherte Werte behalten. In diesem Fall die oben
-genannten Regler anpassen und anwenden. Alternativ alle Shader-Einstellungen
-zurücksetzen und das gewünschte Qualitätsprofil erneut wählen. Die Farbwerte
-sind unabhängig von LOW/HIGH/ULTRA; das Qualitätsprofil stellt sie nicht zurück.
+## Speicherung
 
-## Funktionstest bei unverändertem Bild
+Live-Server verwenden `DataStoreService` und `NeroChaosParty_v1`. Ein Spielerprofil enthält seine Daten und eine erneuerbare 180-Sekunden-Sitzungssperre. Auto-Saves erfolgen alle 45 Sekunden, zusätzlich nach Runden, Käufen, Tagesbelohnungen und beim Verlassen/Herunterfahren. Temporäre Fehler werden viermal mit Wartezeit versucht. Ein fehlerhaftes oder gesperrtes Profil wird **nicht** durch einen neuen Null-Spielstand überschrieben.
 
-Bei falsch gefärbtem Wasser zunächst die aktuelle ZIP **0.2.3 oder neuer** verwenden.
-Ältere Versionen lasen den Wasserhintergrund aus einem in Iris-Geometriepässen
-nicht gebundenen Puffer. Dadurch konnte das Wasser Farben der Blocktexturen anzeigen.
-Die alte Datei ersetzen und Minecraft neu starten; der NERO-Funktionstest sollte
-für normale Darstellung auf **Aus** stehen. Voxy wurde nicht als Fehlerursache bestätigt.
+Studio verwendet standardmäßig **flüchtige Testprofile** (`StudioPersistence=false`). Das ist im HUD und Profil sichtbar. Für echte Speicherprüfungen:
 
-Steht im Log `DispatchingDirectiveHolder.processDirective` zusammen mit
-`ArrayIndexOutOfBoundsException: Index 1 out of bounds for length 1`, die ZIP durch
-**Version 0.2.2 oder neuer** ersetzen. In älteren NERO-Ausgaben löst eine verkürzte
-ClearColor-Direktive genau diesen Ladeabsturz aus. Iris fällt anschließend auf
-normales Rendering zurück, obwohl NERO in der Paketauswahl stehen kann.
+1. Experience veröffentlichen.
+2. In Studio den API-Zugriff für DataStores aktivieren (Experience-/Security-Einstellungen).
+3. `Config.StudioPersistence=true` setzen. Studio nutzt dann ausschließlich `NeroChaosParty_v1_Studio`, getrennt vom Live-Spielstand.
+4. Coins erspielen, Server sauber beenden und erneut verbinden. Ausgerüstete Pets, Einstellungen, tägliche Claims und Inventar prüfen.
 
-1. Die aktuelle `NeroRealismUltra-26.3.zip` herunterladen und die bisherige Datei
-   im `shaderpacks`-Ordner der verwendeten Instanz ersetzen. Anschließend Minecraft
-   neu starten und genau dieses Paket auswählen.
-2. In den Shader-Einstellungen **NERO-Funktionstest → Rahmen** wählen, anwenden und
-   das Menü schließen. Links muss ein türkiser, rechts ein pinker Bildrand erscheinen.
-   Fehlt schon die Einstellung, ist nicht die Ausgabe 0.2.1 oder neuer geladen.
-3. **NERO-Funktionstest → Oberflächen** zeigt Blockseiten je nach Ausrichtung in
-   verschiedenen Farben und den Himmel dunkel. Hier werden die Geometriedaten direkt
-   angezeigt; Belichtung und Farbprofil beeinflussen diese Ansicht nicht.
-4. Zum Spielen den Funktionstest wieder auf **Aus** stellen und anwenden.
+Ein unerwarteter Serverabbruch kann Änderungen seit dem letzten erfolgreichen Save verlieren. Netzwerk-/Plattformausfälle lassen sich nicht ausschließen. Bei gesperrter Sitzung kurz warten und erneut beitreten; nicht den Store löschen. Bei Schemafehlern zuerst das vorhandene Profil sichern. Globale Ranglisten aktualisieren sich alle zwei Minuten und verwenden erfolgreich gespeicherte Schnappschüsse; in Studio ohne Persistenz zeigen sie ausdrücklich Studio-Sitzungswerte.
 
-Ein sichtbarer Rahmen bestätigt den finalen NERO-Pass, aber noch nicht die korrekte
-Beleuchtung aller Flächen. Fehlt der Rahmen nach dem Anwenden, zuerst das ausgewählte
-Paket und das Iris-Protokoll prüfen. Ist der Rahmen sichtbar, aber die Oberflächenansicht
-zeigt trotz sichtbarer Blöcke nur eine gleichmäßige Fläche, die Geometriepässe und
-Renderziele anhand des Logs prüfen. Bei einer Meldung bitte das Ergebnis beider Modi,
-die Iris-/Sodium-Versionen und die Zeilen aus `logs/latest.log` direkt nach dem Laden
-mitsenden. Diese Prüfung grenzt die Ursache ein; eine automatische Reparatur ist sie nicht.
+## Sounds
 
-Bei zu geringer Leistung zuerst HIGH/MEDIUM, kürzere Schattendistanz, weniger
-Wolken-/Nebel-/Reflexionsschritte und deaktivierte Tiefenunschärfe wählen.
-Nach Auflösungswechseln oder Shader-Neuladen kann die zeitliche Historie kurz neu
-aufgebaut werden. Die visuelle Ingame-Abnahme dieser ersten Version steht noch aus.
+Alle zehn WAV-Dateien in `assets/audio` sind im Projekt synthetisiert und dürfen mit dem beigefügten Code verwendet werden. Über den Roblox Asset Manager/Creator Hub unter dem Besitzer der Experience hochladen und für die Experience freigeben. Die jeweiligen `rbxassetid://NUMMER`-Werte in `Config.Audio` einsetzen:
+
+`Bounce`, `Fall`, `Chicken`, `Duck`, `Horn`, `Victory`, `Countdown`, `Explosion`, `LevelUp`, `Music`.
+
+Ohne Upload verwendet das Spiel Roblox-eigene kurze Effekttöne. Musical Platforms hat einen gepulsten Takt als Fallback. Die eigenen WAV-Dateien lassen sich nicht als lokale Dateien in einer veröffentlichten Experience abspielen. Keine erfundenen Audio-IDs sind eingetragen.
+
+## Bedienung
+
+| Aktion | PC | Gamepad | Touch |
+|---|---|---|---|
+| Bewegen / springen | Roblox-Standard | Roblox-Standard | Standard-Joystick und Sprung |
+| Sumo-Schubs | E | X | SCHUBS |
+| Lobby-Item | Q | R2 | ITEM |
+| Emote-Wheel | B | Y | EMOTES in der Menüleiste |
+| Einstellungen | M | Menübuttons auswählen | ⚙ in der Menüleiste |
+| Doppelter Sprung | Erneut springen, wenn Event aktiv | Erneut springen | Sprung erneut drücken |
+
+Die untere Menüleiste lässt sich horizontal scrollen. Das Glücksrad kostet nichts und ist einmal pro UTC-Kalendertag verfügbar.
+
+## Quellcode importieren
+
+Am einfachsten die fertige `.rbxlx` verwenden. Alternativ `python3 tools/build.py`, danach mit Rojo `rojo build default.project.json -o NeroChaosParty.rbxlx` oder `rojo serve` und dem Studio-Plugin synchronisieren. Rojo wurde in dieser Cloud-Umgebung nicht ausgeführt; der direkte Python-XML-Build ist das getestete Lieferformat.

@@ -1,7 +1,5 @@
-* text=auto
-*.glsl text eol=lf
-*.vsh text eol=lf
-*.fsh text eol=lf
+* text=auto eol=lf
+*.rbxlx text eol=lf
 *.zip binary
-*.png binary
-docs/BRIEF.md -text
+*.wav binary
+docs/BRIEF.md -text whitespace=cr-at-eol
